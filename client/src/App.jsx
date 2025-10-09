@@ -35,7 +35,7 @@ function App() {
           <Route path="/input/heading" element={<HeadingForm />} />
           <Route path="/input/experience" element={<ExperienceForm />} />
           <Route path="/input/education" element={<EducationForm />} />
-          <Route path="/input/skills" element={<SkillsForm />} />
+          <Route path="/input/skills" element={<Skills isInput={true} />} />
           <Route path="/input/projects" element={<ProjectsForm />} />
           <Route path="/input/certifications" element={<CertificationsForm />} />
           <Route path="/input/achievements" element={<AchievementsForm />} />
@@ -44,7 +44,7 @@ function App() {
           <Route path="/output/heading" element={<Heading />} />
           <Route path="/output/experience" element={<Experience />} />
           <Route path="/output/education" element={<Education />} />
-          <Route path="/output/skills" element={<Skills />} />
+          <Route path="/output/skills" element={<Skills isInput={false} />} />
           <Route path="/output/projects" element={<Projects />} />
           <Route path="/output/certifications" element={<Certifications />} />
           <Route path="/output/achievements" element={<Achievements />} />
