@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { ResumeContext } from "../../../context/ResumeContext";
+import { useNavigate } from "react-router";
+import { ResumeContext } from "../../../context/resumeContext";
 
 function EducationForm() {
   const { educationData, setEducationData } = useContext(ResumeContext);
@@ -87,4 +87,3 @@ function EducationForm() {
 }
 
 export default EducationForm;
-

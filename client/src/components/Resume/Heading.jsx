@@ -1,11 +1,15 @@
 import { useContext } from "react";
-import { ResumeContext } from "../../context/ResumeContext";
+import { ResumeContext } from "../../context/resumeContext";
 
 function Heading() {
   const { headingData } = useContext(ResumeContext);
 
   if (!headingData) {
-    return <p className="m-3 text-danger">No Heading Data Found. Please fill the form first.</p>;
+    return (
+      <p className="m-3 text-danger">
+        No Heading Data Found. Please fill the form first.
+      </p>
+    );
   }
 
   return (
