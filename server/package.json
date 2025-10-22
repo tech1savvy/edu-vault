@@ -1,0 +1,24 @@
+{
+  "name": "eduvault",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_PATH=helpers/ node index.js",
+    "dev": "NODE_PATH=helpers/ nodemon index.js",
+    "setup": "NODE_PATH=helpers/ node utils/db/setup.js",
+    "seed": "NODE_PATH=helpers/ node utils/db/seed.js",
+    "cleanup": "NODE_PATH=helpers/ node utils/db/cleanup.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
