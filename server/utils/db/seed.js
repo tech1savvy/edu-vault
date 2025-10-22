@@ -1,4 +1,4 @@
-const pool = require("pool");
+const pool = require("../../helpers/pool");
 const bcrypt = require("bcrypt");
 
 const seed = async () => {

@@ -1,4 +1,4 @@
-const pool = require("pool");
+const pool = require("../../helpers/pool");
 const { createUserTable } = require("../../features/user/user.model");
 const {
   createProjectTable,

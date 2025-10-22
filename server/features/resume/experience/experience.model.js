@@ -1,4 +1,4 @@
-const pool = require("pool");
+const pool = require("../../../helpers/pool");
 
 const getExperiences = async ({ user_id }) => {
   const { rows } = await pool.query('SELECT * FROM experience WHERE user_id = $1', [user_id]);

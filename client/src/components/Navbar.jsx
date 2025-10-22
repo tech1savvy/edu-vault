@@ -1,6 +1,55 @@
+import { useContext } from "react";
 import { Link } from "react-router";
+import { ResumeContext } from "../context/resumeContext";
 
 function Navbar() {
+  const { 
+    heading, 
+    education, 
+    experiences, 
+    projects, 
+    skills, 
+    achievements, 
+    certifications 
+  } = useContext(ResumeContext);
+
+  const handleProcessResume = async () => {
+    const fullResume = {
+      heading,
+      education,
+      experiences,
+      projects,
+      skills,
+      achievements,
+      certifications,
+    };
+
+    console.log("Aggregated Resume Data:", fullResume);
+
+    try {
+      const response = await fetch("/api/process/resume", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(fullResume),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Resume processed successfully!");
+        console.log("Server response:", result);
+      } else {
+        throw new Error(result.error || "An unknown error occurred.");
+      }
+    } catch (error) {
+      console.error("Failed to process resume:", error);
+      alert(`Error: ${error.message}`);
+    }
+  };
+
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
       <div className="container-fluid">
@@ -125,6 +174,9 @@ function Navbar() {
               </ul>
             </li>
           </ul>
+          <button className="btn btn-outline-success" onClick={handleProcessResume}>
+            Process Resume for AI
+          </button>
         </div>
       </div>
     </nav>

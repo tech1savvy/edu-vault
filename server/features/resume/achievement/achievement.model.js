@@ -1,4 +1,4 @@
-const pool = require("pool");
+const pool = require("../../../helpers/pool");
 
 const getAchievements = async ({ user_id }) => {
   const { rows } = await pool.query('SELECT * FROM achievement WHERE user_id = $1', [user_id]);
