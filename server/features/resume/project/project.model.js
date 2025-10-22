@@ -1,4 +1,4 @@
-const pool = require("pool");
+const pool = require("../../../helpers/pool");
 
 const getProjects = async ({ user_id }) => {
   const { rows } = await pool.query('SELECT * FROM project WHERE user_id = $1', [user_id]);

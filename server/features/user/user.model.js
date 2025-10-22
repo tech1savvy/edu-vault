@@ -1,4 +1,4 @@
-const pool = require("pool");
+const pool = require("../../helpers/pool");
 
 const createUserTable = `
   CREATE TABLE IF NOT EXISTS users (

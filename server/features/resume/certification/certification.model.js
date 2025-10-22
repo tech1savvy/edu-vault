@@ -1,4 +1,4 @@
-const pool = require("pool");
+const pool = require("../../../helpers/pool");
 
 const getCertifications = async ({ user_id }) => {
   const { rows } = await pool.query('SELECT * FROM certification WHERE user_id = $1', [user_id]);

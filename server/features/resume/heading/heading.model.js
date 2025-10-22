@@ -1,4 +1,4 @@
-const pool = require("pool");
+const pool = require("../../../helpers/pool");
 
 const getHeading = async ({ user_id }) => {
   const { rows } = await pool.query('SELECT * FROM heading WHERE user_id = $1', [user_id]);
