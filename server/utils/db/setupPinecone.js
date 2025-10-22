@@ -20,6 +20,12 @@ const setupPinecone = async () => {
         name: indexName,
         dimension: dimension,
         metric: "cosine",
+        spec: {
+          serverless: {
+            cloud: 'aws',
+            region: 'us-east-1'
+          }
+        }
       });
       console.log("Index created successfully.");
     } else {
