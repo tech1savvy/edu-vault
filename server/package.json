@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_PATH=helpers/ node index.js",
-    "dev": "NODE_PATH=helpers/ nodemon index.js",
-    "setup": "NODE_PATH=helpers/ node utils/db/setup.js",
-    "seed": "NODE_PATH=helpers/ node utils/db/seed.js",
-    "cleanup": "NODE_PATH=helpers/ node utils/db/cleanup.js"
+    "start": "cross-env NODE_PATH=helpers/ node index.js",
+    "dev": "cross-env NODE_PATH=helpers/ nodemon index.js",
+    "setup": "cross-env NODE_PATH=helpers/ node utils/db/setup.js",
+    "seed": "cross-env NODE_PATH=helpers/ node utils/db/seed.js",
+    "cleanup": "cross-env NODE_PATH=helpers/ node utils/db/cleanup.js",
+    "pinecone:setup": "node utils/db/setupPinecone.js"
   },
   "author": "",
   "license": "ISC",
