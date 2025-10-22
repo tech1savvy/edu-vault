@@ -14,18 +14,57 @@ const pineconeIndex = pinecone.index(indexName);
  * @returns {string[]} An array of text chunks.
  */
 const chunkResume = (resumeData) => {
-  // Placeholder logic for chunking
   console.log("Chunking resume data...");
   const chunks = [];
+
+  // Heading
   if (resumeData.heading) {
-    chunks.push(JSON.stringify(resumeData.heading));
+    const { fullName, title, description, ...rest } = resumeData.heading;
+    chunks.push(`The candidate's name is ${fullName}. They are a ${title}. ${description}`);
   }
-  if (resumeData.experiences) {
-    resumeData.experiences.forEach(exp => chunks.push(JSON.stringify(exp)));
+
+  // Experiences
+  if (resumeData.experiences && resumeData.experiences.length > 0) {
+    resumeData.experiences.forEach(exp => {
+      chunks.push(`Worked as a ${exp.role} at ${exp.company} from ${exp.duration}. Responsibilities included: ${exp.details}. This was a ${exp.type} position.`);
+    });
   }
-  // Add other sections similarly...
+
+  // Education
+  if (resumeData.education && resumeData.education.length > 0) {
+    resumeData.education.forEach(edu => {
+      chunks.push(`Studied ${edu.degree} at ${edu.college} from ${edu.startDate} to ${edu.endDate}. Achieved a score of ${edu.score}.`);
+    });
+  }
+
+  // Projects
+  if (resumeData.projects && resumeData.projects.length > 0) {
+    resumeData.projects.forEach(proj => {
+      chunks.push(`Worked on a project titled "${proj.title}". The tech stack included ${proj.techStack}. The project timeline was ${proj.timeline}. Description: ${proj.description}`);
+    });
+  }
+
+  // Skills
+  if (resumeData.skills && resumeData.skills.length > 0) {
+    chunks.push(`The candidate has skills in the following areas: ${resumeData.skills.join(", ")}.`);
+  }
+
+  // Achievements
+  if (resumeData.achievements && resumeData.achievements.length > 0) {
+    resumeData.achievements.forEach(ach => {
+      chunks.push(`Achievement: ${ach.title}, awarded on ${ach.date}. Description: ${ach.description}`);
+    });
+  }
+
+  // Certifications
+  if (resumeData.certifications && resumeData.certifications.length > 0) {
+    resumeData.certifications.forEach(cert => {
+      chunks.push(`Certified in ${cert.name} by ${cert.issuer}, obtained on ${cert.date}.`);
+    });
+  }
+
   console.log(`Created ${chunks.length} chunks.`);
-  return chunks;
+  return chunks.filter(chunk => chunk); // Filter out any empty or null chunks
 };
 
 /**
@@ -34,7 +73,6 @@ const chunkResume = (resumeData) => {
  * @returns {Promise<number[]>} The embedding vector.
  */
 const getEmbedding = async (text) => {
-  // Placeholder logic for embedding
   console.log(`Generating embedding for: "${text.substring(0, 50)}..."`);
   const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001"});
   const result = await embeddingModel.embedContent(text);
@@ -47,7 +85,6 @@ const getEmbedding = async (text) => {
  * @param {object[]} chunksWithEmbeddings - Array of objects with chunk text and embeddings.
  */
 const upsertToPinecone = async (userId, chunksWithEmbeddings) => {
-  // Placeholder logic for upserting
   console.log("Upserting embeddings to Pinecone...");
   const vectors = chunksWithEmbeddings.map((chunk, i) => ({
     id: `${userId}-chunk-${i}`,
