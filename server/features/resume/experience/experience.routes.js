@@ -5,7 +5,7 @@ const {
   addExperience,
   updateExperience,
   deleteExperience,
-} = require('./experience.handlers');
+} = require('./experience.controller');
 
 router.get('/', getExperiences);
 router.post('/', addExperience);
