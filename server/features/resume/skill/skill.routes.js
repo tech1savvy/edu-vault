@@ -5,7 +5,7 @@ const {
   addSkill,
   updateSkill,
   deleteSkill,
-} = require('./skill.handlers');
+} = require('./skill.controller');
 
 router.get('/', getSkills);
 router.post('/', addSkill);

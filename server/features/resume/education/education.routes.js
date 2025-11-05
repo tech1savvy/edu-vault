@@ -5,7 +5,7 @@ const {
   addEducation,
   updateEducation,
   deleteEducation,
-} = require('./education.handlers');
+} = require('./education.controller');
 
 router.get('/', getEducations);
 router.post('/', addEducation);

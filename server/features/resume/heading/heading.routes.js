@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   getHeading,
   createOrUpdateHeading,
-} = require('./heading.handlers');
+} = require('./heading.controller');
 
 router.get('/', getHeading);
 router.post('/', createOrUpdateHeading);

@@ -5,7 +5,7 @@ const {
   addCertification,
   updateCertification,
   deleteCertification,
-} = require('./certification.handlers');
+} = require('./certification.controller');
 
 router.get('/', getCertifications);
 router.post('/', addCertification);

@@ -5,7 +5,7 @@ const {
   addAchievement,
   updateAchievement,
   deleteAchievement,
-} = require('./achievement.handlers');
+} = require('./achievement.controller');
 
 router.get('/', getAchievements);
 router.post('/', addAchievement);
