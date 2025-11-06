@@ -4,13 +4,13 @@ This is the backend server for EduVault, a platform for managing educational and
 
 ## Tech Stack
 
-*   **Framework:** [Express.js](https://expressjs.com/)
-*   **Database:** [PostgreSQL](https://www.postgresql.org/)
-*   **ORM:** [Sequelize](https://sequelize.org/)
-*   **Authentication:** JWT (JSON Web Tokens)
-*   **Validation:** [Joi](https://joi.dev/)
-*   **Logging:** [Winston](https://github.com/winstonjs/winston) & [Morgan](https://github.com/expressjs/morgan)
-*   **Environment Variables:** [dotenv](https://github.com/motdotla/dotenv)
+- **Framework:** [Express.js](https://expressjs.com/)
+- **Database:** [PostgreSQL](https://www.postgresql.org/)
+- **ORM:** [Sequelize](https://sequelize.org/)
+- **Authentication:** JWT (JSON Web Tokens)
+- **Validation:** [Joi](https://joi.dev/)
+- **Logging:** [Winston](https://github.com/winstonjs/winston) & [Morgan](https://github.com/expressjs/morgan)
+- **Environment Variables:** [dotenv](https://github.com/motdotla/dotenv)
 
 ## Getting Started
 
@@ -18,12 +18,13 @@ Follow these steps to set up and run the EduVault server locally.
 
 ### Prerequisites
 
-*   Node.js (v18 or higher recommended)
-*   PostgreSQL
+- Node.js (v18 or higher recommended)
+- PostgreSQL
 
 ### Installation
 
 1.  **Clone the repository:**
+
     ```bash
     git clone <repository-url>
     cd EduVault/server
@@ -38,6 +39,7 @@ Follow these steps to set up and run the EduVault server locally.
 
 1.  **Create a `.env` file:**
     Create a file named `.env` in the `server/` directory by copying the example file:
+
     ```bash
     cp .env.example .env
     ```
@@ -51,12 +53,14 @@ Follow these steps to set up and run the EduVault server locally.
 
 1.  **Create the database:**
     Ensure your PostgreSQL server is running and then run the following command to create the database specified in your `.env` file:
+
     ```bash
     npx sequelize-cli db:create
     ```
 
 2.  **Run database migrations:**
     This command will create all the necessary tables in your database.
+
     ```bash
     npx sequelize-cli db:migrate
     ```
@@ -69,20 +73,23 @@ Follow these steps to set up and run the EduVault server locally.
 
 ### Running the Server
 
-*   **For development (with nodemon):**
-    ```bash
-    npm run dev
-    ```
-    This will start the server and automatically restart it when file changes are detected.
+- **For development (with nodemon):**
 
-*   **For production:**
-    ```bash
-    npm start
-    ```
+  ```bash
+  npm run dev
+  ```
+
+  This will start the server and automatically restart it when file changes are detected.
+
+- **For production:**
+  ```bash
+  npm start
+  ```
 
 ### Seeded Data
 
 If you ran the seeder, the following user account will be created:
 
-*   **Email:** `test@example.com`
-*   **Password:** `password123`
+- **Email:** `student@sexample.com`
+- **Password:** `password123`
+
