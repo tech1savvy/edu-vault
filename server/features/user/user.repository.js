@@ -4,8 +4,8 @@ const findUserByEmail = async (email) => {
   return await User.findOne({ where: { email } });
 };
 
-const createUser = async ({ email, password }) => {
-  return await User.create({ email, password });
+const createUser = async ({ name, email, password }) => {
+  return await User.create({ name, email, password });
 };
 
 module.exports = {
