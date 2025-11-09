@@ -3,7 +3,7 @@ const education = require('./education.service');
 const getEducations = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await education.getEducations({ user_id });
     res.json(result);
   } catch(e) {
@@ -14,7 +14,7 @@ const getEducations = async (req, res) => {
 const addEducation = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await education.addEducation({ ...req.body, user_id });
     res.status(201).json(result);
   } catch(e) {

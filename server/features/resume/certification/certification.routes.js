@@ -6,10 +6,12 @@ const {
   updateCertification,
   deleteCertification,
 } = require('./certification.controller');
+const authenticateToken = require('../../../middleware/auth');
+const authorizeRoles = require('../../../middleware/roles');
 
-router.get('/', getCertifications);
-router.post('/', addCertification);
-router.put('/:id', updateCertification);
-router.delete('/:id', deleteCertification);
+router.get('/', authenticateToken, getCertifications);
+router.post('/', authenticateToken, authorizeRoles('student'), addCertification);
+router.put('/:id', authenticateToken, authorizeRoles('student'), updateCertification);
+router.delete('/:id', authenticateToken, authorizeRoles('student'), deleteCertification);
 
 module.exports = router;

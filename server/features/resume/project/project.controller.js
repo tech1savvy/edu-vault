@@ -3,7 +3,7 @@ const project = require('./project.service');
 const getProjects = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await project.getProjects({ user_id });
     res.json(result);
   } catch(e) {
@@ -14,7 +14,7 @@ const getProjects = async (req, res) => {
 const addProject = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await project.addProject({ ...req.body, user_id });
     res.status(201).json(result);
   } catch(e) {

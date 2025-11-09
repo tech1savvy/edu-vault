@@ -6,10 +6,12 @@ const {
   updateProject,
   deleteProject,
 } = require('./project.controller');
+const authenticateToken = require('../../../middleware/auth');
+const authorizeRoles = require('../../../middleware/roles');
 
-router.get('/', getProjects);
-router.post('/', addProject);
-router.put('/:id', updateProject);
-router.delete('/:id', deleteProject);
+router.get('/', authenticateToken, getProjects);
+router.post('/', authenticateToken, authorizeRoles('student'), addProject);
+router.put('/:id', authenticateToken, authorizeRoles('student'), updateProject);
+router.delete('/:id', authenticateToken, authorizeRoles('student'), deleteProject);
 
 module.exports = router;

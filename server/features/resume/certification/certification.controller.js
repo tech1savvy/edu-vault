@@ -3,7 +3,7 @@ const certification = require('./certification.service');
 const getCertifications = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await certification.getCertifications({ user_id });
     res.json(result);
   } catch(e) {
@@ -14,7 +14,7 @@ const getCertifications = async (req, res) => {
 const addCertification = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await certification.addCertification({ ...req.body, user_id });
     res.status(201).json(result);
   } catch(e) {

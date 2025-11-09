@@ -3,7 +3,7 @@ const experience = require('./experience.service');
 const getExperiences = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await experience.getExperiences({ user_id });
     res.json(result);
   } catch(e) {
@@ -14,7 +14,7 @@ const getExperiences = async (req, res) => {
 const addExperience = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await experience.addExperience({ ...req.body, user_id });
     res.status(201).json(result);
   } catch(e) {
