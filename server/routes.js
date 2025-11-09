@@ -21,4 +21,8 @@ router.use("/resume/certifications", certificationRoutes);
 router.use("/resume/education", educationRoutes);
 router.use("/resume/experiences", experienceRoutes);
 
+const jobDescriptionRoutes = require("./features/job-description/jobDescription.routes");
+
+router.use("/job-descriptions", jobDescriptionRoutes);
+
 module.exports = router;

@@ -6,10 +6,12 @@ const {
   updateSkill,
   deleteSkill,
 } = require('./skill.controller');
+const authenticateToken = require('../../../middleware/auth');
+const authorizeRoles = require('../../../middleware/roles');
 
-router.get('/', getSkills);
-router.post('/', addSkill);
-router.put('/:id', updateSkill);
-router.delete('/:id', deleteSkill);
+router.get('/', authenticateToken, getSkills);
+router.post('/', authenticateToken, authorizeRoles('student'), addSkill);
+router.put('/:id', authenticateToken, authorizeRoles('student'), updateSkill);
+router.delete('/:id', authenticateToken, authorizeRoles('student'), deleteSkill);
 
 module.exports = router;

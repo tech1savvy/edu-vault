@@ -6,10 +6,12 @@ const {
   updateAchievement,
   deleteAchievement,
 } = require('./achievement.controller');
+const authenticateToken = require('../../../middleware/auth');
+const authorizeRoles = require('../../../middleware/roles');
 
-router.get('/', getAchievements);
-router.post('/', addAchievement);
-router.put('/:id', updateAchievement);
-router.delete('/:id', deleteAchievement);
+router.get('/', authenticateToken, getAchievements);
+router.post('/', authenticateToken, authorizeRoles('student'), addAchievement);
+router.put('/:id', authenticateToken, authorizeRoles('student'), updateAchievement);
+router.delete('/:id', authenticateToken, authorizeRoles('student'), deleteAchievement);
 
 module.exports = router;

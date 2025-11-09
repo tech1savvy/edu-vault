@@ -4,11 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_PATH=helpers/ node index.js",
-    "dev": "NODE_PATH=helpers/ nodemon index.js",
-    "setup": "NODE_PATH=helpers/ node utils/db/setup.js",
-    "seed": "NODE_PATH=helpers/ node utils/db/seed.js",
-    "cleanup": "NODE_PATH=helpers/ node utils/db/cleanup.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",

@@ -3,7 +3,7 @@ const achievement = require('./achievement.service');
 const getAchievements = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await achievement.getAchievements({ user_id });
     res.json(result);
   } catch(e) {
@@ -14,7 +14,7 @@ const getAchievements = async (req, res) => {
 const addAchievement = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await achievement.addAchievement({ ...req.body, user_id });
     res.status(201).json(result);
   } catch(e) {

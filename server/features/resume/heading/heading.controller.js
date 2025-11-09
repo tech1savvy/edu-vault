@@ -3,7 +3,7 @@ const heading = require('./heading.service');
 const getHeading = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await heading.getHeading({ user_id });
     res.json(result);
   } catch(e) {
@@ -14,7 +14,7 @@ const getHeading = async (req, res) => {
 const createOrUpdateHeading = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await heading.createOrUpdateHeading({ ...req.body, user_id });
     res.status(201).json(result);
   } catch(e) {

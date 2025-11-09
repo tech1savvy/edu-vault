@@ -3,7 +3,7 @@ const skill = require('./skill.service');
 const getSkills = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await skill.getSkills({ user_id });
     res.json(result);
   } catch(e) {
@@ -14,7 +14,7 @@ const getSkills = async (req, res) => {
 const addSkill = async (req, res) => {
   try {
     // TODO: get user_id from session
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const result = await skill.addSkill({ ...req.body, user_id });
     res.status(201).json(result);
   } catch(e) {
