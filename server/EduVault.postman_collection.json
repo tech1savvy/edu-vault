@@ -1,672 +1,856 @@
 {
-  "info": {
-    "_postman_id": "5f851b32-682c-44d6-b82f-3d11bac46066",
-    "name": "EduVault",
-    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-    "_exporter_id": "47399514",
-    "_collection_link": "https://vejodim511-190113.postman.co/workspace/94cfdae5-1141-4264-8f1b-74ed44f1a070/collection/47399514-5f851b32-682c-44d6-b82f-3d11bac46066?action=share&source=collection_link&creator=47399514"
-  },
-  "item": [
-    {
-      "name": "User",
-      "item": [
-        {
-          "name": "Signup User",
-          "request": {
-            "method": "GET",
-            "header": []
-          },
-          "response": []
-        },
-        {
-          "name": "Login User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "// Parse the JSON response body",
-                  "let response = pm.response.json();",
-                  "",
-                  "// Save values as collection variable",
-                  "pm.collectionVariables.set('token', response.token);"
-                ],
-                "type": "text/javascript",
-                "packages": {}
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\":\"{{testUserEmail}}\",\n    \"password\":\"{{testUserPassword}}\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": "{{baseURL}}/api/auth/login"
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Resume",
-      "item": [
-        {
-          "name": "Heading",
-          "item": [
-            {
-              "name": "Heading",
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/heading"
-              },
-              "response": []
-            },
-            {
-              "name": "Heading",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"user_id\": 1,\n    \"name\": \"test\",\n    \"role\": null,\n    \"email\": null,\n    \"phone\": null,\n    \"location\": null,\n    \"link\": null\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/heading"
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Skills",
-          "item": [
-            {
-              "name": "Skills",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/skills"
-              },
-              "response": []
-            },
-            {
-              "name": "Skill",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"id\": 2,\n    \"user_id\": 1,\n    \"name\": \"TypeScript\",\n    \"level\": \"Intermidiate\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/skills"
-              },
-              "response": []
-            },
-            {
-              "name": "Skill",
-              "request": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"user_id\": 1,\n    \"name\": \"TypeScript\",\n    \"level\": \"Expert\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/skills/2"
-              },
-              "response": []
-            },
-            {
-              "name": "Skill",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"user_id\": 1,\n    \"name\": \"TypeScript\",\n    \"level\": \"Expert\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/skills/2"
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Projects",
-          "item": [
-            {
-              "name": "Projects",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/projects"
-              },
-              "response": []
-            },
-            {
-              "name": "Project",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/projects"
-              },
-              "response": []
-            },
-            {
-              "name": "Project",
-              "request": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"user_id\": 1,\n    \"title\": \"project 2\",\n    \"description\": null,\n    \"techstack\": null,\n    \"timeline\": null,\n    \"type\": null,\n    \"collaborators\": null\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/projects/1"
-              },
-              "response": []
-            },
-            {
-              "name": "Project",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/projects/2"
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Achievements",
-          "item": [
-            {
-              "name": "Achievements",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/achievements"
-              },
-              "response": []
-            },
-            {
-              "name": "Achievements",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "\n    {\n        \"user_id\": 1,\n        \"title\": \"Award for Creativity\",\n        \"description\": \"Received an award for innovative project design.\",\n        \"date\": \"2022\"\n    }\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/achievements"
-              },
-              "response": []
-            },
-            {
-              "name": "Achievements",
-              "request": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "\n    {\n        \"user_id\": 1,\n        \"title\": \"Award for Creativity\",\n        \"description\": \"Received an award for creative project design.\",\n        \"date\": \"2022\"\n    }\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/achievements/2"
-              },
-              "response": []
-            },
-            {
-              "name": "Achievements",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/achievements/2"
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Certifications",
-          "item": [
-            {
-              "name": "Certifications",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/certifications"
-              },
-              "response": []
-            },
-            {
-              "name": "Certifications",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "    {\n        \"user_id\": 1,\n        \"name\": \"GCP Certified Developer\",\n        \"issuer\": \"Amazon Web Services\",\n        \"date\": \"2021\",\n        \"credentialid\": \"ABC123XYZ\"\n    }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/certifications"
-              },
-              "response": []
-            },
-            {
-              "name": "Certifications",
-              "request": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"user_id\": 1,\n    \"name\": \"GCP Certified Developer\",\n    \"issuer\": \"Google Cloud\",\n    \"date\": \"2021\",\n    \"credentialid\": null\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/certifications/2"
-              },
-              "response": []
-            },
-            {
-              "name": "Certifications",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/certifications/2"
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Education",
-          "item": [
-            {
-              "name": "Educations",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/education"
-              },
-              "response": []
-            },
-            {
-              "name": "Educations",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "    {\n        \"user_id\": 1,\n        \"institution\": \"University of ABC\",\n        \"degree\": \"Master of Science\",\n        \"fieldofstudy\": \"Computer Science\",\n        \"duration\": \"2018-2020\",\n        \"details\": \"Specialized in AI and Machine Learning.\"\n    }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/education"
-              },
-              "response": []
-            },
-            {
-              "name": "Educations",
-              "request": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "    {\n        \"user_id\": 1,\n        \"institution\": \"University of ABC\",\n        \"degree\": \"Expert of Science\",\n        \"fieldofstudy\": \"Computer Science\",\n        \"duration\": \"2018-2020\",\n        \"details\": \"Specialized in AI and Machine Learning.\"\n    }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/education/2"
-              },
-              "response": []
-            },
-            {
-              "name": "Educations",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/education/2"
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Experiencies",
-          "item": [
-            {
-              "name": "Experiences",
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/experiences"
-              },
-              "response": []
-            },
-            {
-              "name": "Experiences",
-              "request": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "    {\n        \"user_id\": 1,\n        \"type\": \"Part-time\",\n        \"company\": \"Google\",\n        \"role\": \"Software Engineer\",\n        \"duration\": \"2020-Present\",\n        \"details\": \"Developed and maintained various software.\"\n    }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/experiences"
-              },
-              "response": []
-            },
-            {
-              "name": "Experiences",
-              "request": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "    {\n        \"user_id\": 1,\n        \"type\": \"Part-time\",\n        \"company\": \"Microsoft\",\n        \"role\": \"Software Engineer\",\n        \"duration\": \"2020-Present\",\n        \"details\": \"Developed and maintained various software.\"\n    }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": "{{baseURL}}/api/resume/experiences/2"
-              },
-              "response": []
-            },
-            {
-              "name": "Experiences",
-              "request": {
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "url": "{{baseURL}}/api/resume/experiences/2"
-              },
-              "response": []
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "packages": {},
-        "exec": [""]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "packages": {},
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "baseURL",
-      "value": "http://localhost:8000",
-      "type": "string"
-    },
-    {
-      "key": "testUserEmail",
-      "value": "test@example.com",
-      "type": "string"
-    },
-    {
-      "key": "testUserPassword",
-      "value": "password123",
-      "type": "string"
-    },
-    {
-      "key": "token",
-      "value": ""
-    }
-  ]
+	"info": {
+		"_postman_id": "0d8f6913-8232-46a3-9f0d-b1729ad7d25b",
+		"name": "EduVault",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "47399514",
+		"_collection_link": "https://vejodim511-190113.postman.co/workspace/vejodim511's-Workspace~94cfdae5-1141-4264-8f1b-74ed44f1a070/collection/47399514-0d8f6913-8232-46a3-9f0d-b1729ad7d25b?action=share&source=collection_link&creator=47399514"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Signup Student User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Login Student User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response body",
+									"let response = pm.response.json();",
+									"",
+									"// Save values as collection variable",
+									"pm.collectionVariables.set('token', response.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{testUserEmail}}\",\n    \"password\":\"{{testUserPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Login Admin User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response body",
+									"let response = pm.response.json();",
+									"",
+									"// Save values as collection variable",
+									"pm.collectionVariables.set('adminToken', response.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{testAdminUserEmail}}\",\n    \"password\":\"{{testAdminUserPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/auth/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Resume",
+			"item": [
+				{
+					"name": "Heading",
+					"item": [
+						{
+							"name": "Heading",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/heading"
+							},
+							"response": []
+						},
+						{
+							"name": "Heading",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"John Doe\",\n    \"role\": \"Software Engineer\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"123-456-7890\",\n    \"location\": \"New York, USA\",\n    \"link\": \"linkedin.com/in/johndoe\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/heading"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Skills",
+					"item": [
+						{
+							"name": "Skills",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/skills"
+							},
+							"response": []
+						},
+						{
+							"name": "Skill",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 2,\n    \"user_id\": 1,\n    \"name\": \"TypeScript\",\n    \"level\": \"Intermidiate\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/skills"
+							},
+							"response": []
+						},
+						{
+							"name": "Skill",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 1,\n    \"name\": \"TypeScript\",\n    \"level\": \"Expert\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/skills/2"
+							},
+							"response": []
+						},
+						{
+							"name": "Skill",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 1,\n    \"name\": \"TypeScript\",\n    \"level\": \"Expert\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/skills/2"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Projects",
+					"item": [
+						{
+							"name": "Projects",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/projects"
+							},
+							"response": []
+						},
+						{
+							"name": "Project",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/projects"
+							},
+							"response": []
+						},
+						{
+							"name": "Project",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 1,\n    \"title\": \"project 2\",\n    \"description\": null,\n    \"techstack\": null,\n    \"timeline\": null,\n    \"type\": null,\n    \"collaborators\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/projects/1"
+							},
+							"response": []
+						},
+						{
+							"name": "Project",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/projects/2"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Achievements",
+					"item": [
+						{
+							"name": "Achievements",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/achievements"
+							},
+							"response": []
+						},
+						{
+							"name": "Achievements",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "\n    {\n        \"user_id\": 1,\n        \"title\": \"Award for Creativity\",\n        \"description\": \"Received an award for innovative project design.\",\n        \"date\": \"2022\"\n    }\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/achievements"
+							},
+							"response": []
+						},
+						{
+							"name": "Achievements",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "\n    {\n        \"user_id\": 1,\n        \"title\": \"Award for Creativity\",\n        \"description\": \"Received an award for creative project design.\",\n        \"date\": \"2022\"\n    }\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/achievements/2"
+							},
+							"response": []
+						},
+						{
+							"name": "Achievements",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/achievements/2"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Certifications",
+					"item": [
+						{
+							"name": "Certifications",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/certifications"
+							},
+							"response": []
+						},
+						{
+							"name": "Certifications",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"user_id\": 1,\n        \"name\": \"GCP Certified Developer\",\n        \"issuer\": \"Amazon Web Services\",\n        \"date\": \"2021\",\n        \"credentialid\": \"ABC123XYZ\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/certifications"
+							},
+							"response": []
+						},
+						{
+							"name": "Certifications",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 1,\n    \"name\": \"GCP Certified Developer\",\n    \"issuer\": \"Google Cloud\",\n    \"date\": \"2021\",\n    \"credentialid\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/certifications/2"
+							},
+							"response": []
+						},
+						{
+							"name": "Certifications",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/certifications/2"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Education",
+					"item": [
+						{
+							"name": "Educations",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/education"
+							},
+							"response": []
+						},
+						{
+							"name": "Educations",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"user_id\": 1,\n        \"institution\": \"University of ABC\",\n        \"degree\": \"Master of Science\",\n        \"fieldofstudy\": \"Computer Science\",\n        \"duration\": \"2018-2020\",\n        \"details\": \"Specialized in AI and Machine Learning.\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/education"
+							},
+							"response": []
+						},
+						{
+							"name": "Educations",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"user_id\": 1,\n        \"institution\": \"University of ABC\",\n        \"degree\": \"Expert of Science\",\n        \"fieldofstudy\": \"Computer Science\",\n        \"duration\": \"2018-2020\",\n        \"details\": \"Specialized in AI and Machine Learning.\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/education/2"
+							},
+							"response": []
+						},
+						{
+							"name": "Educations",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/education/2"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Experiencies",
+					"item": [
+						{
+							"name": "Experiences",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/experiences"
+							},
+							"response": []
+						},
+						{
+							"name": "Experiences",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"user_id\": 1,\n        \"type\": \"Part-time\",\n        \"company\": \"Google\",\n        \"role\": \"Software Engineer\",\n        \"duration\": \"2020-Present\",\n        \"details\": \"Developed and maintained various software.\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/experiences"
+							},
+							"response": []
+						},
+						{
+							"name": "Experiences",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\n        \"user_id\": 1,\n        \"type\": \"Part-time\",\n        \"company\": \"Microsoft\",\n        \"role\": \"Software Engineer\",\n        \"duration\": \"2020-Present\",\n        \"details\": \"Developed and maintained various software.\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/resume/experiences/2"
+							},
+							"response": []
+						},
+						{
+							"name": "Experiences",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": "{{baseURL}}/api/resume/experiences/2"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Job Descriptions",
+			"item": [
+				{
+					"name": "All Job Descriptions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"role\": \"Software Engineer\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"123-456-7890\",\n    \"location\": \"New York, USA\",\n    \"link\": \"linkedin.com/in/johndoe\"\n}"
+						},
+						"url": "{{baseURL}}/api/job-descriptions"
+					},
+					"response": []
+				},
+				{
+					"name": "Job Descriptions by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"role\": \"Software Engineer\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"123-456-7890\",\n    \"location\": \"New York, USA\",\n    \"link\": \"linkedin.com/in/johndoe\"\n}"
+						},
+						"url": "{{baseURL}}/api/job-descriptions/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Job Description",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Software Engineer\",\n    \"description\": \"We are looking for a talented Software Engineer to join our team\",\n    \"requirements\": \"B.S. in Computer Science or a related field, 3+ years of experience in software development.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/job-descriptions"
+					},
+					"response": []
+				},
+				{
+					"name": "Job Description",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"DevOps Engineer\",\n    \"description\": \"We are looking for a talented Software Engineer to join our team\",\n    \"requirements\": \"B.S. in Computer Science or a related field, 3+ years of experience in software development.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/job-descriptions/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Job Description",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/job-descriptions/2"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "testUserEmail",
+			"value": "student@example.com",
+			"type": "string"
+		},
+		{
+			"key": "testUserPassword",
+			"value": "password123",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "testAdminUserEmail",
+			"value": "admin@example.com",
+			"type": "string"
+		},
+		{
+			"key": "testAdminUserPassword",
+			"value": "password123",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": ""
+		}
+	]
 }
