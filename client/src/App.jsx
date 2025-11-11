@@ -25,6 +25,9 @@ import Projects from "./components/Resume/Projects";
 import Certifications from "./components/Resume/Certifications";
 import Achievements from "./components/Resume/Achievements";
 
+import LayoutT from "./components/Portfolio/Layouts/LayoutT/LayoutT";
+
+
 function App() {
   return (
     <>
@@ -48,6 +51,9 @@ function App() {
           <Route path="/output/projects" element={<Projects />} />
           <Route path="/output/certifications" element={<Certifications />} />
           <Route path="/output/achievements" element={<Achievements />} />
+          
+          {/* Portfolio Route */}
+          <Route path="/portfolio/layoutT" element={<LayoutT />} />
 
           {/* Default Route */}
           <Route path="/" element={<div className="container text-center mt-5"><h2>Welcome to EduVault Resume Builder</h2><p>Select a component from the navigation menu to get started.</p></div>} />
