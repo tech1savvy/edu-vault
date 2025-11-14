@@ -1,8 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const logger = require('./config/logger');
 const app = express();
 const routes = require('./routes');
+
+app.use(cors());
+app.options('*', cors());
 
 app.use(morgan('dev', { stream: logger.stream }));
 app.use(express.json());
