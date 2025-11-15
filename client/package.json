@@ -14,7 +14,10 @@
     "bootstrap-icons": "^1.13.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router": "^7.9.3"
+    "react-router": "^7.9.3",
+    "react-router-dom": "^7.9.5",
+    "react-scroll": "^1.9.3",
+    "react-to-print": "^3.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

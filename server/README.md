@@ -39,7 +39,8 @@ Follow these steps to set up and run the EduVault server locally.
 1.  **Create a `.env` file:**
     Create a file named `.env` in the `server/` directory by copying the example file:
     ```bash
-    cp .env.example .env
+   
+   
     ```
 
 2.  **Edit the `.env` file:**

@@ -10,9 +10,11 @@ const achievementRoutes = require("./features/resume/achievement");
 const certificationRoutes = require("./features/resume/certification");
 const educationRoutes = require("./features/resume/education");
 const experienceRoutes = require("./features/resume/experience");
+const fullResumeRoutes = require("./features/resume/full-resume");
 
 router.use("/auth", authRoutes);
 router.use("/resume", authenticate);
+router.use("/resume/all", fullResumeRoutes);
 router.use("/resume/heading", headingRoutes);
 router.use("/resume/skills", skillRoutes);
 router.use("/resume/projects", projectRoutes);

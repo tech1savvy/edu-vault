@@ -27,6 +27,11 @@ function ExperienceForm() {
     });
   };
 
+  const handleRemove = (index) => {
+    const updatedExperiences = experiences.filter((_, i) => i !== index);
+    setExperiences(updatedExperiences);
+  };
+
   return (
     <div className="container">
       <h2 className="mb-3">Experience Section</h2>
@@ -102,9 +107,19 @@ function ExperienceForm() {
       <ul className="list-group">
         {experiences.map((exp, idx) => (
           <li key={idx} className="list-group-item">
-            <strong>{exp.type}:</strong> {exp.role} at {exp.company} <br />
-            <small>{exp.duration}</small>
-            <p>{exp.details}</p>
+            <div className="d-flex justify-content-between align-items-start">
+              <div>
+                <strong>{exp.type}:</strong> {exp.role} at {exp.company} <br />
+                <small>{exp.duration}</small>
+                <p>{exp.details}</p>
+              </div>
+              <button
+                className="btn btn-outline-danger btn-sm"
+                onClick={() => handleRemove(idx)}
+              >
+                Remove
+              </button>
+            </div>
           </li>
         ))}
       </ul>

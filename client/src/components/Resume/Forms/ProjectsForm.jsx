@@ -29,6 +29,11 @@ function ProjectsForm() {
     });
   };
 
+  const handleRemove = (index) => {
+    const updatedProjects = projects.filter((_, i) => i !== index);
+    setProjects(updatedProjects);
+  };
+
   return (
     <div className="container">
       <h2 className="mb-3">Projects Section</h2>
@@ -118,14 +123,24 @@ function ProjectsForm() {
       <ul className="list-group">
         {projects.map((proj, idx) => (
           <li key={idx} className="list-group-item">
-            <strong>{proj.title}</strong> <br />
-            <small>{proj.timeline}</small>
-            <p>{proj.description}</p>
-            <em>{proj.techStack}</em> <br />
-            <span className="badge bg-info">{proj.type}</span>
-            {proj.type === "Group" && (
-              <p>Collaborators: {proj.collaborators}</p>
-            )}
+            <div className="d-flex justify-content-between align-items-start">
+              <div>
+                <strong>{proj.title}</strong> <br />
+                <small>{proj.timeline}</small>
+                <p>{proj.description}</p>
+                <em>{proj.techStack}</em> <br />
+                <span className="badge bg-info">{proj.type}</span>
+                {proj.type === "Group" && (
+                  <p>Collaborators: {proj.collaborators}</p>
+                )}
+              </div>
+              <button
+                className="btn btn-outline-danger btn-sm"
+                onClick={() => handleRemove(idx)}
+              >
+                Remove
+              </button>
+            </div>
           </li>
         ))}
       </ul>

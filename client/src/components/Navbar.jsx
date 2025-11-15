@@ -1,8 +1,11 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router-dom";
+import ThemeSwitcher from "./Portfolio/Layouts/LayoutK/ThemeSwitcher";
 
-function Navbar() {
+function Navbar({ toggleTheme }) {
+  const location = useLocation();
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary fixed-top" style={{ backgroundColor: '#212529' }}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           EduVault
@@ -124,7 +127,30 @@ function Navbar() {
                 </li>
               </ul>
             </li>
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownPortfolio"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Portfolio
+              </a>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdownPortfolio"
+              >
+                <li>
+                  <Link className="dropdown-item" to="/portfolio/layout-k">
+                    Layout K
+                  </Link>
+                </li>
+              </ul>
+            </li>
           </ul>
+          {location.pathname === '/portfolio/layout-k' && <ThemeSwitcher toggleTheme={toggleTheme} />}
         </div>
       </div>
     </nav>

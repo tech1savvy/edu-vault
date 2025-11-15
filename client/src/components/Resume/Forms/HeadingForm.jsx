@@ -1,9 +1,9 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { ResumeContext } from "../../../context/resumeContext";
 
 function HeadingForm() {
-  const { setHeadingData } = useContext(ResumeContext);
+  const { heading, setHeading } = useContext(ResumeContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -16,13 +16,19 @@ function HeadingForm() {
     description: "",
   });
 
+  useEffect(() => {
+    if (heading) {
+      setFormData(heading);
+    }
+  }, [heading]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setHeadingData(formData); // save into context
+    setHeading(formData); // save into context
     navigate("/output/heading"); // go to preview
   };
 
@@ -36,7 +42,7 @@ function HeadingForm() {
           className="form-control mb-2"
           name="fullName"
           placeholder="Full Name"
-          value={formData.fullName}
+          value={formData.fullName || ""}
           onChange={handleChange}
         />
 
@@ -44,7 +50,7 @@ function HeadingForm() {
           className="form-control mb-2"
           name="contact"
           placeholder="Contact Info (Email, Phone)"
-          value={formData.contact}
+          value={formData.contact || ""}
           onChange={handleChange}
         />
 
@@ -52,7 +58,7 @@ function HeadingForm() {
           className="form-control mb-2"
           name="linkedin"
           placeholder="LinkedIn URL"
-          value={formData.linkedin}
+          value={formData.linkedin || ""}
           onChange={handleChange}
         />
 
@@ -60,7 +66,7 @@ function HeadingForm() {
           className="form-control mb-2"
           name="github"
           placeholder="GitHub URL"
-          value={formData.github}
+          value={formData.github || ""}
           onChange={handleChange}
         />
 
@@ -68,7 +74,7 @@ function HeadingForm() {
           className="form-control mb-2"
           name="portfolio"
           placeholder="Portfolio Link"
-          value={formData.portfolio}
+          value={formData.portfolio || ""}
           onChange={handleChange}
         />
 
@@ -76,7 +82,7 @@ function HeadingForm() {
           className="form-control mb-2"
           name="title"
           placeholder="Professional Title"
-          value={formData.title}
+          value={formData.title || ""}
           onChange={handleChange}
         />
 
@@ -84,7 +90,7 @@ function HeadingForm() {
           className="form-control mb-2"
           name="description"
           placeholder="Small description"
-          value={formData.description}
+          value={formData.description || ""}
           onChange={handleChange}
         />
 

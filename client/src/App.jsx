@@ -25,17 +25,22 @@ import Projects from "./components/Resume/Projects";
 import Certifications from "./components/Resume/Certifications";
 import Achievements from "./components/Resume/Achievements";
 
+import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
+import { useTheme } from "./components/Portfolio/Layouts/LayoutK/useTheme";
+
 function App() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <>
-      <Navbar />
-      <main className="p-3">
+      <Navbar toggleTheme={toggleTheme} />
+      <main style={{ paddingTop: '56px' }}>
         <Routes>
           {/* Input Routes */}
           <Route path="/input/heading" element={<HeadingForm />} />
           <Route path="/input/experience" element={<ExperienceForm />} />
           <Route path="/input/education" element={<EducationForm />} />
-          <Route path="/input/skills" element={<Skills isInput={true} />} />
+          <Route path="/input/skills" element={<SkillsForm />} />
           <Route path="/input/projects" element={<ProjectsForm />} />
           <Route path="/input/certifications" element={<CertificationsForm />} />
           <Route path="/input/achievements" element={<AchievementsForm />} />
@@ -44,10 +49,13 @@ function App() {
           <Route path="/output/heading" element={<Heading />} />
           <Route path="/output/experience" element={<Experience />} />
           <Route path="/output/education" element={<Education />} />
-          <Route path="/output/skills" element={<Skills isInput={false} />} />
+          <Route path="/output/skills" element={<Skills />} />
           <Route path="/output/projects" element={<Projects />} />
           <Route path="/output/certifications" element={<Certifications />} />
           <Route path="/output/achievements" element={<Achievements />} />
+
+          {/* Portfolio Route */}
+          <Route path="/portfolio/layout-k" element={<LayoutK />} />
 
           {/* Default Route */}
           <Route path="/" element={<div className="container text-center mt-5"><h2>Welcome to EduVault Resume Builder</h2><p>Select a component from the navigation menu to get started.</p></div>} />
