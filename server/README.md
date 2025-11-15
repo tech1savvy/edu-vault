@@ -90,6 +90,5 @@ Follow these steps to set up and run the EduVault server locally.
 
 If you ran the seeder, the following user account will be created:
 
-- **Email:** `student@sexample.com`
+- **Email:** `student@example.com`
 - **Password:** `password123`
-
