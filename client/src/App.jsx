@@ -24,6 +24,8 @@ import Skills from "./components/Resume/Skills";
 import Projects from "./components/Resume/Projects";
 import Certifications from "./components/Resume/Certifications";
 import Achievements from "./components/Resume/Achievements";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   return (
@@ -31,6 +33,10 @@ function App() {
       <Navbar />
       <main className="p-3">
         <Routes>
+          {/* Auth Routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+
           {/* Input Routes */}
           <Route path="/input/heading" element={<HeadingForm />} />
           <Route path="/input/experience" element={<ExperienceForm />} />
