@@ -124,6 +124,28 @@ function Navbar() {
                 </li>
               </ul>
             </li>
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownPortfolio"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Portfolio
+              </a>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdownPortfolio"
+              >
+                <li>
+                  <Link className="dropdown-item" to="/portfolio/layout-k">
+                    Layout K
+                  </Link>
+                </li>
+              </ul>
+            </li>
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">
