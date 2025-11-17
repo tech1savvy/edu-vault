@@ -12,7 +12,12 @@ const updateJobDescriptionSchema = Joi.object({
   requirements: Joi.string().min(10).allow(null, ''),
 });
 
+const matchJobSchema = Joi.object({
+  top_n: Joi.number().integer().positive().default(10),
+});
+
 module.exports = {
   createJobDescriptionSchema,
   updateJobDescriptionSchema,
+  matchJobSchema,
 };

@@ -17,7 +17,20 @@ const createOrUpdateHeading = async ({ user_id, name, role, email, phone, locati
   return heading;
 };
 
+const { Op } = require('sequelize');
+
+const getHeadingsByUserIds = async (userIds) => {
+  return await Heading.findAll({
+    where: {
+      userId: {
+        [Op.in]: userIds,
+      },
+    },
+  });
+};
+
 module.exports = {
   getHeading,
   createOrUpdateHeading,
+  getHeadingsByUserIds,
 };
