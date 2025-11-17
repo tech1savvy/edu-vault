@@ -20,17 +20,17 @@ This checklist outlines the steps for implementing the Admin Dashboard in the fr
 ## Group 2: Admin API Service
 
 *   **2.1 Create `client/src/services/adminApi.js`**
-    *   [ ] Create an Axios instance for admin-specific API calls.
-    *   [ ] Implement an Axios interceptor to automatically attach the `Authorization` token from `AuthContext` to requests.
-    *   [ ] Implement error handling within `adminApi.js`, such as redirecting to the login page on 401 Unauthorized errors.
-    *   [ ] Implement functions for:
-        *   [ ] `getJobDescriptions()`
-        *   [ ] `getJobDescriptionById(id)`
-        *   [ ] `createJobDescription(data)`
-        *   [ ] `updateJobDescription(id, data)`
-        *   [ ] `deleteJobDescription(id)`
-        *   [ ] `matchJobDescription(id, topN)`
-        *   [ ] `triggerFullSync()`
+    *   [x] Create an Axios instance for admin-specific API calls.
+    *   [x] Implement an Axios interceptor to automatically attach the `Authorization` token from `AuthContext` to requests.
+    *   [x] Implement error handling within `adminApi.js`, such as redirecting to the login page on 401 Unauthorized errors.
+    *   [x] Implement functions for:
+        *   [x] `getJobDescriptions()`
+        *   [x] `getJobDescriptionById(id)`
+        *   [x] `createJobDescription(data)`
+        *   [x] `updateJobDescription(id, data)`
+        *   [x] `deleteJobDescription(id)`
+        *   [x] `matchJobDescription(id, topN)`
+        *   [x] `triggerFullSync()`
 
 ---
 
