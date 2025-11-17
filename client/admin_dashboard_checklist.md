@@ -60,15 +60,15 @@ This checklist outlines the steps for implementing the Admin Dashboard in the fr
 ## Group 5: Routing and Navigation
 
 *   **5.1 Create `client/src/components/AdminRoute.jsx`**
-    *   [ ] Implement an `AdminRoute` wrapper component to protect routes, redirecting unauthorized users to the login page.
+    *   [x] Implement an `AdminRoute` wrapper component to protect routes, redirecting unauthorized users to the login page.
 
 *   **5.2 Update `client/src/App.jsx`**
-    *   [ ] Import `AdminDashboardPage` and `JobDescriptionFormPage`.
-    *   [ ] Add new `Route` components for `/admin/dashboard`, `/admin/job-descriptions/new`, and `/admin/job-descriptions/edit/:id`, protected by `AdminRoute`.
+    *   [x] Import `AdminDashboardPage` and `JobDescriptionFormPage`.
+    *   [x] Add new `Route` components for `/admin/dashboard`, `/admin/job-descriptions/new`, and `/admin/job-descriptions/edit/:id`, protected by `AdminRoute`.
 
 *   **5.3 Update `client/src/components/Navbar.jsx`**
-    *   [ ] Use `AuthContext` to conditionally render a link to `/admin/dashboard` only if the logged-in user has an `administrator` role.
-    *   [ ] Set link text to "Admin Dashboard", place it in the right corner, and set its text color to green.
+    *   [x] Use `AuthContext` to conditionally render a link to `/admin/dashboard` only if the logged-in user has an `administrator` role.
+    *   [x] Set link text to "Admin Dashboard", place it in the right corner, and set its text color to green.
 
 ---
 
