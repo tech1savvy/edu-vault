@@ -9,8 +9,6 @@ const createUser = async ({ name, email, password }) => {
   return await User.create({ name, email, password });
 };
 
-const { Op } = require('sequelize');
-
 const getUsersByIds = async (ids) => {
   return await User.findAll({
     where: {
