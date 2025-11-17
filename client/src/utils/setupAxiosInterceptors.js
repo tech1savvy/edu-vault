@@ -1,4 +1,4 @@
-import adminApi from '../services/adminApi';
+import { adminApi } from '../services/adminApi';
 
 const setupAxiosInterceptors = (logout) => {
   adminApi.interceptors.response.use(

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import adminApi from '../services/adminApi';
+import { adminService } from '../services/adminApi';
 
 const JobDescriptionFormPage = () => {
   const { id } = useParams(); // Get ID from URL for editing

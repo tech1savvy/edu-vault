@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import api from '../services/api'; // Assuming api.js handles general API calls including login
+import { login as apiLogin } from '../services/api'; // Use named import for login function
 
 const AuthContext = createContext(null);
 
@@ -21,8 +21,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const response = await api.post('/auth/login', { email, password });
-      const { token: newToken, user: userData } = response.data;
+      const response = await apiLogin(email, password); // Use the named import function
+      const { token: newToken, user: userData } = response; // apiLogin already returns { token, user }
 
       localStorage.setItem('token', newToken);
       localStorage.setItem('user', JSON.stringify(userData));

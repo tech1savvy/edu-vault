@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import adminApi from '../services/adminApi';
+import { adminService } from '../services/adminApi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
