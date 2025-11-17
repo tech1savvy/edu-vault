@@ -51,8 +51,8 @@ const deleteJobDescription = async (req, res) => {
 const matchJob = async (req, res) => {
   try {
     const { id } = req.params;
-    const { top_n } = req.body;
-    const result = await jobDescriptionService.matchJob(id, top_n);
+    const { topN } = req.body; // Corrected from top_n to topN
+    const result = await jobDescriptionService.matchJob(id, topN);
     res.json(result);
   } catch (e) {
     res.status(500).json({ error: e.message });
