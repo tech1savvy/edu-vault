@@ -17,7 +17,14 @@ const handleSignup = async (req, res) => {
 const handleLogin = async (req, res) => {
   try {
     const { user, token } = await login(req.body);
-    res.status(200).json({ token });
+    // Exclude password field from the user object before sending to client
+    const userWithoutPassword = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+    res.status(200).json({ user: userWithoutPassword, token });
   } catch (error) {
     logger.error(error);
     res.status(401).json({ error: error.message });

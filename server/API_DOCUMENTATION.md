@@ -385,3 +385,49 @@ Most endpoints require a Bearer Token for authentication. The token should be in
 -   **Method:** `DELETE`
 -   **Endpoint:** `/api/job-descriptions/{jobDescriptionId}`
 -   **Auth:** Bearer Token (Admin)
+
+### Match Job Description with Resumes
+
+-   **Method:** `POST`
+-   **Endpoint:** `/api/job-descriptions/{jobDescriptionId}/match`
+-   **Auth:** Bearer Token (Admin)
+-   **Description:** Performs a semantic search to find and rank resumes that best match the specified job description.
+-   **Request Body:**
+    ```json
+    {
+        "topN": 5 // Optional: Number of top matching resumes to return. Defaults to 5.
+    }
+    ```
+-   **Response Body (Example):**
+    ```json
+    [
+        {
+            "userId": "user123",
+            "score": 0.95,
+            "resumePreview": "John Doe - Software Engineer with 5 years experience..."
+        },
+        {
+            "userId": "user456",
+            "score": 0.88,
+            "resumePreview": "Jane Smith - Fullstack Developer skilled in React and Node.js..."
+        }
+    ]
+    ```
+
+---
+
+## Synchronization
+
+### Trigger Full Synchronization
+
+-   **Method:** `POST`
+-   **Endpoint:** `/api/sync/all`
+-   **Auth:** Bearer Token (Admin)
+-   **Description:** Triggers a full synchronization of all user resumes and job descriptions, generating and updating their embeddings in the semantic search index. This can be a long-running operation.
+-   **Request Body:** None
+-   **Response:**
+    ```json
+    {
+        "message": "Full synchronization initiated."
+    }
+    ```
