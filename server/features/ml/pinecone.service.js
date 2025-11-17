@@ -21,18 +21,7 @@ class PineconeService {
 
       const existingIndexes = await this.pinecone.listIndexes();
       if (!existingIndexes.indexes || !existingIndexes.indexes.some(index => index.name === indexName)) {
-        logger.info(`Pinecone index '${indexName}' not found. Creating...`);
-        await this.pinecone.createIndex({
-          name: indexName,
-          dimension: dimension,
-          metric: 'cosine',
-          spec: {
-            pod: {
-              environment: config.pinecone.environment,
-            },
-          },
-        });
-        logger.info(`Pinecone index '${indexName}' created successfully.`);
+        throw new Error(`Pinecone index '${indexName}' not found. Please create it manually in your Pinecone dashboard.`);
       }
 
       this.index = this.pinecone.index(indexName);
