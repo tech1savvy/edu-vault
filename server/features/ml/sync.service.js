@@ -1,7 +1,7 @@
-
-import { getAggregatedResumeText } from '../resume/resume.aggregator';
-import { EmbeddingService, PineconeService } from './';
-import logger from '../../config/logger';
+const { getAggregatedResumeText } = require('../resume/resume.aggregator.js');
+const EmbeddingService = require('./embedding.service');
+const PineconeService = require('./pinecone.service');
+const logger = require('../../config/logger');
 
 const syncResume = async (userId) => {
   try {
@@ -50,7 +50,9 @@ const syncJobDescription = async (jobDescription) => {
   }
 };
 
-export const SyncService = {
+const SyncService = {
   syncResume,
   syncJobDescription,
 };
+
+module.exports = { SyncService };

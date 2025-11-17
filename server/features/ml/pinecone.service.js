@@ -1,6 +1,6 @@
-import { Pinecone } from '@pinecone-database/pinecone';
-import config from '../../config/config';
-import logger from '../../config/logger';
+const { Pinecone } = require('@pinecone-database/pinecone');
+const config = require('../../config/config');
+const logger = require('../../config/logger');
 
 const indexName = 'eduvault-resumes';
 const dimension = 384; // Dimension for Xenova/all-MiniLM-L6-v2
@@ -67,4 +67,4 @@ class PineconeService {
   }
 }
 
-export default PineconeService;
+module.exports = PineconeService;

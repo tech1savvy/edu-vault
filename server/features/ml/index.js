@@ -1,7 +1,9 @@
-import EmbeddingService from './embedding.service';
-import PineconeService from './pinecone.service';
+const EmbeddingService = require('./embedding.service');
+const PineconeService = require('./pinecone.service');
+const { SyncService } = require('./sync.service');
 
-export {
+module.exports = {
   EmbeddingService,
   PineconeService,
+  SyncService,
 };

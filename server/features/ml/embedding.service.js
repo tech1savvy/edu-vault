@@ -1,11 +1,11 @@
-import { pipeline } from '@xenova/transformers';
+const { pipeline } = require('@xenova/transformers');
 
 class EmbeddingService {
   static instance = null;
 
   static async getInstance() {
     if (!this.instance) {
-      this.instance = pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+      this.instance = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
     }
     return this.instance;
   }
@@ -16,8 +16,8 @@ class EmbeddingService {
       pooling: 'mean',
       normalize: true,
     });
-    return result.data;
+    return Array.from(result.data);
   }
 }
 
-export default EmbeddingService;
+module.exports = EmbeddingService;
