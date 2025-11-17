@@ -24,8 +24,13 @@ const deleteAchievement = async (id) => {
   return await achievement.destroy();
 };
 
+const getAchievementById = async (id) => {
+  return await Achievement.findByPk(id);
+};
+
 module.exports = {
   getAchievements,
+  getAchievementById,
   addAchievement,
   updateAchievement,
   deleteAchievement,

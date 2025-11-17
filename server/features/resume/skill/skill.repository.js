@@ -24,8 +24,13 @@ const deleteSkill = async (id) => {
   return await skill.destroy();
 };
 
+const getSkillById = async (id) => {
+  return await Skill.findByPk(id);
+};
+
 module.exports = {
   getSkills,
+  getSkillById,
   addSkill,
   updateSkill,
   deleteSkill,

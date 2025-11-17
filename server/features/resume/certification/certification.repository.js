@@ -24,8 +24,13 @@ const deleteCertification = async (id) => {
   return await certification.destroy();
 };
 
+const getCertificationById = async (id) => {
+  return await Certification.findByPk(id);
+};
+
 module.exports = {
   getCertifications,
+  getCertificationById,
   addCertification,
   updateCertification,
   deleteCertification,
