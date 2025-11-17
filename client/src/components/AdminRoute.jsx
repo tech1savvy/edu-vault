@@ -1,13 +1,19 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+// Removed import { useAuth } from '../context/AuthContext';
 
 const AdminRoute = ({ children }) => {
-  const { user, loading, isAdmin } = useAuth();
-
-  if (loading) {
-    return <div className="text-center mt-8">Loading authentication...</div>;
+  const storedUser = localStorage.getItem('user');
+  let user = null;
+  if (storedUser) {
+    try {
+      user = JSON.parse(storedUser);
+    } catch (error) {
+      console.error("Failed to parse user from localStorage in AdminRoute", error);
+    }
   }
+
+  const isAdmin = user && user.role === 'administrator';
 
   if (!user || !isAdmin) {
     // Redirect to login page if not authenticated or not an admin

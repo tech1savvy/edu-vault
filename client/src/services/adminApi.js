@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; // Assuming jwt-decode is available or will be installed
+// Removed jwtDecode import
 
 const API_URL = 'http://localhost:8000/api';
 
@@ -24,7 +24,19 @@ adminApi.interceptors.request.use(
   }
 );
 
-// Response interceptor will be set up externally by setupAxiosInterceptors.js
+// Response interceptor for error handling, especially 401
+adminApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Handle 401 errors: clear localStorage and redirect to login
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login'; // Redirect to login page
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Admin-specific API calls
 const adminService = {
