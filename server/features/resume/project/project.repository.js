@@ -24,8 +24,13 @@ const deleteProject = async (id) => {
   return await project.destroy();
 };
 
+const getProjectById = async (id) => {
+  return await Project.findByPk(id);
+};
+
 module.exports = {
   getProjects,
+  getProjectById,
   addProject,
   updateProject,
   deleteProject,

@@ -4,6 +4,10 @@ const getExperiences = async ({ user_id }) => {
   return await Experience.findAll({ where: { user_id } });
 };
 
+const getExperienceById = async (id) => {
+  return await Experience.findByPk(id);
+};
+
 const addExperience = async ({ user_id, type, company, role, duration, details }) => {
   return await Experience.create({ user_id, type, company, role, duration, details });
 };
@@ -26,6 +30,7 @@ const deleteExperience = async (id) => {
 
 module.exports = {
   getExperiences,
+  getExperienceById,
   addExperience,
   updateExperience,
   deleteExperience,

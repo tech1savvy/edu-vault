@@ -24,8 +24,13 @@ const deleteEducation = async (id) => {
   return await education.destroy();
 };
 
+const getEducationById = async (id) => {
+  return await Education.findByPk(id);
+};
+
 module.exports = {
   getEducations,
+  getEducationById,
   addEducation,
   updateEducation,
   deleteEducation,
