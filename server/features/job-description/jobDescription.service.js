@@ -39,7 +39,7 @@ const matchJob = async (jobId, topN) => {
 
   const pineconeResult = await PineconeService.fetch(vectorId);
   
-  if (pineconeResult.records[vectorId].values.length > 0) {
+  if (pineconeResult.records && pineconeResult.records[vectorId] && pineconeResult.records[vectorId].values && pineconeResult.records[vectorId].values.length > 0) {
     jobVector = pineconeResult.records[vectorId].values;
   } else {
     // Resiliency: Job vector not found, generate it on-the-fly

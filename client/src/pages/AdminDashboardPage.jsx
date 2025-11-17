@@ -162,8 +162,12 @@ const AdminDashboardPage = () => {
                           {matchResults[job.id].map((match, index) => (
                             <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                               <div>
-                                <strong>User ID:</strong> {match.userId} <br />
-                                <small className="text-muted">{match.resumePreview}</small>
+                                <strong>User ID:</strong> {match.user.id} <br />
+                                <small className="text-muted">
+                                  <strong>Name:</strong> {match.user.name || 'N/A'},
+                                  <strong> Email:</strong> {match.user.email || 'N/A'},
+                                  <strong> Role:</strong> {match.user.role || 'N/A'}
+                                </small>
                               </div>
                               <span className="badge bg-primary rounded-pill">Score: {(match.score * 100).toFixed(2)}%</span>
                             </li>
