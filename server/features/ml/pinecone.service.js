@@ -20,7 +20,7 @@ class PineconeService {
       });
 
       const existingIndexes = await this.pinecone.listIndexes();
-      if (!existingIndexes.some(index => index.name === indexName)) {
+      if (!existingIndexes.indexes || !existingIndexes.indexes.some(index => index.name === indexName)) {
         logger.info(`Pinecone index '${indexName}' not found. Creating...`);
         await this.pinecone.createIndex({
           name: indexName,
