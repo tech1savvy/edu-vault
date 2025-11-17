@@ -26,6 +26,12 @@ class PineconeService {
           name: indexName,
           dimension: dimension,
           metric: 'cosine',
+          spec: {
+            serverless: {
+              cloud: config.pinecone.cloud,
+              region: config.pinecone.region,
+            },
+          },
         });
         logger.info(`Pinecone index '${indexName}' created successfully.`);
       }

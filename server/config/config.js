@@ -27,6 +27,7 @@ module.exports = {
   },
   pinecone: {
     apiKey: process.env.PINECONE_API_KEY,
-    environment: process.env.PINECONE_ENVIRONMENT
+    cloud: process.env.PINECONE_CLOUD,
+    region: process.env.PINECONE_REGION,
   }
 };
