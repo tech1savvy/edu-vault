@@ -23,6 +23,9 @@ router.use("/resume/experiences", experienceRoutes);
 
 const jobDescriptionRoutes = require("./features/job-description/jobDescription.routes");
 
+const syncRoutes = require("./features/sync/sync.routes");
+
 router.use("/job-descriptions", jobDescriptionRoutes);
+router.use("/sync", syncRoutes);
 
 module.exports = router;
