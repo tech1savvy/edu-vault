@@ -170,6 +170,11 @@ function Navbar() {
                     Layout K
                   </Link>
                 </li>
+                <li>
+                  <Link className="dropdown-item" to="/portfolio/layout-t">
+                    Layout T
+                  </Link>
+                </li>
               </ul>
             </li>
           </ul>
