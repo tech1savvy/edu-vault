@@ -52,9 +52,6 @@ const syncJobDescription = async (jobDescription) => {
   }
 };
 
-const userRepository = require('../user/user.repository');
-const jobDescriptionRepository = require('../job-description/jobDescription.repository');
-
 const syncAll = async () => {
   logger.info('Starting bulk synchronization for all users and job descriptions...');
 
