@@ -29,6 +29,28 @@ const syncResume = async (userId) => {
   }
 };
 
+const syncJobDescription = async (jobDescription) => {
+  try {
+    const jobText = `${jobDescription.title}\n${jobDescription.description}\n${jobDescription.requirements}`;
+    const embedding = await EmbeddingService.generateEmbedding(jobText);
+
+    const vector = {
+      id: `job-${jobDescription.id}`,
+      values: embedding,
+      metadata: {
+        type: 'job',
+        jobId: jobDescription.id,
+      },
+    };
+
+    await PineconeService.upsert([vector]);
+    logger.info(`Successfully synced job description for job: ${jobDescription.id}`);
+  } catch (error) {
+    logger.error(`Error syncing job description for job ${jobDescription.id}:`, { message: error.message, stack: error.stack });
+  }
+};
+
 export const SyncService = {
   syncResume,
+  syncJobDescription,
 };
