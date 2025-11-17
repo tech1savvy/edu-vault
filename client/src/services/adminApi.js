@@ -37,4 +37,4 @@ const adminService = {
   triggerFullSync: () => adminApi.post('/sync/all'),
 };
 
-export default adminService;
+export { adminApi, adminService };
