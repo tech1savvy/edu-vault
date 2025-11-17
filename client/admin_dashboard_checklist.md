@@ -48,12 +48,12 @@ This checklist outlines the steps for implementing the Admin Dashboard in the fr
 ## Group 4: Admin Dashboard Page
 
 *   **4.1 Create `client/src/pages/AdminDashboardPage.jsx`**
-    *   [ ] Update API calls to use `adminApi.js`.
-    *   [ ] Implement logic to display match results on the dashboard as a list of cards, limited by `topN`. These results will persist until another match operation is performed or the page is refreshed.
-    *   [ ] Refine styling using Bootstrap classes.
-    *   [ ] Use `AuthContext` to check for admin role.
-    *   [ ] Implement navigation to `JobDescriptionFormPage` for viewing job description details.
-    *   [ ] Implement "Edit" and "Delete" actions on job description cards using simple buttons.
+    *   [x] Update API calls to use `adminApi.js`.
+    *   [x] Implement logic to display match results on the dashboard as a list of cards, limited by `topN`. These results will persist until another match operation is performed or the page is refreshed.
+    *   [x] Refine styling using Bootstrap classes.
+    *   [x] Use `AuthContext` to check for admin role.
+    *   [x] Implement navigation to `JobDescriptionFormPage` for viewing job description details.
+    *   [x] Implement "Edit" and "Delete" actions on job description cards using simple buttons.
 
 ---
 
