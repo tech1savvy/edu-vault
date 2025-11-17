@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     issuer: DataTypes.STRING,
     date: DataTypes.STRING,
-    credentialid: DataTypes.STRING
+    credentialId: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Certification',

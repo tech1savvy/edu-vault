@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
-    techstack: DataTypes.STRING,
+    techStack: DataTypes.STRING,
     timeline: DataTypes.STRING,
     type: DataTypes.STRING,
     collaborators: DataTypes.STRING
