@@ -27,9 +27,8 @@ class PineconeService {
           dimension: dimension,
           metric: 'cosine',
           spec: {
-            serverless: {
-              cloud: config.pinecone.cloud,
-              region: config.pinecone.region,
+            pod: {
+              environment: config.pinecone.environment,
             },
           },
         });
