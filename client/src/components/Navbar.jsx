@@ -1,12 +1,29 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+// Removed import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
-  const { user, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
 
+  // Directly read user from localStorage
+  const getUserFromLocalStorage = () => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (error) {
+        console.error("Failed to parse user from localStorage in Navbar", error);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const user = getUserFromLocalStorage();
+  const isAdmin = user && user.role === 'administrator';
+
   const handleLogout = () => {
-    logout();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/login');
   };
 

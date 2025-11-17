@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/adminApi';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+// Removed import { useAuth } from '../context/AuthContext';
 
 const AdminDashboardPage = () => {
   const [jobDescriptions, setJobDescriptions] = useState([]);
@@ -9,7 +9,23 @@ const AdminDashboardPage = () => {
   const [error, setError] = useState(null);
   const [matchResults, setMatchResults] = useState({}); // Stores match results for each job ID
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
+
+  // Directly read user from localStorage and derive isAdmin
+  const getUserFromLocalStorage = () => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (error) {
+        console.error("Failed to parse user from localStorage in AdminDashboardPage", error);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const user = getUserFromLocalStorage();
+  const isAdmin = user && user.role === 'administrator';
 
   useEffect(() => {
     if (!isAdmin) {
@@ -17,12 +33,12 @@ const AdminDashboardPage = () => {
       return;
     }
     fetchJobDescriptions();
-  }, [isAdmin, navigate]);
+  }, [isAdmin, navigate]); // isAdmin is now a derived value, not from useAuth
 
   const fetchJobDescriptions = async () => {
     try {
       setLoading(true);
-      const response = await adminApi.getJobDescriptions();
+      const response = await adminService.getJobDescriptions();
       setJobDescriptions(response.data);
     } catch (err) {
       setError('Failed to fetch job descriptions.');
@@ -43,7 +59,7 @@ const AdminDashboardPage = () => {
   const handleDeleteJobDescription = async (id) => {
     if (window.confirm('Are you sure you want to delete this job description?')) {
       try {
-        await adminApi.deleteJobDescription(id);
+        await adminService.deleteJobDescription(id);
         fetchJobDescriptions(); // Refresh the list
         setMatchResults((prev) => { // Clear match results for deleted job
           const newResults = { ...prev };
@@ -60,7 +76,7 @@ const AdminDashboardPage = () => {
   const handleMatchJobDescription = async (id) => {
     try {
       setLoading(true);
-      const response = await adminApi.matchJobDescription(id, 5); // topN=5 as per plan
+      const response = await adminService.matchJobDescription(id, 5); // topN=5 as per plan
       setMatchResults((prev) => ({
         ...prev,
         [id]: response.data,
@@ -78,7 +94,7 @@ const AdminDashboardPage = () => {
     if (window.confirm('Are you sure you want to trigger a full synchronization? This can be a long-running operation.')) {
       try {
         setLoading(true);
-        const response = await adminApi.triggerFullSync();
+        const response = await adminService.triggerFullSync();
         alert(response.data.message);
         console.log('Full sync response:', response.data);
       } catch (err) {

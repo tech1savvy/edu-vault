@@ -1,14 +1,13 @@
 import { Routes, Route } from "react-router";
 import "./App.css";
-import { useEffect } from "react";
+// Removed useEffect as setupAxiosInterceptors is no longer used here
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Navbar from "./components/Navbar";
-import { AuthProvider, useAuth } from "./context/AuthContext";
-import setupAxiosInterceptors from "./utils/setupAxiosInterceptors";
+// Removed AuthProvider, useAuth, setupAxiosInterceptors imports
 
 // Admin Components
 import AdminDashboardPage from "./pages/AdminDashboardPage";
@@ -37,19 +36,7 @@ import SignupPage from "./pages/SignupPage";
 import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
 
 function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
-}
-
-function AppContent() {
-  const { logout } = useAuth();
-
-  useEffect(() => {
-    setupAxiosInterceptors(logout);
-  }, [logout]);
+  // Removed useAuth and useEffect for setupAxiosInterceptors
 
   return (
     <>

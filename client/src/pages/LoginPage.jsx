@@ -10,9 +10,15 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { token } = await login(email, password);
+      const { token, user } = await login(email, password); // Get user object from response
       localStorage.setItem('token', token);
-      navigate('/');
+      localStorage.setItem('user', JSON.stringify(user)); // Store user object
+
+      if (user && user.role === 'administrator') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       console.error('Login failed:', error);
       // You might want to show an error message to the user

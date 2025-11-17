@@ -20,7 +20,7 @@ const JobDescriptionFormPage = () => {
       const fetchJobDescription = async () => {
         setLoading(true);
         try {
-          const response = await adminApi.getJobDescriptionById(id);
+          const response = await adminService.getJobDescriptionById(id);
           setFormData(response.data);
         } catch (err) {
           setError('Failed to fetch job description.');
@@ -54,10 +54,10 @@ const JobDescriptionFormPage = () => {
     setLoading(true);
     try {
       if (isEditing) {
-        await adminApi.updateJobDescription(id, formData);
+        await adminService.updateJobDescription(id, formData);
         alert('Job Description updated successfully!');
       } else {
-        await adminApi.createJobDescription(formData);
+        await adminService.createJobDescription(formData);
         alert('Job Description created successfully!');
       }
       navigate('/admin/dashboard'); // Redirect to dashboard after success
