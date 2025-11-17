@@ -1,6 +1,5 @@
 
-
-import db from '../../models';
+const db = require('../../models');
 
 const {
   Heading,
@@ -31,7 +30,7 @@ const formatters = {
   skills: (item) => `- ${item.name} (${item.level})`,
 };
 
-export const getAggregatedResumeText = async (userId) => {
+const getAggregatedResumeText = async (userId) => {
   let fullText = '';
 
   const heading = await Heading.findOne({ where: { userId } });
@@ -58,4 +57,8 @@ export const getAggregatedResumeText = async (userId) => {
   fullText += getSectionText('Achievements', achievements, formatters.achievements);
 
   return fullText.trim();
+};
+
+module.exports = {
+  getAggregatedResumeText,
 };
