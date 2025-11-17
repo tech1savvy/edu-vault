@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     institution: DataTypes.STRING,
     degree: DataTypes.STRING,
-    fieldofstudy: DataTypes.STRING,
+    fieldOfStudy: DataTypes.STRING,
     duration: DataTypes.STRING,
     details: DataTypes.TEXT
   }, {
