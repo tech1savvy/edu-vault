@@ -34,6 +34,7 @@ import Achievements from "./components/Resume/Achievements";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
+import LayoutT from "./components/Portfolio/Layouts/LayoutT/LayoutT";
 
 function App() {
   // Removed useAuth and useEffect for setupAxiosInterceptors
@@ -72,6 +73,7 @@ function App() {
 
           {/* Portfolio Route */}
           <Route path="/portfolio/layout-k" element={<LayoutK />} />
+          <Route path="/portfolio/layout-t" element={<LayoutT />} />
 
           {/* Default Route */}
           <Route path="/" element={<div className="container text-center mt-5"><h2>Welcome to EduVault Resume Builder</h2><p>Select a component from the navigation menu to get started.</p></div>} />

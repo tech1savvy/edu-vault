@@ -1,0 +1,1624 @@
+/* --- Add this to the bottom of LayoutT.css --- */
+
+/* Enhanced About Section Wrapper */
+.about-section-enhanced {
+    position: relative;
+    overflow: hidden;
+    /* Keeps the blobs inside the card */
+    /* Replicating Tailwind's p-8 md:p-12 */
+    padding: 3rem;
+}
+
+/* Decorative Blobs (The glowing background effects) */
+.about-blob {
+    position: absolute;
+    width: 12rem;
+    /* w-48 */
+    height: 12rem;
+    /* h-48 */
+    border-radius: 50%;
+    filter: blur(60px);
+    /* blur-3xl */
+    opacity: 0.4;
+    transition: transform 0.7s ease;
+    z-index: 0;
+}
+
+/* Blob Colors using your theme variables */
+.blob-top-right {
+    top: 0;
+    right: 0;
+    background: radial-gradient(circle, var(--secondary-color), transparent);
+}
+
+.blob-bottom-left {
+    bottom: 0;
+    left: 0;
+    background: radial-gradient(circle, var(--primary-color), transparent);
+}
+
+/* Hover effect for blobs */
+.about-section-enhanced:hover .blob-top-right,
+.about-section-enhanced:hover .blob-bottom-left {
+    transform: scale(1.5);
+}
+
+/* Content Wrapper to sit above blobs */
+.about-content-wrapper {
+    position: relative;
+    z-index: 10;
+}
+
+/* Title with Gradient Text */
+.about-title {
+    font-size: 3rem;
+    /* text-5xl */
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+
+    /* Gradient Text Logic */
+    background: linear-gradient(to right,
+            var(--secondary-color),
+            var(--primary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Makes text take the background gradient */
+    display: inline-block;
+
+    /* Override the border-bottom from the old .portfolio-section h2 if needed */
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+/* The gradient underline bar */
+.about-underline {
+    height: 0.25rem;
+    /* h-1 */
+    width: 6rem;
+    /* w-24 */
+    background: linear-gradient(to right,
+            var(--secondary-color),
+            var(--primary-color));
+    border-radius: 9999px;
+    margin-bottom: 2rem;
+}
+
+/* Paragraph text styling */
+.about-description {
+    font-size: 1.25rem;
+    /* text-xl */
+    line-height: 1.625;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+/* Highlighted span */
+.about-highlight {
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .about-section-enhanced {
+        padding: 2rem;
+    }
+
+    .about-title {
+        font-size: 2.25rem;
+        /* text-4xl */
+    }
+}
+
+/* --- Achievements Section Enhancements --- */
+
+/* Wrapper for the vertical list */
+.achievements-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* space-y-6 */
+    padding-left: 1rem;
+    /* Space for the dot to hang */
+}
+
+/* Individual Card */
+.achievement-card {
+    position: relative;
+    background: rgba(0, 0, 0, 0.05);
+    /* bg-slate-800/30 equivalent */
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    /* rounded-2xl */
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+
+    /* Animation setup */
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
+}
+
+/* Card Hover Effects */
+.achievement-card:hover {
+    border-color: var(--secondary-color);
+    /* hover:border-emerald-500 */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateX(-5px);
+    /* hover:-translate-x-2 */
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* The Timeline Dot */
+.achievement-dot {
+    position: absolute;
+    left: -12px;
+    /* -left-3 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.5rem;
+    /* w-6 */
+    height: 1.5rem;
+    /* h-6 */
+    border-radius: 50%;
+
+    /* Gradient Color */
+    background: linear-gradient(135deg,
+            var(--secondary-color),
+            var(--primary-color));
+
+    /* Border to separate from background */
+    border: 4px solid var(--background-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    z-index: 2;
+}
+
+/* Dot Hover Effect */
+.achievement-card:hover .achievement-dot {
+    transform: translateY(-50%) scale(1.25);
+}
+
+/* Header Layout (Title + Date) */
+.achievement-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+@media (min-width: 768px) {
+    .achievement-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+/* Item Title */
+.achievement-item-title {
+    font-size: 1.25rem;
+    /* text-xl */
+    font-weight: 700;
+    color: var(--secondary-color);
+    /* text-emerald-400 */
+    margin: 0;
+    transition: color 0.3s;
+}
+
+.achievement-card:hover .achievement-item-title {
+    color: var(--primary-color);
+}
+
+/* Date Badge */
+.achievement-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 600;
+    width: fit-content;
+
+    /* Badge Colors */
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+/* Calendar Icon size */
+.achievement-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Description Text */
+.achievement-description {
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Empty State */
+.achievement-empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+/* --- Certifications Section Enhancements --- */
+
+/* Grid Layout */
+.cert-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    /* gap-6 */
+}
+
+@media (min-width: 768px) {
+    .cert-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Individual Card */
+.cert-card {
+    position: relative;
+    background: rgba(0, 0, 0, 0.05);
+    /* bg-slate-800/30 */
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    /* rounded-2xl */
+    padding: 1.5rem;
+    overflow: hidden;
+    /* Important for the glow effect */
+    transition: all 0.3s ease;
+
+    /* Animation setup */
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
+}
+
+/* Card Hover Effects */
+.cert-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-0.5rem);
+    /* hover:-translate-y-2 */
+}
+
+/* Decorative Corner Glow */
+.cert-card-glow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6rem;
+    /* w-24 */
+    height: 6rem;
+    /* h-24 */
+    background: radial-gradient(circle, var(--primary-color), transparent);
+    border-radius: 50%;
+    filter: blur(40px);
+    /* blur-2xl */
+    opacity: 0.1;
+    transition: transform 0.5s ease;
+    z-index: 0;
+}
+
+.cert-card:hover .cert-card-glow {
+    transform: scale(1.5);
+    opacity: 0.2;
+}
+
+/* Content Wrapper (to sit above glow) */
+.cert-card-content {
+    position: relative;
+    z-index: 10;
+}
+
+/* Main Info Area (Icon + Text) */
+.cert-main-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Gradient Icon Box */
+.cert-icon-box {
+    width: 3rem;
+    /* w-12 */
+    height: 3rem;
+    /* h-12 */
+    border-radius: 0.75rem;
+    /* rounded-xl */
+    background: linear-gradient(135deg,
+            var(--primary-color),
+            var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.cert-icon-svg {
+    width: 1.75rem;
+    /* w-7 */
+    height: 1.75rem;
+    color: white;
+    /* Always white icon inside gradient */
+}
+
+/* Text Details Column */
+.cert-text-details {
+    flex: 1;
+    min-width: 0;
+    /* Prevents text overflow issues */
+}
+
+.cert-name {
+    font-size: 1.25rem;
+    /* text-xl */
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 0 0.5rem 0;
+    transition: color 0.3s;
+}
+
+.cert-card:hover .cert-name {
+    filter: brightness(1.2);
+}
+
+.cert-issuer {
+    color: var(--text-color);
+    font-weight: 500;
+    margin: 0 0 0.25rem 0;
+    opacity: 0.9;
+}
+
+.cert-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    /* text-sm */
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+.cert-date-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Footer / Credential ID Area */
+.cert-footer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.cert-credential {
+    font-size: 0.75rem;
+    /* text-xs */
+    color: var(--text-color);
+    margin: 0;
+    opacity: 0.7;
+}
+
+.cert-credential-value {
+    font-family: monospace;
+    color: var(--secondary-color);
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 1;
+}
+
+/* --- Contact Section Enhancements --- */
+
+/* New Blob Positions (Specific to Contact) */
+.blob-top-left {
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle, var(--secondary-color), transparent);
+}
+
+.blob-bottom-right {
+    bottom: 0;
+    right: 0;
+    background: radial-gradient(circle, var(--primary-color), transparent);
+}
+
+.about-section-enhanced:hover .blob-top-left,
+.about-section-enhanced:hover .blob-bottom-right {
+    transform: scale(1.5);
+}
+
+/* Wrapper for the cards */
+.contact-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* space-y-6 */
+}
+
+/* Contact Card Container */
+.contact-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    /* gap-6 */
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    /* bg-slate-800/30 */
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    /* rounded-2xl */
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    border-color: var(--secondary-color);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Icon Box Styling */
+.contact-icon-box {
+    width: 3.5rem;
+    /* w-14 */
+    height: 3.5rem;
+    /* h-14 */
+    border-radius: 0.75rem;
+    /* rounded-xl */
+
+    /* Default Gradient (Cyan to Blue equivalent) */
+    background: linear-gradient(135deg,
+            var(--secondary-color),
+            var(--primary-color));
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Alternate Gradient for the second card (Blue to Cyan) */
+.contact-icon-box.box-alt {
+    background: linear-gradient(135deg,
+            var(--primary-color),
+            var(--secondary-color));
+}
+
+.contact-icon-svg {
+    width: 1.75rem;
+    /* w-7 */
+    height: 1.75rem;
+    color: white;
+}
+
+/* Text Details Area */
+.contact-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-label {
+    font-size: 0.875rem;
+    /* text-sm */
+    color: var(--text-color);
+    opacity: 0.7;
+    margin: 0 0 0.25rem 0;
+}
+
+/* The Main Link Styling */
+.contact-link {
+    font-size: 1.125rem;
+    /* text-lg */
+    font-weight: 600;
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .contact-link {
+        font-size: 1.25rem;
+        /* md:text-xl */
+    }
+}
+
+.contact-link:hover {
+    color: var(--primary-color);
+}
+
+/* External Link Arrow Icon */
+.contact-arrow-icon {
+    width: 1.25rem;
+    /* w-5 */
+    height: 1.25rem;
+}
+
+/* --- Education Section Enhancements --- */
+
+.education-timeline-wrapper {
+    position: relative;
+    /* Container for the whole list */
+}
+
+/* The Vertical Line */
+.education-timeline-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    /* w-0.5 */
+
+    /* Gradient Line */
+    background: linear-gradient(to bottom,
+            var(--secondary-color),
+            var(--primary-color));
+
+    /* Default left position (mobile) */
+    left: 0;
+}
+
+@media (min-width: 768px) {
+    .education-timeline-line {
+        left: 2rem;
+        /* md:left-8 */
+    }
+}
+
+/* Container for the items */
+.education-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    /* space-y-12 */
+}
+
+/* Individual Item Wrapper */
+.education-timeline-item {
+    position: relative;
+
+    /* Indent content to make room for line */
+    padding-left: 2rem;
+    /* pl-8 */
+
+    /* Animation Setup */
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
+}
+
+@media (min-width: 768px) {
+    .education-timeline-item {
+        padding-left: 5rem;
+        /* md:pl-20 */
+    }
+}
+
+/* Timeline Dot */
+.education-dot {
+    position: absolute;
+    top: 0.5rem;
+    /* top-2 */
+    width: 1.25rem;
+    /* w-5 */
+    height: 1.25rem;
+    /* h-5 */
+    border-radius: 50%;
+
+    /* Gradient Background */
+    background: linear-gradient(135deg,
+            var(--secondary-color),
+            var(--primary-color));
+
+    /* Border to create "cutout" effect against background */
+    border: 4px solid var(--background-color);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+
+    transition: transform 0.3s ease;
+    z-index: 10;
+
+    /* Positioning logic relative to the line */
+    left: -0.55rem;
+    /* Centers on the line at left:0 */
+}
+
+@media (min-width: 768px) {
+    .education-dot {
+        left: 1.45rem;
+        /* Centers on the line at left: 2rem */
+    }
+}
+
+/* Hover effect on the dot */
+.education-timeline-item:hover .education-dot {
+    transform: scale(1.25);
+}
+
+/* Education Card Styling */
+.education-card {
+    background: rgba(0, 0, 0, 0.05);
+    /* bg-slate-800/30 */
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    /* rounded-2xl */
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.education-card:hover {
+    border-color: var(--secondary-color);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-0.25rem);
+    /* -translate-y-1 */
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Typography within the card */
+.edu-degree {
+    font-size: 1.5rem;
+    /* text-2xl */
+    font-weight: 700;
+    color: var(--secondary-color);
+    /* text-cyan-400 */
+    margin: 0 0 0.5rem 0;
+}
+
+.edu-institution {
+    font-size: 1.25rem;
+    /* text-xl */
+    font-weight: 500;
+    color: var(--text-color);
+    /* text-gray-300 */
+    margin: 0 0 0.75rem 0;
+    opacity: 0.9;
+}
+
+.edu-duration {
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 500;
+    color: var(--secondary-color);
+    /* text-teal-400 */
+    margin: 0 0 0.75rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.8;
+}
+
+.edu-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.edu-field {
+    color: var(--primary-color);
+    /* text-blue-300 */
+    font-weight: 500;
+    margin: 0 0 0.75rem 0;
+}
+
+.edu-details {
+    color: var(--text-color);
+    /* text-gray-400 */
+    line-height: 1.625;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* --- Experience Section Enhancements --- */
+
+.experience-timeline-wrapper {
+    position: relative;
+}
+
+/* Vertical Line */
+.experience-timeline-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom,
+            var(--secondary-color),
+            var(--primary-color));
+    left: 0;
+}
+
+@media (min-width: 768px) {
+    .experience-timeline-line {
+        left: 2rem;
+    }
+}
+
+.experience-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+/* Timeline Item Wrapper */
+.experience-timeline-item {
+    position: relative;
+    padding-left: 2rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
+}
+
+@media (min-width: 768px) {
+    .experience-timeline-item {
+        padding-left: 5rem;
+    }
+}
+
+/* Timeline Dot */
+.experience-dot {
+    position: absolute;
+    top: 0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg,
+            var(--secondary-color),
+            var(--primary-color));
+    border: 4px solid var(--background-color);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    z-index: 10;
+    left: -0.55rem;
+}
+
+@media (min-width: 768px) {
+    .experience-dot {
+        left: 1.45rem;
+    }
+}
+
+.experience-timeline-item:hover .experience-dot {
+    transform: scale(1.25);
+}
+
+/* Experience Card */
+.experience-card {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.experience-card:hover {
+    border-color: var(--secondary-color);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-0.25rem);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Header Row (Role/Company + Badge) */
+.experience-header-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.experience-main-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.exp-role {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin: 0 0 0.5rem 0;
+}
+
+.exp-company {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-color);
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Job Type Badge */
+.exp-type-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    /* Gradient Badge Background */
+    background: linear-gradient(to right,
+            rgba(var(--secondary-color), 0.1),
+            rgba(var(--primary-color), 0.1));
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+
+    white-space: nowrap;
+}
+
+/* Duration */
+.exp-duration {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.8;
+}
+
+.exp-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Description */
+.exp-details {
+    color: var(--text-color);
+    line-height: 1.625;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* --- Header Section Enhancements --- */
+
+/* Main Wrapper */
+.header-enhanced {
+    position: relative;
+    padding: 6rem 1rem;
+    /* py-24 px-4 */
+    text-align: center;
+    overflow: hidden;
+    /* Ensure it sits correctly within the layout flow */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Background Gradient Overlay */
+.header-bg-overlay {
+    position: absolute;
+    inset: 0;
+    /* Subtle vertical gradient using theme colors with low opacity */
+    background: linear-gradient(to bottom,
+            transparent,
+            rgba(0, 0, 0, 0.05),
+            transparent);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Content Wrapper */
+.header-content {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Main Title */
+.header-title {
+    font-size: 3.5rem;
+    /* text-6xl */
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.05em;
+
+    /* Gradient Text */
+    background: linear-gradient(to right,
+            var(--primary-color),
+            var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    /* Animation */
+    opacity: 0;
+    animation: fadeInDown 1s forwards;
+}
+
+@media (min-width: 768px) {
+    .header-title {
+        font-size: 4.5rem;
+        /* md:text-7xl */
+    }
+}
+
+@media (min-width: 1024px) {
+    .header-title {
+        font-size: 6rem;
+        /* lg:text-8xl */
+    }
+}
+
+/* Role / Subtitle */
+.header-role {
+    font-size: 1.5rem;
+    /* text-2xl */
+    font-weight: 300;
+    color: var(--secondary-color);
+    margin: 0 0 2rem 0;
+
+    /* Animation */
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+    animation-delay: 0.2s;
+}
+
+@media (min-width: 768px) {
+    .header-role {
+        font-size: 2rem;
+        /* md:text-3xl */
+    }
+}
+
+/* Contact Info Bar */
+.header-contact-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    /* gap-6 */
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+    animation-delay: 0.3s;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+    cursor: default;
+}
+
+.contact-item:hover {
+    color: var(--secondary-color);
+}
+
+/* Standard Icon Size */
+.header-icon {
+    width: 1.25rem;
+    /* w-5 */
+    height: 1.25rem;
+    /* h-5 */
+}
+
+/* Call to Action Button */
+.header-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 2rem;
+    /* px-8 py-3 */
+    border-radius: 9999px;
+    /* rounded-full */
+    font-weight: 600;
+    text-decoration: none;
+
+    /* Gradient Background */
+    background: linear-gradient(to right,
+            var(--secondary-color),
+            var(--primary-color));
+    color: #fff;
+    /* White text works best on saturated gradients */
+
+    /* Hover Effects */
+    transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+    animation-delay: 0.4s;
+}
+
+/* Adjust text color for Light mode specifically if needed, 
+   but usually white on Primary/Secondary gradient is fine. */
+
+.header-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    /* We simulate hover:from-cyan-400 by shifting brightness */
+    filter: brightness(1.1);
+}
+
+/* --- Loading State (Pulse) --- */
+.header-loading {
+    justify-content: center;
+    min-height: 300px;
+}
+
+.skeleton-bar {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    margin: 0 auto 1rem auto;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+[data-theme="light"] .skeleton-bar {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.skeleton-title {
+    height: 3rem;
+    /* h-12 */
+    width: 16rem;
+    /* w-64 */
+}
+
+.skeleton-subtitle {
+    height: 1.5rem;
+    /* h-6 */
+    width: 12rem;
+    /* w-48 */
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* --- Theme Definitions --- */
+
+/* Dark Theme (Default Slate/Cyan) */
+[data-theme="dark"] {
+    --bg-gradient-start: #020617;
+    /* slate-950 */
+    --bg-gradient-mid: #0f172a;
+    /* slate-900 */
+    --bg-gradient-end: #020617;
+    /* slate-950 */
+
+    --primary-color: #06b6d4;
+    /* cyan-500 */
+    --secondary-color: #3b82f6;
+    /* blue-500 */
+    --text-color: #f8fafc;
+    /* slate-50 */
+
+    --card-bg-color: rgba(30, 41, 59, 0.5);
+    /* slate-800/50 */
+    --border-color: rgba(51, 65, 85, 0.5);
+    /* slate-700/50 */
+
+    --switcher-active-bg: rgba(30, 41, 59, 0.9);
+}
+
+/* Ocean Theme (Blue/Cyan) */
+[data-theme="ocean"] {
+    --bg-gradient-start: #172554;
+    /* blue-950 */
+    --bg-gradient-mid: #0f172a;
+    /* slate-900 */
+    --bg-gradient-end: #083344;
+    /* cyan-950 */
+
+    --primary-color: #3b82f6;
+    /* blue-500 */
+    --secondary-color: #06b6d4;
+    /* cyan-500 */
+    --text-color: #f0f9ff;
+    /* sky-50 */
+
+    --card-bg-color: rgba(30, 58, 138, 0.4);
+    --border-color: rgba(59, 130, 246, 0.3);
+
+    --switcher-active-bg: rgba(30, 58, 138, 0.9);
+}
+
+/* Forest Theme (Emerald/Teal) */
+[data-theme="forest"] {
+    --bg-gradient-start: #022c22;
+    /* emerald-950 */
+    --bg-gradient-mid: #0f172a;
+    /* slate-900 */
+    --bg-gradient-end: #042f2e;
+    /* teal-950 */
+
+    --primary-color: #10b981;
+    /* emerald-500 */
+    --secondary-color: #14b8a6;
+    /* teal-500 */
+    --text-color: #ecfdf5;
+    /* emerald-50 */
+
+    --card-bg-color: rgba(6, 78, 59, 0.4);
+    --border-color: rgba(16, 185, 129, 0.3);
+
+    --switcher-active-bg: rgba(6, 78, 59, 0.9);
+}
+
+/* --- Global Layout Structure --- */
+
+.portfolio-layout-t {
+    /* Main Background Gradient */
+    background: linear-gradient(135deg,
+            var(--bg-gradient-start),
+            var(--bg-gradient-mid),
+            var(--bg-gradient-end));
+    color: var(--text-color);
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    transition:
+        background 0.5s ease,
+        color 0.5s ease;
+}
+
+/* SVG Grid Overlay */
+.layout-grid-overlay {
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+");
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Top Gradient Bar */
+.layout-top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    /* h-1 */
+    background: linear-gradient(to right,
+            var(--secondary-color),
+            var(--primary-color));
+    z-index: 1000;
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+.portfolio-container {
+    max-width: 1200px;
+    /* max-w-6xl */
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    position: relative;
+    z-index: 10;
+}
+
+/* --- Theme Switcher --- */
+
+.theme-switcher {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    z-index: 1000;
+}
+
+.theme-switcher button {
+    width: 3rem;
+    /* w-12 */
+    height: 3rem;
+    /* h-12 */
+    border-radius: 0.75rem;
+    /* rounded-xl */
+    cursor: pointer;
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+
+    /* Default Inactive State */
+    background-color: rgba(30, 41, 59, 0.5);
+    /* bg-slate-800/50 */
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    color: var(--text-color);
+    backdrop-filter: blur(10px);
+}
+
+.theme-switcher button:hover {
+    border-color: var(--text-color);
+    transform: scale(1.1);
+}
+
+.theme-switcher button.active {
+    background-color: var(--switcher-active-bg);
+    border-color: var(--primary-color);
+    box-shadow:
+        0 0 15px rgba(0, 0, 0, 0.3),
+        0 0 5px var(--primary-color);
+}
+
+/* --- Footer --- */
+
+.portfolio-footer {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--text-color);
+    opacity: 0.6;
+    font-size: 0.875rem;
+}
+
+.footer-line {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(to right,
+            transparent,
+            var(--border-color),
+            transparent);
+    margin-bottom: 1.5rem;
+}
+
+/* --- Utilities & Animations --- */
+
+.portfolio-content {
+    margin-top: 3rem;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+    .portfolio-header h1 {
+        font-size: 3rem;
+    }
+
+    .portfolio-section {
+        padding: 1.5rem;
+    }
+
+    .theme-switcher {
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .theme-switcher button {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* --- Projects Section Enhancements --- */
+
+/* Grid Layout */
+.projects-grid-enhanced {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    /* gap-6 */
+}
+
+@media (min-width: 1024px) {
+    .projects-grid-enhanced {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Project Card */
+.project-card-enhanced {
+    position: relative;
+    background: rgba(0, 0, 0, 0.05);
+    /* bg-slate-800/40 */
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    /* rounded-2xl */
+    padding: 1.5rem;
+    overflow: hidden;
+    transition: all 0.5s ease;
+
+    /* Animation */
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
+}
+
+.project-card-enhanced:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    /* shadow-2xl */
+    transform: translateY(-0.5rem);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Decorative Corner Glow */
+.project-card-glow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8rem;
+    /* w-32 */
+    height: 8rem;
+    /* h-32 */
+    background: radial-gradient(circle, var(--primary-color), transparent);
+    border-radius: 50%;
+    filter: blur(40px);
+    /* blur-2xl */
+    opacity: 0.1;
+    transition: transform 0.5s ease;
+    z-index: 0;
+}
+
+.project-card-enhanced:hover .project-card-glow {
+    transform: scale(1.5);
+    opacity: 0.2;
+}
+
+/* Content Wrapper */
+.project-card-content {
+    position: relative;
+    z-index: 10;
+}
+
+/* Header (Title + Badge) */
+.project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.project-title {
+    font-size: 1.5rem;
+    /* text-2xl */
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+    transition: color 0.3s;
+}
+
+.project-card-enhanced:hover .project-title {
+    filter: brightness(1.2);
+}
+
+/* Type Badge */
+.project-type-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    /* text-xs */
+    font-weight: 600;
+    white-space: nowrap;
+
+    /* Gradient Badge */
+    background: linear-gradient(to right,
+            rgba(var(--primary-color), 0.2),
+            rgba(var(--secondary-color), 0.2));
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Description */
+.project-description {
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.625;
+    margin-bottom: 1.5rem;
+}
+
+/* Meta Data Stack */
+.project-meta-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.project-meta-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.project-icon {
+    width: 1.25rem;
+    /* w-5 */
+    height: 1.25rem;
+    /* h-5 */
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+}
+
+.icon-primary {
+    color: var(--primary-color);
+}
+
+.icon-secondary {
+    color: var(--secondary-color);
+}
+
+.project-meta-text {
+    font-size: 0.875rem;
+    /* text-sm */
+    color: var(--text-color);
+    opacity: 0.9;
+    margin: 0;
+}
+
+.meta-label {
+    font-weight: 600;
+}
+
+.label-primary {
+    color: var(--primary-color);
+}
+
+.label-secondary {
+    color: var(--secondary-color);
+}
+
+/* --- Skills Section Enhancements --- */
+
+/* Container */
+.skills-flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    /* gap-4 */
+}
+
+/* Base Skill Pill */
+.skill-pill {
+    position: relative;
+    padding: 0.75rem 1.5rem;
+    /* px-6 py-3 */
+    border-radius: 9999px;
+    /* rounded-full */
+    border: 1px solid transparent;
+    /* set by variant */
+    cursor: default;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    /* Animation */
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
+}
+
+/* Hover Effects */
+.skill-pill:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Inner Content Layout */
+.skill-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* gap-2 */
+}
+
+.skill-name {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* Level Badge (Mini Pill) */
+.skill-level-badge {
+    font-size: 0.75rem;
+    /* text-xs */
+    font-weight: 500;
+    padding: 0.125rem 0.5rem;
+    /* px-2 py-0.5 */
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.3);
+    color: inherit;
+    /* Inherits from parent variant color */
+}
+
+/* --- Variants (Mapping Levels to Theme Colors) --- */
+
+/* Expert/Advanced -> Primary Color */
+.skill-variant-primary {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent);
+    border-color: var(--primary-color);
+}
+
+.skill-variant-primary .skill-name {
+    color: #fff;
+}
+
+/* Ensure readability */
+.skill-variant-primary .skill-level-badge {
+    color: var(--primary-color);
+}
+
+.skill-variant-primary:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary-color);
+}
+
+/* Intermediate -> Secondary Color */
+.skill-variant-secondary {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent);
+    border-color: var(--secondary-color);
+}
+
+.skill-variant-secondary .skill-name {
+    color: #fff;
+}
+
+.skill-variant-secondary .skill-level-badge {
+    color: var(--secondary-color);
+}
+
+/* Default/Other -> Text/Border Color */
+.skill-variant-default {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent);
+    border-color: var(--border-color);
+}
+
+.skill-variant-default .skill-name {
+    color: var(--text-color);
+}
+
+.skill-variant-default .skill-level-badge {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Background Animation Layer */
+.skill-pill-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.skill-pill:hover .skill-pill-bg {
+    opacity: 1;
+}
