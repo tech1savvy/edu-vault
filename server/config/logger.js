@@ -24,7 +24,8 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({ format: consoleFormat }),
     new winston.transports.File({ filename: 'error.log', level: 'error', format: fileFormat }),
-    new winston.transports.File({ filename: 'combined.log', format: fileFormat })
+    new winston.transports.File({ filename: 'combined.log', format: fileFormat }),
+    new winston.transports.File({ filename: 'pinecone-sync.log', level: 'error', format: fileFormat })
   ]
 });
 
