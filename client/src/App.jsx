@@ -10,6 +10,11 @@ import Navbar from "./components/Navbar";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import setupAxiosInterceptors from "./utils/setupAxiosInterceptors";
 
+// Admin Components
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import JobDescriptionFormPage from "./pages/JobDescriptionFormPage";
+import AdminRoute from "./components/AdminRoute";
+
 // Form Components
 import HeadingForm from "./components/Resume/Forms/HeadingForm";
 import ExperienceForm from "./components/Resume/Forms/ExperienceForm";
@@ -54,6 +59,11 @@ function AppContent() {
           {/* Auth Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+
+          {/* Admin Routes */}
+          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+          <Route path="/admin/job-descriptions/new" element={<AdminRoute><JobDescriptionFormPage /></AdminRoute>} />
+          <Route path="/admin/job-descriptions/edit/:id" element={<AdminRoute><JobDescriptionFormPage /></AdminRoute>} />
 
           {/* Input Routes */}
           <Route path="/input/heading" element={<HeadingForm />} />
