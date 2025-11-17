@@ -1,12 +1,14 @@
 import { Routes, Route } from "react-router";
 import "./App.css";
+import { useEffect } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Navbar from "./components/Navbar";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import setupAxiosInterceptors from "./utils/setupAxiosInterceptors";
 
 // Form Components
 import HeadingForm from "./components/Resume/Forms/HeadingForm";
@@ -32,6 +34,20 @@ import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
 function App() {
   return (
     <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+function AppContent() {
+  const { logout } = useAuth();
+
+  useEffect(() => {
+    setupAxiosInterceptors(logout);
+  }, [logout]);
+
+  return (
+    <>
       <Navbar />
       <main className="p-3">
         <Routes>
@@ -64,7 +80,7 @@ function App() {
           <Route path="/" element={<div className="container text-center mt-5"><h2>Welcome to EduVault Resume Builder</h2><p>Select a component from the navigation menu to get started.</p></div>} />
         </Routes>
       </main>
-    </AuthProvider>
+    </>
   );
 }
 
