@@ -37,11 +37,11 @@ This checklist outlines the steps for implementing the Admin Dashboard in the fr
 ## Group 3: Job Description Form Page
 
 *   **3.1 Create `client/src/pages/JobDescriptionFormPage.jsx`**
-    *   [ ] Implement a form with fields for `title`, `description`, `requirements` using a simple stacked layout.
-    *   [ ] Handle both creation and editing logic based on route parameters. For editing, the component will fetch the job description by ID to populate the form.
-    *   [ ] Integrate with `adminApi.js` for `POST` and `PUT` requests.
-    *   [ ] Implement basic "required" validation for all fields.
-    *   [ ] After successfully creating or updating a job description, redirect the user back to the `AdminDashboardPage`.
+    *   [x] Implement a form with fields for `title`, `description`, `requirements` using a simple stacked layout.
+    *   [x] Handle both creation and editing logic based on route parameters. For editing, the component will fetch the job description by ID to populate the form.
+    *   [x] Integrate with `adminApi.js` for `POST` and `PUT` requests.
+    *   [x] Implement basic "required" validation for all fields.
+    *   [x] After successfully creating or updating a job description, redirect the user back to the `AdminDashboardPage`.
 
 ---
 
