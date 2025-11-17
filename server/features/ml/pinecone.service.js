@@ -17,7 +17,6 @@ class PineconeService {
     try {
       this.pinecone = new Pinecone({
         apiKey: config.pinecone.apiKey,
-        environment: config.pinecone.environment,
       });
 
       const existingIndexes = await this.pinecone.listIndexes();
