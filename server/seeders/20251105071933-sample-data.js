@@ -14,6 +14,14 @@ module.exports = {
       updatedAt: new Date()
     },
     {
+      name: 'Test Student 2',
+      email: 'student2@example.com',
+      password: hashedPassword,
+      role: 'student',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
       name: 'Test Admin',
       email: 'admin@example.com',
       password: hashedPassword,
@@ -22,10 +30,11 @@ module.exports = {
       updatedAt: new Date()
     }], { returning: ['id'] });
 
-    const userId = users[0].id;
+    const student1Id = users[0].id;
+    const student2Id = users[1].id;
 
     await queryInterface.bulkInsert('Headings', [{
-      user_id: userId,
+      user_id: student1Id,
       name: 'John Doe',
       role: 'Software Engineer',
       email: 'john.doe@example.com',
@@ -34,10 +43,21 @@ module.exports = {
       link: 'linkedin.com/in/johndoe',
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      user_id: student2Id,
+      name: 'Jane Smith',
+      role: 'Data Scientist',
+      email: 'jane.smith@example.com',
+      phone: '098-765-4321',
+      location: 'San Francisco, USA',
+      link: 'linkedin.com/in/janesmith',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }]);
 
     await queryInterface.bulkInsert('Experiences', [{
-      user_id: userId,
+      user_id: student1Id,
       type: 'Full-time',
       company: 'Google',
       role: 'Software Engineer',
@@ -48,7 +68,7 @@ module.exports = {
     }]);
 
     await queryInterface.bulkInsert('Educations', [{
-      user_id: userId,
+      user_id: student1Id,
       institution: 'University of XYZ',
       degree: 'Master of Science',
       fieldOfStudy: 'Computer Science',
@@ -59,7 +79,7 @@ module.exports = {
     }]);
 
     await queryInterface.bulkInsert('Projects', [{
-      user_id: userId,
+      user_id: student1Id,
       title: 'EduVault',
       description: 'A platform for managing educational records.',
       techStack: 'Node.js, Express, PostgreSQL, React',
@@ -71,15 +91,22 @@ module.exports = {
     }]);
 
     await queryInterface.bulkInsert('Skills', [{
-      user_id: userId,
+      user_id: student1Id,
       name: 'JavaScript',
+      level: 'Expert',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      user_id: student2Id,
+      name: 'Python',
       level: 'Expert',
       createdAt: new Date(),
       updatedAt: new Date()
     }]);
 
     await queryInterface.bulkInsert('Achievements', [{
-      user_id: userId,
+      user_id: student1Id,
       title: 'Award for Innovation',
       description: 'Received an award for innovative project design.',
       date: '2022',
@@ -88,7 +115,7 @@ module.exports = {
     }]);
 
     await queryInterface.bulkInsert('Certifications', [{
-      user_id: userId,
+      user_id: student1Id,
       name: 'AWS Certified Developer',
       issuer: 'Amazon Web Services',
       date: '2021',
