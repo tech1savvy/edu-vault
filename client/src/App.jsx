@@ -9,6 +9,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Navbar from "./components/Navbar";
 // Removed AuthProvider, useAuth, setupAxiosInterceptors imports
 
+import MatchResultsPage from "./pages/MatchResultsPage";
+
 // Admin Components
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import JobDescriptionFormPage from "./pages/JobDescriptionFormPage";
@@ -52,6 +54,7 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
           <Route path="/admin/job-descriptions/new" element={<AdminRoute><JobDescriptionFormPage /></AdminRoute>} />
           <Route path="/admin/job-descriptions/edit/:id" element={<AdminRoute><JobDescriptionFormPage /></AdminRoute>} />
+          <Route path="/admin/job-descriptions/:id/matches" element={<AdminRoute><MatchResultsPage /></AdminRoute>} />
 
           {/* Input Routes */}
           <Route path="/input/heading" element={<HeadingForm />} />
