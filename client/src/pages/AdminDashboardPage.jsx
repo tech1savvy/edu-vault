@@ -7,6 +7,8 @@ const AdminDashboardPage = () => {
   const [jobDescriptions, setJobDescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState('');
   const navigate = useNavigate();
 
   const getUserFromLocalStorage = () => {
@@ -71,22 +73,20 @@ const AdminDashboardPage = () => {
   };
 
   const handleTriggerFullSync = async () => {
-    if (window.confirm('Are you sure you want to trigger a full synchronization? This can be a long-running operation.')) {
-      try {
-        setLoading(true);
-        const response = await adminService.triggerFullSync();
-        alert(response.data.message);
-        console.log('Full sync response:', response.data);
-      } catch (err) {
-        setError('Failed to trigger full synchronization.');
-        console.error('Error triggering full sync:', err);
-      } finally {
-        setLoading(false);
-      }
+    setIsSyncing(true);
+    setSyncMessage('');
+    try {
+      const response = await adminService.triggerFullSync();
+      setSyncMessage(response.data.message);
+    } catch (err) {
+      setSyncMessage('Failed to trigger full synchronization.');
+      console.error('Error triggering full sync:', err);
+    } finally {
+      setIsSyncing(false);
     }
   };
 
-  if (loading) return (
+  if (loading && !isSyncing) return (
     <div className="loading-spinner">
       <div className="spinner-border text-primary" role="status">
         <span className="visually-hidden">Loading...</span>
@@ -106,15 +106,25 @@ const AdminDashboardPage = () => {
           <button onClick={handleCreateJobDescription} className="btn btn-success">
             <i className="bi bi-plus-lg"></i> Create Job
           </button>
-          <button onClick={handleTriggerFullSync} className="btn btn-warning">
-            <i className="bi bi-arrow-repeat"></i> Trigger Full Sync
+          <button onClick={handleTriggerFullSync} className="btn btn-warning" disabled={isSyncing}>
+            {isSyncing ? (
+              <>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span className="ms-2">Syncing...</span>
+              </>
+            ) : (
+              <>
+                <i className="bi bi-arrow-repeat"></i> Trigger Full Sync
+              </>
+            )}
           </button>
         </div>
       </header>
+      {syncMessage && <p className="mt-3 text-center">{syncMessage}</p>}
 
       <section className="mb-5">
         <h2 className="mb-3">Job Descriptions</h2>
-        {jobDescriptions.length === 0 ? (
+        {jobDescriptions.length === 0 && !loading ? (
           <p>No job descriptions found.</p>
         ) : (
           <div className="row">

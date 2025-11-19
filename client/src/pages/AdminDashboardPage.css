@@ -75,28 +75,23 @@
   display: flex;
   flex-direction: column;
 }
-
 .job-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
-
 .job-card .card-body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
-
 .job-card .card-title {
   font-weight: 600;
   color: var(--fg1);
 }
-
 .job-card .card-text {
   color: var(--grey-fg);
   flex-grow: 1;
 }
-
 .job-card-actions {
   margin-top: auto;
   padding-top: 1rem;
@@ -105,7 +100,6 @@
   flex-wrap: wrap;
   gap: 0.5rem;
 }
-
 .job-card-actions .btn-info {
     background-color: var(--info-color);
     border-color: var(--info-color);
@@ -121,20 +115,17 @@
     border-color: var(--primary-color);
     color: var(--dark-color);
 }
-
 .match-results-container {
   margin-top: 1.5rem;
   background-color: var(--bg0);
   border-radius: 0.375rem;
   padding: 1rem;
 }
-
 .match-results-container h6 {
   font-weight: 600;
   color: var(--fg1);
   margin-bottom: 1rem;
 }
-
 .match-list-item {
   background-color: var(--bg1) !important;
   border-color: var(--bg2) !important;
@@ -144,21 +135,52 @@
   align-items: center;
   padding: 0.75rem 1.25rem;
 }
-
 .match-user-info strong {
   color: var(--fg1);
 }
-
 .match-user-info small {
   color: var(--grey-fg);
 }
-
 .match-score {
   font-weight: 700;
   font-size: 0.9rem;
   padding: 0.5em 0.75em;
   background-color: var(--primary-color) !important;
   color: var(--dark-color) !important;
+}
+.sync-section {
+  background-color: var(--bg1);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--bg2);
+  text-align: center;
+}
+.sync-section h2 {
+  font-weight: 600;
+  color: var(--fg1);
+}
+.sync-section .btn {
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sync-section .btn i {
+  font-size: 1.2rem;
+}
+.loading-spinner, .error-message, .access-denied {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  flex-direction: column;
+  gap: 1rem;
+}
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: var(--primary-color);
+}t;
 }
 
 .sync-section {
