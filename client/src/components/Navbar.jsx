@@ -166,6 +166,11 @@ function Navbar() {
                 aria-labelledby="navbarDropdownPortfolio"
               >
                 <li>
+                  <Link className="dropdown-item" to="/portfolio/layout-s">
+                    Layout S
+                  </Link>
+                </li>
+                <li>
                   <Link className="dropdown-item" to="/portfolio/layout-k">
                     Layout K
                   </Link>

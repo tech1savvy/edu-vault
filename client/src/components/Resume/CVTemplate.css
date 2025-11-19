@@ -1,0 +1,95 @@
+/* CVTemplate.css - print friendly A4 layout, matches example CV */
+@page { size: A4; margin: 12mm; }
+
+.cv-root { font-family: "Inter", "Poppins", Arial, sans-serif; color: #111; }
+.cv-page {
+  width: 210mm;
+  max-width: 780px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 16mm;
+  box-sizing: border-box;
+  color: #111;
+}
+
+/* Header */
+.cv-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.cv-name { font-size: 26px; font-weight: 800; color: #0b1320; }
+.cv-title { margin-top:4px; color:#444; font-weight:600; }
+.cv-contact-block { text-align:right; font-size:12px; color:#333; }
+
+/* Two-column small sections */
+.cv-section { margin-bottom: 12px; }
+.cv-skills-training .cv-two-col { display:flex; gap:16px; justify-content:space-between; }
+.cv-two-col > div { flex:1; }
+
+/* Section headings */
+.cv-section h4 {
+  margin:0 0 8px 0;
+  font-size:14px;
+  color:#0b1320;
+  font-weight:700;
+}
+
+/* skills */
+.cv-skills { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+.cv-skill-pill {
+  font-size:12px;
+  padding:6px 8px;
+  border-radius: 6px;
+  background:#f2f6f5;
+  color:#0b1320;
+  border:1px solid #e6e6e6;
+}
+
+/* entries */
+.cv-entry { display:flex; justify-content:space-between; gap: 12px; margin-bottom: 10px; page-break-inside: avoid; break-inside: avoid; }
+.cv-entry-left { max-width:64%; }
+.cv-role { font-weight:700; color:#111; }
+.cv-company.small, .small { color:#666; font-size:12px; }
+.cv-duration { text-align:right; color:#666; font-size:12px; min-width:88px; }
+.cv-desc { margin-top:6px; font-size:13px; line-height:1.35; color:#333; }
+
+/* lists */
+.cv-list { padding-left: 18px; margin: 6px 0; }
+.cv-list li { margin-bottom:6px; font-size:13px; }
+
+/* footer */
+.cv-footer { margin-top: 18px; text-align:center; color:#666; font-size:12px; }
+
+/* small helpers */
+.cv-muted { color:#666; font-size:13px; }
+
+/* hide / show for offscreen rendering */
+.cv-hidden-offscreen {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 210mm;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+}
+.cv-visible { position: static; opacity:1; pointer-events:auto; }
+
+/* print tweaks */
+@media print {
+  body { background: #fff; }
+  .cv-hidden-offscreen { display:block !important; position:static !important; left:0 !important; opacity:1 !important; pointer-events:auto !important; }
+  .cv-page { box-shadow:none; padding: 12mm; width: auto; max-width: none; }
+}
+
+/* responsiveness - preview only */
+@media (max-width: 900px) {
+  .cv-page { padding: 18px; }
+  .cv-header { flex-direction:column; align-items:flex-start; gap:6px; }
+  .cv-contact-block { text-align:left; }
+  .cv-body { display:block; }
+}

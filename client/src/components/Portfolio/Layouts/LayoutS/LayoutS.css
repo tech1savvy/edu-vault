@@ -1,0 +1,208 @@
+/* LayoutS.css - centered stacked cards with theme switcher
+   Themes: sunset (default), mint, coral
+*/
+
+:root{
+  --radius: 14px;
+  --card-pad: 30px;
+  --max-width: 1100px;
+
+  /* sunset theme (default) */
+  --bg-start: #0f0710;
+  --bg-end: #281225;
+  --accent: #ff9bd1; /* pink-ish highlight */
+  --muted: #bfc7cf;
+  --card-bg: rgba(255,255,255,0.02);
+}
+
+/* theme: sunset */
+[data-theme="sunset"]{
+  --bg-start: #0f0710;
+  --bg-end: #281225;
+  --accent: #ff9bd1;
+  --accent-2: #ffa07a;
+  --card-bg: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  --muted: #bfc7cf;
+  --title-color: #ffd9f0;
+}
+
+/* theme: mint (green-teal) */
+[data-theme="mint"]{
+  --bg-start: #071614;
+  --bg-end: #072a24;
+  --accent: #3ee3b6;
+  --accent-2: #97f8d8;
+  --card-bg: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(0,0,0,0.02));
+  --muted: #9fbeb0;
+  --title-color: #dffbf0;
+}
+
+/* theme: coral (warm orange) */
+[data-theme="coral"]{
+  --bg-start: #140b06;
+  --bg-end: #2b1710;
+  --accent: #ffb77a;
+  --accent-2: #ffd6b3;
+  --card-bg: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(0,0,0,0.03));
+  --muted: #d4c4bf;
+  --title-color: #ffe7d0;
+}
+
+/* page background */
+.ls-root{
+  min-height: 100vh;
+  font-family: "Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--muted);
+  background:
+    radial-gradient(600px 300px at 10% 10%, rgba(255,255,255,0.02), transparent 10%),
+    radial-gradient(500px 400px at 90% 80%, rgba(255,255,255,0.01), transparent 12%),
+    linear-gradient(180deg, var(--bg-start), var(--bg-end) 80%);
+  padding: 28px 20px;
+  box-sizing: border-box;
+}
+
+/* theme switcher top-right */
+.ls-theme-ui{
+  position: fixed;
+  right: 22px;
+  top: 12px;
+  display:flex;
+  gap:10px;
+  z-index: 60;
+}
+.ls-theme-btn{
+  width:46px;
+  height:46px;
+  border-radius:10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(4px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  cursor:pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+  color: var(--title-color, #fff);
+}
+.ls-theme-btn:hover{ transform: translateY(-3px); }
+.ls-theme-btn.active{
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 24px rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.08);
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* main container */
+.ls-container{
+  max-width: var(--max-width);
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Header (big name & subtitle) */
+.ls-header{
+  margin-bottom: 18px;
+}
+.ls-hero{
+  padding: 28px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.025));
+  color: var(--title-color);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.ls-hero h1{
+  margin:0;
+  font-size: 44px;
+  font-weight:800;
+  color: var(--title-color);
+  letter-spacing:-0.6px;
+}
+.ls-hero p.lead{
+  margin-top:8px;
+  color:var(--muted);
+  font-size: 16px;
+}
+
+/* stacked cards layout */
+.ls-cards{
+  display:flex;
+  flex-direction:column;
+  gap: 26px;
+  margin-top: 28px;
+}
+
+/* card base */
+.ls-card{
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: var(--card-pad);
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 20px 45px rgba(2,4,6,0.5);
+  overflow: hidden;
+}
+
+/* heading inside card */
+.ls-card h2{
+  margin:0 0 12px 0;
+  font-size: 28px;
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  display:inline-block;
+}
+.ls-underline{
+  height:4px;
+  width:60px;
+  margin-top:10px;
+  border-radius:4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+/* body text */
+.ls-card .ls-muted{
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+/* Project / Education / Experience layout helpers */
+.ls-two-col{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.ls-item{
+  padding: 14px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.02);
+  border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* small screens */
+@media (max-width: 900px){
+  .ls-hero h1{ font-size: 34px; }
+  .ls-container{ padding: 12px; }
+  .ls-card{ padding: 18px; }
+  .ls-two-col{ grid-template-columns: 1fr; }
+  .ls-theme-ui{ right: 12px; top: 8px; gap:6px; }
+}
+
+
+@media print {
+  .navbar,
+  .theme-buttons,
+  .download-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  #resume-root {
+    box-shadow: none !important;
+    background: white !important;
+  }
+}
