@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { ResumeContext } from "../../../context/resumeContext";
 
 function EducationForm() {
-  const { educationData, setEducationData } = useContext(ResumeContext);
+  const { setEducation } = useContext(ResumeContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ function EducationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setEducationData([...educationData, formData]);
+    setEducation((prev) => [...prev, formData]); // SAFE & CORRECT
     navigate("/output/education");
   };
 
