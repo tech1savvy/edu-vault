@@ -7,7 +7,6 @@ const AdminDashboardPage = () => {
   const [jobDescriptions, setJobDescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [matchResults, setMatchResults] = useState({});
   const navigate = useNavigate();
 
   const getUserFromLocalStorage = () => {
@@ -60,11 +59,6 @@ const AdminDashboardPage = () => {
       try {
         await adminService.deleteJobDescription(id);
         fetchJobDescriptions();
-        setMatchResults((prev) => {
-          const newResults = { ...prev };
-          delete newResults[id];
-          return newResults;
-        });
       } catch (err) {
         setError('Failed to delete job description.');
         console.error('Error deleting job description:', err);
@@ -72,21 +66,8 @@ const AdminDashboardPage = () => {
     }
   };
 
-  const handleMatchJobDescription = async (id) => {
-    try {
-      setLoading(true);
-      const response = await adminService.matchJobDescription(id, 5);
-      setMatchResults((prev) => ({
-        ...prev,
-        [id]: response.data,
-      }));
-      alert('Matching process completed. Results displayed below.');
-    } catch (err) {
-      setError('Failed to match job description.');
-      console.error('Error matching job description:', err);
-    } finally {
-      setLoading(false);
-    }
+  const handleMatchJobDescription = (id) => {
+    navigate(`/admin/job-descriptions/${id}/matches`);
   };
 
   const handleTriggerFullSync = async () => {
@@ -143,25 +124,6 @@ const AdminDashboardPage = () => {
                   <div className="card-body">
                     <h5 className="card-title">{job.title}</h5>
                     <p className="card-text">{job.description.substring(0, 120)}...</p>
-                    
-                    {matchResults[job.id] && matchResults[job.id].length > 0 && (
-                      <div className="match-results-container">
-                        <h6><i className="bi bi-people-fill"></i> Top Matches</h6>
-                        <ul className="list-group list-group-flush">
-                          {matchResults[job.id].map((match, index) => (
-                            <li key={index} className="list-group-item match-list-item">
-                              <div className="match-user-info">
-                                <strong>{match.user.name || 'N/A'}</strong><br />
-                                <small>{match.user.email || 'N/A'}</small>
-                              </div>
-                              <span className="badge bg-primary match-score">
-                                {(match.score * 100).toFixed(2)}%
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
                   </div>
                   <div className="card-footer job-card-actions">
                       <button onClick={() => handleViewJobDescription(job.id)} className="btn btn-info btn-sm">
