@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { ResumeContext } from "../../../context/resumeContext";
 
 function HeadingForm() {
-  const { setHeadingData } = useContext(ResumeContext);
+  const { setHeading } = useContext(ResumeContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -22,13 +22,23 @@ function HeadingForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setHeadingData(formData); // save into context
-    navigate("/output/heading"); // go to preview
+
+    setHeading({
+      name: formData.fullName,
+      email: formData.contact,
+      contact: formData.contact,
+      linkedin: formData.linkedin,
+      github: formData.github,
+      website: formData.portfolio,
+      title: formData.title,
+      summary: formData.description,
+    });
+
+    navigate("/output/heading");
   };
 
   return (
     <div className="form-container">
-      {" "}
       <form onSubmit={handleSubmit} className="container mt-3">
         <h3 className="mb-3">Heading Information</h3>
 

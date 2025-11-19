@@ -33,8 +33,12 @@ import Certifications from "./components/Resume/Certifications";
 import Achievements from "./components/Resume/Achievements";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import LayoutS from "./components/Portfolio/Layouts/LayoutS/LayoutS";
 import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
 import LayoutT from "./components/Portfolio/Layouts/LayoutT/LayoutT";
+
+import CVTemplate from "./components/Resume/CVTemplate";
+
 
 function App() {
   // Removed useAuth and useEffect for setupAxiosInterceptors
@@ -42,6 +46,10 @@ function App() {
   return (
     <>
       <Navbar />
+
+      {/* 🔥 Hidden CV Template (always in DOM, invisible) */}
+      <CVTemplate visible={false} />
+      
       <main className="p-3">
         <Routes>
           {/* Auth Routes */}
@@ -72,6 +80,7 @@ function App() {
           <Route path="/output/achievements" element={<Achievements />} />
 
           {/* Portfolio Route */}
+          <Route path="/portfolio/layout-s" element={<LayoutS />} />
           <Route path="/portfolio/layout-k" element={<LayoutK />} />
           <Route path="/portfolio/layout-t" element={<LayoutT />} />
 
