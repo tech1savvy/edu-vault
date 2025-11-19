@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import "./LayoutT.css";
 import Header from "./Header";
@@ -11,6 +9,7 @@ import Skills from "./Skills";
 import Achievements from "./Achievements";
 import Certifications from "./Certifications";
 import Contact from "./Contact";
+
 import {
   getHeading,
   getProjects,
@@ -21,10 +20,12 @@ import {
   getCertifications,
 } from "../../../../services/api";
 
+// 👉 PDF Button
+import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
+
 const LayoutT = () => {
   const [theme, setTheme] = useState("dark");
 
-  // Consolidated state object to match the new logic
   const [data, setData] = useState({
     heading: null,
     projects: [],
@@ -38,7 +39,6 @@ const LayoutT = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Use Promise.all for faster concurrent loading
         const [
           heading,
           projects,
@@ -75,10 +75,8 @@ const LayoutT = () => {
 
   return (
     <div className="portfolio-layout-t" data-theme={theme}>
-      {/* Background Grid Overlay */}
+      {/* Background Effects */}
       <div className="layout-grid-overlay"></div>
-
-      {/* Top Gradient Line */}
       <div className="layout-top-bar"></div>
 
       {/* Theme Switcher */}
@@ -86,50 +84,50 @@ const LayoutT = () => {
         <button
           onClick={() => setTheme("dark")}
           className={theme === "dark" ? "active" : ""}
-          title="Dark Theme"
         >
-          <span role="img" aria-label="Dark">
-            🌙
-          </span>
+          🌙
         </button>
         <button
           onClick={() => setTheme("ocean")}
           className={theme === "ocean" ? "active" : ""}
-          title="Ocean Theme"
         >
-          <span role="img" aria-label="Ocean">
-            🌊
-          </span>
+          🌊
         </button>
         <button
           onClick={() => setTheme("forest")}
           className={theme === "forest" ? "active" : ""}
-          title="Forest Theme"
         >
-          <span role="img" aria-label="Forest">
-            🌲
-          </span>
+          🌲
         </button>
       </div>
 
-      <div className="portfolio-container">
-        <Header data={data.heading} />
+      {/* ------------ PRINTABLE AREA ------------ */}
+      <div id="resume-root">
+        <div className="portfolio-container">
+          <Header data={data.heading} />
 
-        <main className="portfolio-content">
-          <About data={data.heading} />
-          <Experience data={data.experience} />
-          <Education data={data.education} />
-          <Projects data={data.projects} />
-          <Skills data={data.skills} />
-          <Achievements data={data.achievements} />
-          <Certifications data={data.certifications} />
-          <Contact data={data.heading} />
-        </main>
+          <main className="portfolio-content">
+            <About data={data.heading} />
+            <Experience data={data.experience} />
+            <Education data={data.education} />
+            <Projects data={data.projects} />
+            <Skills data={data.skills} />
+            <Achievements data={data.achievements} />
+            <Certifications data={data.certifications} />
+            <Contact data={data.heading} />
+          </main>
 
-        <footer className="portfolio-footer">
-          <div className="footer-line"></div>
-          <p>Built with passion and dedication</p>
-        </footer>
+          <footer className="portfolio-footer">
+            <div className="footer-line"></div>
+            <p>Built with passion and dedication</p>
+          </footer>
+        </div>
+      </div>
+      {/* ------------ PRINTABLE AREA END ------------ */}
+
+      {/* ------------ DOWNLOAD BUTTON ------------ */}
+      <div style={{ textAlign: "center", margin: "40px 0" }}>
+        <DownloadPdfButton filename="My-Resume.pdf" />
       </div>
     </div>
   );

@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import './LayoutK.css';
-import Header from './Header';
-import About from './About';
-import Experience from './Experience';
-import Education from './Education';
-import Projects from './Projects';
-import Skills from './Skills';
-import Achievements from './Achievements';
-import Certifications from './Certifications';
-import Contact from './Contact';
+import React, { useState, useEffect } from "react";
+import "./LayoutK.css";
+import Header from "./Header";
+import About from "./About";
+import Experience from "./Experience";
+import Education from "./Education";
+import Projects from "./Projects";
+import Skills from "./Skills";
+import Achievements from "./Achievements";
+import Certifications from "./Certifications";
+import Contact from "./Contact";
+
 import {
   getHeading,
   getProjects,
@@ -17,10 +18,13 @@ import {
   getEducation,
   getAchievements,
   getCertifications,
-} from '../../../../services/api';
+} from "../../../../services/api";
+
+// 👉 PDF Button
+import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
 
 const LayoutK = () => {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState("dark");
   const [heading, setHeading] = useState(null);
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -40,7 +44,7 @@ const LayoutK = () => {
         setAchievements(await getAchievements());
         setCertifications(await getCertifications());
       } catch (error) {
-        console.error('Failed to fetch data:', error);
+        console.error("Failed to fetch data:", error);
       }
     };
     fetchData();
@@ -48,23 +52,35 @@ const LayoutK = () => {
 
   return (
     <div className="portfolio-layout-k" data-theme={theme}>
+      {/* Theme Switcher */}
       <div className="theme-switcher">
-        <button onClick={() => setTheme('dark')}>🌙</button>
-        <button onClick={() => setTheme('light')}>☀️</button>
-        <button onClick={() => setTheme('blue')}>💧</button>
+        <button onClick={() => setTheme("dark")}>🌙</button>
+        <button onClick={() => setTheme("light")}>☀️</button>
+        <button onClick={() => setTheme("blue")}>💧</button>
       </div>
-      <div className="portfolio-container">
-        <Header data={heading} />
-        <main className="portfolio-content">
-          <About data={heading} />
-          <Experience data={experience} />
-          <Education data={education} />
-          <Projects data={projects} />
-          <Skills data={skills} />
-          <Achievements data={achievements} />
-          <Certifications data={certifications} />
-          <Contact data={heading} />
-        </main>
+
+      {/* ------------ PRINTABLE AREA ------------ */}
+      <div id="resume-root">
+        <div className="portfolio-container">
+          <Header data={heading} />
+
+          <main className="portfolio-content">
+            <About data={heading} />
+            <Experience data={experience} />
+            <Education data={education} />
+            <Projects data={projects} />
+            <Skills data={skills} />
+            <Achievements data={achievements} />
+            <Certifications data={certifications} />
+            <Contact data={heading} />
+          </main>
+        </div>
+      </div>
+      {/* ------------ PRINTABLE AREA END ------------ */}
+
+      {/* ------------ DOWNLOAD BUTTON ------------ */}
+      <div style={{ textAlign: "center", margin: "40px 0" }}>
+        <DownloadPdfButton filename="My-Resume.pdf" />
       </div>
     </div>
   );
