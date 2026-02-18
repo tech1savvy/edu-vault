@@ -1,6 +1,5 @@
 const { getAggregatedResumeText } = require('../resume/resume.aggregator.js');
 const EmbeddingService = require('./embedding.service');
-const PineconeService = require('./pinecone.service');
 const logger = require('../../config/logger');
 const userRepository = require('../user/user.repository');
 const jobDescriptionRepository = require('../job-description/jobDescription.repository');
@@ -24,7 +23,6 @@ const syncResume = async (userId) => {
       },
     };
 
-    await PineconeService.upsert([vector]);
     logger.info(`Successfully synced resume for user: ${userId}`);
   } catch (error) {
     logger.error(`Error syncing resume for user ${userId}:`, { message: error.message, stack: error.stack });
@@ -45,7 +43,7 @@ const syncJobDescription = async (jobDescription) => {
       },
     };
 
-    await PineconeService.upsert([vector]);
+
     logger.info(`Successfully synced job description for job: ${jobDescription.id}`);
   } catch (error) {
     logger.error(`Error syncing job description for job ${jobDescription.id}:`, { message: error.message, stack: error.stack });
