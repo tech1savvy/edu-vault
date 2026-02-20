@@ -10,8 +10,11 @@ const achievementRoutes = require("./features/resume/achievement");
 const certificationRoutes = require("./features/resume/certification");
 const educationRoutes = require("./features/resume/education");
 const experienceRoutes = require("./features/resume/experience");
+const jobDescriptionRoutes = require("./features/job-description/jobDescription.routes");
+const syncRoutes = require("./features/sync/sync.routes");
 
 router.use("/auth", authRoutes);
+
 router.use("/resume", authenticate);
 router.use("/resume/heading", headingRoutes);
 router.use("/resume/skills", skillRoutes);
@@ -20,10 +23,6 @@ router.use("/resume/achievements", achievementRoutes);
 router.use("/resume/certifications", certificationRoutes);
 router.use("/resume/education", educationRoutes);
 router.use("/resume/experiences", experienceRoutes);
-
-const jobDescriptionRoutes = require("./features/job-description/jobDescription.routes");
-
-const syncRoutes = require("./features/sync/sync.routes");
 
 router.use("/job-descriptions", jobDescriptionRoutes);
 router.use("/sync", syncRoutes);

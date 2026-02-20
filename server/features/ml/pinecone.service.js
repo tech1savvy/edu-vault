@@ -1,8 +1,8 @@
-const { Pinecone } = require('@pinecone-database/pinecone');
-const config = require('../../config/config');
-const logger = require('../../config/logger');
+const { Pinecone } = require("@pinecone-database/pinecone");
+const config = require("../../config/config");
+const logger = require("../../config/logger");
 
-const indexName = 'eduvault-resumes';
+const indexName = "eduvault";
 const dimension = 384; // Dimension for Xenova/all-MiniLM-L6-v2
 
 class PineconeService {
@@ -20,15 +20,20 @@ class PineconeService {
       });
 
       const existingIndexes = await this.pinecone.listIndexes();
-      if (!existingIndexes.indexes || !existingIndexes.indexes.some(index => index.name === indexName)) {
-        throw new Error(`Pinecone index '${indexName}' not found. Please create it manually in your Pinecone dashboard.`);
+      if (
+        !existingIndexes.indexes ||
+        !existingIndexes.indexes.some((index) => index.name === indexName)
+      ) {
+        throw new Error(
+          `Pinecone index '${indexName}' not found. Please create it manually in your Pinecone dashboard.`,
+        );
       }
 
       this.index = this.pinecone.index(indexName);
       logger.info(`Successfully connected to Pinecone index '${indexName}'.`);
     } catch (error) {
-      logger.error('Error initializing Pinecone:', error);
-      throw new Error('Could not initialize Pinecone service.');
+      logger.error("Error initializing Pinecone:", error);
+      throw new Error("Could not initialize Pinecone service.");
     }
   }
 
