@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 // Removed useEffect as setupAxiosInterceptors is no longer used here
 
@@ -51,10 +51,38 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
 
           {/* Admin Routes */}
-          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
-          <Route path="/admin/job-descriptions/new" element={<AdminRoute><JobDescriptionFormPage /></AdminRoute>} />
-          <Route path="/admin/job-descriptions/edit/:id" element={<AdminRoute><JobDescriptionFormPage /></AdminRoute>} />
-          <Route path="/admin/job-descriptions/:id/matches" element={<AdminRoute><MatchResultsPage /></AdminRoute>} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminRoute>
+                <AdminDashboardPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/job-descriptions/new"
+            element={
+              <AdminRoute>
+                <JobDescriptionFormPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/job-descriptions/edit/:id"
+            element={
+              <AdminRoute>
+                <JobDescriptionFormPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/job-descriptions/:id/matches"
+            element={
+              <AdminRoute>
+                <MatchResultsPage />
+              </AdminRoute>
+            }
+          />
 
           {/* Input Routes */}
           <Route path="/input/heading" element={<HeadingForm />} />
@@ -62,7 +90,10 @@ function App() {
           <Route path="/input/education" element={<EducationForm />} />
           <Route path="/input/skills" element={<Skills isInput={true} />} />
           <Route path="/input/projects" element={<ProjectsForm />} />
-          <Route path="/input/certifications" element={<CertificationsForm />} />
+          <Route
+            path="/input/certifications"
+            element={<CertificationsForm />}
+          />
           <Route path="/input/achievements" element={<AchievementsForm />} />
 
           {/* Output Routes */}
@@ -79,7 +110,17 @@ function App() {
           <Route path="/portfolio/layout-t" element={<LayoutT />} />
 
           {/* Default Route */}
-          <Route path="/" element={<div className="container text-center mt-5"><h2>Welcome to EduVault Resume Builder</h2><p>Select a component from the navigation menu to get started.</p></div>} />
+          <Route
+            path="/"
+            element={
+              <div className="container text-center mt-5">
+                <h2>Welcome to EduVault Resume Builder</h2>
+                <p>
+                  Select a component from the navigation menu to get started.
+                </p>
+              </div>
+            }
+          />
         </Routes>
       </main>
     </>
@@ -87,3 +128,4 @@ function App() {
 }
 
 export default App;
+

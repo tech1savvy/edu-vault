@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { ResumeContext } from "../../../context/resumeContext";
 
 function EducationForm() {
