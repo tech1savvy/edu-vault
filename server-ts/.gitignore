@@ -1,0 +1,12 @@
+# Build Files
+dist
+tsconfig.tsbuildinfo
+
+# Node packages
+node_modules
+
+# Logs
+*.log
+
+# Environment File
+.env
