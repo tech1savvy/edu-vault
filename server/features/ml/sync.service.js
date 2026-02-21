@@ -2,8 +2,6 @@ const { getAggregatedResumeText } = require('../resume/resume.aggregator.js');
 const EmbeddingService = require('./embedding.service');
 const PineconeService = require('./pinecone.service');
 const logger = require('../../config/logger');
-const userRepository = require('../user/user.repository');
-const jobDescriptionRepository = require('../job-description/jobDescription.repository');
 
 const syncResume = async (userId) => {
   try {
@@ -52,27 +50,9 @@ const syncJobDescription = async (jobDescription) => {
   }
 };
 
-const syncAll = async () => {
-  logger.info('Starting bulk synchronization for all users and job descriptions...');
-
-  const users = await userRepository.findAll();
-  for (const user of users) {
-    // Not awaiting each one to allow them to run in parallel without blocking
-    syncResume(user.id);
-  }
-
-  const jobDescriptions = await jobDescriptionRepository.findAll();
-  for (const job of jobDescriptions) {
-    syncJobDescription(job);
-  }
-
-  logger.info('Bulk synchronization process initiated for all items.');
-};
-
 const SyncService = {
   syncResume,
   syncJobDescription,
-  syncAll,
 };
 
 module.exports = { SyncService };
