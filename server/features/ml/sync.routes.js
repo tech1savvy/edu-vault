@@ -3,6 +3,8 @@ const router = express.Router();
 const mlClient = require('../ml/ml.client');
 const jobDescriptionRepository = require('../job-description/jobDescription.repository');
 const { getAggregatedResumeText, getAllResumesForSync } = require('../resume/resume.aggregator');
+const authenticateToken = require('../../middleware/auth');
+const authorizeRoles = require('../../middleware/roles');
 
 const syncResume = async (req, res) => {
   try {
@@ -85,10 +87,10 @@ const syncAll = async (req, res) => {
   }
 };
 
-router.post('/resume/:userId', syncResume);
-router.post('/resume', syncResume);
-router.post('/job/:jobId', syncJobDescription);
-router.post('/job', syncJobDescription);
-router.post('/all', syncAll);
+router.post('/resume/:userId', authenticateToken, syncResume);
+router.post('/resume', authenticateToken, syncResume);
+router.post('/job/:jobId', authenticateToken, authorizeRoles('administrator'), syncJobDescription);
+router.post('/job', authenticateToken, authorizeRoles('administrator'), syncJobDescription);
+router.post('/all', authenticateToken, authorizeRoles('administrator'), syncAll);
 
 module.exports = router;

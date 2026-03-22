@@ -1,0 +1,14 @@
+meta {
+  name: Sync All - No Auth (should fail 401)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseURL}}/api/sync/all
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}

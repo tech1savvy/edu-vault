@@ -1,0 +1,20 @@
+meta {
+  name: Sync Resume - No Auth (should fail 401)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseURL}}/api/sync/resume
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  {
+    "userId": 1
+  }
+}
