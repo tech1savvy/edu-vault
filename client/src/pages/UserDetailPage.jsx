@@ -13,6 +13,7 @@ const UserDetailPage = () => {
 
   useEffect(() => {
     fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchUser = async () => {
@@ -20,7 +21,7 @@ const UserDetailPage = () => {
       setLoading(true);
       const response = await adminService.getUserById(id);
       setUser(response.data);
-    } catch (err) {
+    } catch {
       setError('Failed to fetch user details.');
     } finally {
       setLoading(false);
