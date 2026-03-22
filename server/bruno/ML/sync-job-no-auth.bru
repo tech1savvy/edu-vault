@@ -1,0 +1,20 @@
+meta {
+  name: Sync Job - No Auth (should fail 401)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseURL}}/api/sync/job
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  {
+    "jobId": 1
+  }
+}

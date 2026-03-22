@@ -1,0 +1,21 @@
+meta {
+  name: Sync Job - Admin Auth (should succeed)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseURL}}/api/sync/job
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+}
+
+body {
+  {
+    "jobId": 1
+  }
+}
