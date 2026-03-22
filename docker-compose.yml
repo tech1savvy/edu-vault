@@ -54,8 +54,14 @@ services:
       QDRANT_COLLECTION: ${QDRANT_COLLECTION:-eduvault}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
       ML_SERVICE_PORT: "8001"
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      POSTGRES_DB: ${POSTGRES_DB:-edu_vault}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
     depends_on:
       - qdrant
+      - postgres
     restart: unless-stopped
 
   client:
@@ -66,7 +72,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      VITE_API_BASE_URL: http://localhost:8000
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://backend:8000}
     volumes:
       - ./client:/app
       - /app/node_modules
