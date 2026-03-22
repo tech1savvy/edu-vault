@@ -1,6 +1,5 @@
-import { createContext, useState } from "react";
-
-export const ResumeContext = createContext();
+import { useState } from "react";
+import { ResumeContext } from "./resumeContext";
 
 export function ResumeProvider({ children }) {
   const [heading, setHeading] = useState({});
