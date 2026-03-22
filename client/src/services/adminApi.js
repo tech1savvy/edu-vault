@@ -40,6 +40,7 @@ adminApi.interceptors.response.use(
 
 // Admin-specific API calls
 const adminService = {
+  // Job descriptions
   getJobDescriptions: () => adminApi.get('/job-descriptions'),
   getJobDescriptionById: (id) => adminApi.get(`/job-descriptions/${id}`),
   createJobDescription: (data) => adminApi.post('/job-descriptions', data),
@@ -47,6 +48,12 @@ const adminService = {
   deleteJobDescription: (id) => adminApi.delete(`/job-descriptions/${id}`),
   matchJobDescription: (id, topN = 5) => adminApi.post(`/job-descriptions/${id}/match`, { topN }),
   triggerFullSync: () => adminApi.post('/sync/all'),
+
+  // User management
+  getUsers: (page = 1, limit = 20) => adminApi.get('/users', { params: { page, limit } }),
+  getUserById: (id) => adminApi.get(`/users/${id}`),
+  updateUserRole: (id, role) => adminApi.put(`/users/${id}/role`, { role }),
+  updateUserStatus: (id, status) => adminApi.put(`/users/${id}/status`, { status }),
 };
 
 export { adminApi, adminService };
