@@ -1,0 +1,22 @@
+meta {
+  name: Match Resumes to Job
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8001/match
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  {
+    "job_id": 6,
+    "text": "We are looking for a talented Software Engineer to join our team with experience in Python and JavaScript",
+    "limit": 5
+  }
+}

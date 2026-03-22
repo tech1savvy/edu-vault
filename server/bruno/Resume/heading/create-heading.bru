@@ -1,0 +1,26 @@
+meta {
+  name: Create/Update Heading
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/resume/heading
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "name": "John Doe",
+    "role": "Software Engineer",
+    "email": "john.doe@example.com",
+    "phone": "123-456-7890",
+    "location": "New York, USA",
+    "link": "linkedin.com/in/johndoe"
+  }
+}

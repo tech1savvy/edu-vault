@@ -1,94 +1,69 @@
 # EduVault Server
 
-This is the backend server for EduVault, a platform for managing educational and professional records.
+Backend API for EduVault. Runs in Docker only - see [root README](../README.md).
 
 ## Tech Stack
 
-- **Framework:** [Express.js](https://expressjs.com/)
-- **Database:** [PostgreSQL](https://www.postgresql.org/)
-- **ORM:** [Sequelize](https://sequelize.org/)
-- **Authentication:** JWT (JSON Web Tokens)
-- **Validation:** [Joi](https://joi.dev/)
-- **Logging:** [Winston](https://github.com/winstonjs/winston) & [Morgan](https://github.com/expressjs/morgan)
-- **Environment Variables:** [dotenv](https://github.com/motdotla/dotenv)
+- **Express.js** - Web framework
+- **Sequelize** - PostgreSQL ORM
+- **JWT** - Authentication
+- **Winston** - Logging
+- **axios** - HTTP client for ML service
 
-## Getting Started
+## API Documentation
 
-Follow these steps to set up and run the EduVault server locally.
+### Base URL
 
-### Prerequisites
+`http://localhost:8000`
 
-- Node.js (v18 or higher recommended)
-- PostgreSQL
+### Authentication
 
-### Installation
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/signup` | Register new student |
+| POST | `/api/auth/login` | Login |
 
-1.  **Clone the repository:**
+**Login Response:**
+```json
+{ "user": { "id": 1, "name": "John", "role": "student" }, "token": "eyJhbG..." }
+```
 
-    ```bash
-    git clone <repository-url>
-    cd EduVault/server
-    ```
+### Resume (Student Role)
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET/POST | `/api/resume/heading` | User heading |
+| GET/POST | `/api/resume/skills` | Skills |
+| GET/POST | `/api/resume/projects` | Projects |
+| GET/POST | `/api/resume/experiences` | Work experience |
+| GET/POST | `/api/resume/education` | Education |
+| GET/POST | `/api/resume/achievements` | Achievements |
+| GET/POST | `/api/resume/certifications` | Certifications |
 
-### Configuration
+### Job Descriptions (Admin Role)
 
-1.  **Create a `.env` file:**
-    Create a file named `.env` in the `server/` directory by copying the example file:
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/job-descriptions` | List all |
+| POST | `/api/job-descriptions` | Create |
+| PUT | `/api/job-descriptions/:id` | Update |
+| DELETE | `/api/job-descriptions/:id` | Delete |
+| POST | `/api/job-descriptions/:id/match` | Match resumes |
 
-    ```bash
-    cp .env.example .env
-    ```
+### Sync (Admin Role)
 
-2.  **Edit the `.env` file:**
-    Open the `.env` file and add your PostgreSQL database credentials and a JWT secret. Replace the placeholder values with your actual information.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/sync/all` | Sync all data to ML service |
 
-    A new `.env.example` file has been created for you.
+## Environment Variables
 
-### Database Setup
-
-1.  **Create the database:**
-    Ensure your PostgreSQL server is running and then run the following command to create the database specified in your `.env` file:
-
-    ```bash
-    npx sequelize-cli db:create
-    ```
-
-2.  **Run database migrations:**
-    This command will create all the necessary tables in your database.
-
-    ```bash
-    npx sequelize-cli db:migrate
-    ```
-
-3.  **Seed sample data (Optional):**
-    To populate your database with some initial sample data, run:
-    ```bash
-    npx sequelize-cli db:seed:all
-    ```
-
-### Running the Server
-
-- **For development (with nodemon):**
-
-  ```bash
-  npm run dev
-  ```
-
-  This will start the server and automatically restart it when file changes are detected.
-
-- **For production:**
-  ```bash
-  npm start
-  ```
-
-### Seeded Data
-
-If you ran the seeder, the following user account will be created:
-
-- **Email:** `student@example.com`
-- **Password:** `password123`
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `POSTGRES_DB` | edu_vault | Database name |
+| `DB_HOST` | postgres | Database host |
+| `DB_USER` | postgres | Database user |
+| `DB_PASSWORD` | postgres | Database password |
+| `JWT_SECRET` | dev-secret... | JWT signing secret |
+| `ML_SERVICE_URL` | http://ml:8001 | ML service endpoint |
+| `NODE_ENV` | development | Environment |

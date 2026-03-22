@@ -1,0 +1,23 @@
+meta {
+  name: Update Job Description
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseURL}}/api/job-descriptions/6
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "title": "DevOps Engineer",
+    "description": "We are looking for a talented DevOps Engineer to join our team",
+    "requirements": "B.S. in Computer Science or a related field, 3+ years of experience in software development."
+  }
+}

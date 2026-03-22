@@ -1,0 +1,13 @@
+meta {
+  name: Delete Job Description
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseURL}}/api/job-descriptions/7
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}

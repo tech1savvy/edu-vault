@@ -1,0 +1,26 @@
+meta {
+  name: Update Project
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseURL}}/api/resume/projects/21
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "title": "Updated Project Title",
+    "description": "Updated description",
+    "techStack": "React, Node.js, TypeScript",
+    "timeline": "3 months",
+    "type": "Personal",
+    "collaborators": "None"
+  }
+}

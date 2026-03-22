@@ -1,0 +1,23 @@
+meta {
+  name: Create Job Description
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseURL}}/api/job-descriptions
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "title": "Software Engineer",
+    "description": "We are looking for a talented Software Engineer to join our team",
+    "requirements": "B.S. in Computer Science or a related field, 3+ years of experience in software development."
+  }
+}

@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { ResumeContext } from "../../../context/resumeContext.jsx";
+import { ResumeContext } from "../../../context/resumeContext";
 
 function CertificationsForm() {
   const { certifications, setCertifications } = useContext(ResumeContext);

@@ -1,0 +1,13 @@
+meta {
+  name: Get All Job Descriptions
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/api/job-descriptions
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
