@@ -1,0 +1,15 @@
+meta {
+  name: Sync All - Student Auth (should fail 403)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseURL}}/api/sync/all
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{token}}
+}

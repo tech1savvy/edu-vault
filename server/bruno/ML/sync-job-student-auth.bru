@@ -1,0 +1,21 @@
+meta {
+  name: Sync Job - Student Auth (should fail 403)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseURL}}/api/sync/job
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{token}}
+}
+
+body {
+  {
+    "jobId": 1
+  }
+}
