@@ -1,0 +1,13 @@
+meta {
+  name: Delete Experience
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseURL}}/api/resume/experiences/2
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}

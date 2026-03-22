@@ -1,0 +1,13 @@
+meta {
+  name: Get Certifications
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/api/resume/certifications
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}

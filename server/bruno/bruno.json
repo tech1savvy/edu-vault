@@ -1,0 +1,8 @@
+{
+  "version": "1",
+  "name": "EduVault",
+  "type": "collection",
+  "scripts": {
+    "module": "@usebruno/js"
+  }
+}

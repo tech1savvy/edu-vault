@@ -1,0 +1,25 @@
+meta {
+  name: Add Education
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/resume/education
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "institution": "University of ABC",
+    "degree": "Master of Science",
+    "fieldOfStudy": "Computer Science",
+    "duration": "2018-2020",
+    "details": "Specialized in AI and Machine Learning."
+  }
+}

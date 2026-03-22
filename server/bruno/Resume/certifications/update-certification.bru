@@ -1,0 +1,24 @@
+meta {
+  name: Update Certification
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseURL}}/api/resume/certifications/21
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "name": "GCP Certified Developer",
+    "issuer": "Google",
+    "date": "2021",
+    "credentialId": "ABC123XYZ"
+  }
+}

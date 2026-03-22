@@ -1,0 +1,25 @@
+meta {
+  name: Update Experience
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseURL}}/api/resume/experiences/21
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "type": "Part-time",
+    "company": "Microsoft",
+    "role": "Software Engineer",
+    "duration": "2020-Present",
+    "details": "Developed and maintained various software."
+  }
+}

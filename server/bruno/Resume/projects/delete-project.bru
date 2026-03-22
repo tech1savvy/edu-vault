@@ -1,0 +1,13 @@
+meta {
+  name: Delete Project
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseURL}}/api/resume/projects/1
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}

@@ -1,0 +1,13 @@
+meta {
+  name: Delete Skill
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseURL}}/api/resume/skills/2
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
