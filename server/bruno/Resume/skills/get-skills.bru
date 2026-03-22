@@ -1,0 +1,13 @@
+meta {
+  name: Get Skills
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/api/resume/skills
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}

@@ -1,0 +1,13 @@
+meta {
+  name: Get Educations
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/api/resume/education
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}

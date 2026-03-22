@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { ResumeProvider } from "./context/resumeContext";
+import { ResumeProvider } from "./context/ResumeProvider";
 import "./index.css";
 import App from "./App.jsx";
 

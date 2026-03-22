@@ -1,0 +1,21 @@
+meta {
+  name: Sync Resume
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8001/sync/resume
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  {
+    "user_id": 14,
+    "text": "Software engineer with 5 years of experience in Python, JavaScript, and React"
+  }
+}

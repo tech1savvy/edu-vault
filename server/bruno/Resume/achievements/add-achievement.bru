@@ -1,0 +1,23 @@
+meta {
+  name: Add Achievement
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/resume/achievements
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "title": "Award for Creativity",
+    "description": "Received an award for innovative project design.",
+    "date": "2022"
+  }
+}

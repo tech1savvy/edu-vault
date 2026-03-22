@@ -1,0 +1,25 @@
+meta {
+  name: Login Student User
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseURL}}/api/auth/login
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  {
+    "email": "{{testUserEmail}}",
+    "password": "{{testUserPassword}}"
+  }
+}
+
+script:post-response {
+  bru.setVar("token", res.body.token);
+}

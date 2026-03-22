@@ -1,0 +1,23 @@
+meta {
+  name: Update Achievement
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseURL}}/api/resume/achievements/21
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "title": "Award for Creativity",
+    "description": "Received an award for creative project design.",
+    "date": "2022"
+  }
+}

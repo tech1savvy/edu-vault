@@ -1,0 +1,25 @@
+meta {
+  name: Update Education
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseURL}}/api/resume/education/21
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "institution": "University of ABC",
+    "degree": "Master of Science",
+    "fieldOfStudy": "Computer Science",
+    "duration": "2018-2020",
+    "details": "Specialized in AI and Machine Learning."
+  }
+}

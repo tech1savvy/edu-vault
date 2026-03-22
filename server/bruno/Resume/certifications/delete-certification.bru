@@ -1,0 +1,13 @@
+meta {
+  name: Delete Certification
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseURL}}/api/resume/certifications/2
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}

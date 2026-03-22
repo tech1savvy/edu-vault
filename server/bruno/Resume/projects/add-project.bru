@@ -1,0 +1,26 @@
+meta {
+  name: Add Project
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/resume/projects
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "title": "Project Title",
+    "description": "Project Description",
+    "techStack": "React, Node.js",
+    "timeline": "2 months",
+    "type": "Personal",
+    "collaborators": "None"
+  }
+}
