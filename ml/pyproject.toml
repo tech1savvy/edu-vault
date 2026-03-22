@@ -1,0 +1,21 @@
+[project]
+name = "ml-service"
+version = "0.1.0"
+description = "ML microservice for resume-job matching using embeddings"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "qdrant-client>=1.9.0",
+    "fastembed>=0.7.0",
+    "python-dotenv>=1.0.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "httpx>=0.25.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["config", "embedding_service", "qdrant_service", "logger", "main"]

@@ -1,34 +1,15 @@
-version: "3.9"
-
 services:
-  backend:
-    build:
-      context: ./server
-    container_name: eduvault-backend
-    command: npm start
-    ports:
-      - "8000:8000"
-    env_file:
-      - ./server/.env
-    depends_on:
-      - qdrant
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    restart: unless-stopped
-
-  client:
-    build:
-      context: ./client
-    container_name: eduvault-client
-    command: npm run dev -- --host
-    ports:
-      - "5173:5173"
+  postgres:
+    image: postgres:16
+    container_name: eduvault-postgres
     environment:
-      - VITE_API_BASE_URL=http://localhost:8000
+      POSTGRES_DB: ${POSTGRES_DB:-edu_vault}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
     volumes:
-      - ./client:/app
-      - /app/node_modules
+      - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
   qdrant:
@@ -40,5 +21,57 @@ services:
       - qdrant_data:/qdrant/storage
     restart: unless-stopped
 
+  backend:
+    build:
+      context: ./server
+    container_name: eduvault-backend
+    command: node index.js
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_DATABASE: ${DB_DATABASE:-edu_vault}
+      DB_PORT: ${DB_PORT:-5432}
+      ML_SERVICE_URL: ${ML_SERVICE_URL:-http://ml:8001}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-key-change-in-production}
+      NODE_ENV: ${NODE_ENV:-development}
+    depends_on:
+      - postgres
+      - qdrant
+      - ml
+    restart: unless-stopped
+
+  ml:
+    build:
+      context: ./ml
+    container_name: eduvault-ml
+    ports:
+      - "8001:8001"
+    environment:
+      QDRANT_URL: ${QDRANT_URL:-http://qdrant:6333}
+      QDRANT_COLLECTION: ${QDRANT_COLLECTION:-eduvault}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      ML_SERVICE_PORT: "8001"
+    depends_on:
+      - qdrant
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+    container_name: eduvault-client
+    command: pnpm dev -- --host
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    restart: unless-stopped
+
 volumes:
+  postgres_data:
   qdrant_data:
