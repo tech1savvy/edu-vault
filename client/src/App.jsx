@@ -16,6 +16,7 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 import JobDescriptionFormPage from "./pages/JobDescriptionFormPage";
 import UsersPage from "./pages/UsersPage";
 import UserDetailPage from "./pages/UserDetailPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
 import AdminRoute from "./components/AdminRoute";
 
 // Form Components
@@ -98,6 +99,14 @@ function App() {
             element={
               <AdminRoute>
                 <UserDetailPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/analytics"
+            element={
+              <AdminRoute>
+                <AnalyticsPage />
               </AdminRoute>
             }
           />

@@ -3,6 +3,7 @@ const { SyncService } = require('../ml/sync.service');
 const mlClient = require('../ml/ml.client');
 const userRepository = require('../user/user.repository');
 const headingRepository = require('../resume/heading/heading.repository');
+const analyticsService = require('../analytics/analytics.service');
 
 const getJobDescriptions = async () => {
   return jobDescriptionRepository.findAll();
@@ -56,12 +57,13 @@ const matchJob = async (jobId, topN = 10) => {
     return acc;
   }, {});
 
-  return result.matches.map((match) => {
+  const matches = result.matches.map((match) => {
     const userId = match.user_id;
     const user = userMap[userId];
     const heading = headingMap[userId];
     return {
       score: match.score,
+      userId,
       user: {
         id: userId,
         name: user ? user.name : heading ? heading.name : "N/A",
@@ -70,6 +72,16 @@ const matchJob = async (jobId, topN = 10) => {
       },
     };
   });
+
+  for (const match of matches) {
+    try {
+      await analyticsService.recordMatch(parseInt(jobId), match.userId, match.score);
+    } catch (err) {
+      console.error(`Failed to record match history for job ${jobId}, user ${match.userId}:`, err.message);
+    }
+  }
+
+  return matches;
 };
 
 module.exports = {

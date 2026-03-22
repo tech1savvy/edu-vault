@@ -54,6 +54,9 @@ const adminService = {
   getUserById: (id) => adminApi.get(`/users/${id}`),
   updateUserRole: (id, role) => adminApi.put(`/users/${id}/role`, { role }),
   updateUserStatus: (id, status) => adminApi.put(`/users/${id}/status`, { status }),
+
+  // Analytics
+  getAnalytics: () => adminApi.get('/analytics/dashboard'),
 };
 
 export { adminApi, adminService };
