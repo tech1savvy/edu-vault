@@ -1,0 +1,21 @@
+meta {
+  name: Sync Resume - Student Auth (should succeed)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/sync/resume
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{token}}
+}
+
+body {
+  {
+    "userId": 1
+  }
+}

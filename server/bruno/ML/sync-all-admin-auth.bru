@@ -1,0 +1,15 @@
+meta {
+  name: Sync All - Admin Auth (should succeed)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseURL}}/api/sync/all
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+}
