@@ -1,0 +1,13 @@
+meta {
+  name: Get Experiences
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/api/resume/experiences
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}

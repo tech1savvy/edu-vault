@@ -1,0 +1,22 @@
+meta {
+  name: Add Skill
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/resume/skills
+  body: json
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body {
+  {
+    "name": "TypeScript",
+    "level": "Intermediate"
+  }
+}

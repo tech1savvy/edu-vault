@@ -1,0 +1,20 @@
+meta {
+  name: Embed Text
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8001/embed
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  {
+    "text": "Software engineer with 5 years of experience in Python and JavaScript"
+  }
+}

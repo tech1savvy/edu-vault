@@ -1,0 +1,13 @@
+meta {
+  name: Get Projects
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/api/resume/projects
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}

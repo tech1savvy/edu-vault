@@ -1,0 +1,21 @@
+meta {
+  name: Sync Job
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8001/sync/job
+  body: json
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  {
+    "job_id": 6,
+    "text": "We are looking for a talented Software Engineer to join our team with experience in Python and JavaScript"
+  }
+}

@@ -1,0 +1,13 @@
+meta {
+  name: Get Achievements
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/api/resume/achievements
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
