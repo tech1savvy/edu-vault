@@ -14,6 +14,8 @@ import MatchResultsPage from "./pages/MatchResultsPage";
 // Admin Components
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import JobDescriptionFormPage from "./pages/JobDescriptionFormPage";
+import UsersPage from "./pages/UsersPage";
+import UserDetailPage from "./pages/UserDetailPage";
 import AdminRoute from "./components/AdminRoute";
 
 // Form Components
@@ -80,6 +82,22 @@ function App() {
             element={
               <AdminRoute>
                 <MatchResultsPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <AdminRoute>
+                <UsersPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/users/:id"
+            element={
+              <AdminRoute>
+                <UserDetailPage />
               </AdminRoute>
             }
           />
