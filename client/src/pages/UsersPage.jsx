@@ -20,7 +20,7 @@ const UsersPage = () => {
       const response = await adminService.getUsers(page, 20);
       setUsers(response.data.users);
       setPagination(response.data.pagination);
-    } catch (err) {
+    } catch {
       setError('Failed to fetch users.');
     } finally {
       setLoading(false);
@@ -47,13 +47,6 @@ const UsersPage = () => {
   const getRoleBadgeClass = (role) => {
     return role === 'administrator' ? 'bg-primary' : 'bg-secondary';
   };
-
-  const getCurrentUserId = () => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    return user.id;
-  };
-
-  const currentUserId = getCurrentUserId();
 
   if (loading && users.length === 0) {
     return (
