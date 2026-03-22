@@ -2,6 +2,7 @@
 const db = require('../../models');
 
 const {
+  User,
   Heading,
   Achievement,
   Certification,
@@ -59,6 +60,20 @@ const getAggregatedResumeText = async (userId) => {
   return fullText.trim();
 };
 
+const getAllResumesForSync = async () => {
+  const students = await User.findAll({ where: { role: 'student' } });
+  
+  const resumes = await Promise.all(
+    students.map(async (user) => {
+      const text = await getAggregatedResumeText(user.id);
+      return { id: user.id, text };
+    })
+  );
+  
+  return resumes.filter(r => r.text);
+};
+
 module.exports = {
   getAggregatedResumeText,
+  getAllResumesForSync,
 };

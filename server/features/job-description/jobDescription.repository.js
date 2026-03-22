@@ -28,10 +28,19 @@ const deleteJobDescription = async (id) => {
   return await jobDescription.destroy();
 };
 
+const findAllForSync = async () => {
+  const jobs = await JobDescription.findAll();
+  return jobs.map(j => ({
+    id: j.id,
+    text: `${j.title}\n${j.description}\n${j.requirements}`
+  }));
+};
+
 module.exports = {
   findAll,
   findById,
   addJobDescription,
   updateJobDescription,
   deleteJobDescription,
+  findAllForSync,
 };
