@@ -16,8 +16,11 @@ const syncJob = async (jobId, text) => {
   });
 };
 
-const syncAll = async () => {
-  const response = await axios.post(`${ML_SERVICE_URL}/sync/all`);
+const syncBatch = async (resumes, jobs) => {
+  const response = await axios.post(`${ML_SERVICE_URL}/sync/batch`, {
+    resumes,
+    jobs,
+  });
   return response.data;
 };
 
@@ -33,6 +36,6 @@ const match = async (jobId, text, limit = 10) => {
 module.exports = {
   syncResume,
   syncJob,
-  syncAll,
+  syncBatch,
   match,
 };

@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const mlClient = require('../ml/ml.client');
-const userRepository = require('../user/user.repository');
 const jobDescriptionRepository = require('../job-description/jobDescription.repository');
-const { getAggregatedResumeText } = require('../resume/resume.aggregator');
+const { getAggregatedResumeText, getAllResumesForSync } = require('../resume/resume.aggregator');
 
 const syncResume = async (req, res) => {
   try {
@@ -48,8 +47,38 @@ const syncJobDescription = async (req, res) => {
 
 const syncAll = async (req, res) => {
   try {
-    const result = await mlClient.syncAll();
-    res.json(result);
+    const BATCH_SIZE = 50;
+
+    const resumes = await getAllResumesForSync();
+    const jobs = await jobDescriptionRepository.findAllForSync();
+
+    let totalSyncedResumes = 0;
+    let totalSyncedJobs = 0;
+    let failedResumes = [];
+    let failedJobs = [];
+
+    for (let i = 0; i < resumes.length; i += BATCH_SIZE) {
+      const batch = resumes.slice(i, i + BATCH_SIZE);
+      const result = await mlClient.syncBatch(batch, []);
+      totalSyncedResumes += result.synced_resumes;
+      failedResumes = failedResumes.concat(result.failed_resumes);
+    }
+
+    for (let i = 0; i < jobs.length; i += BATCH_SIZE) {
+      const batch = jobs.slice(i, i + BATCH_SIZE);
+      const result = await mlClient.syncBatch([], batch);
+      totalSyncedJobs += result.synced_jobs;
+      failedJobs = failedJobs.concat(result.failed_jobs);
+    }
+
+    res.json({
+      status: 'ok',
+      message: `Synced ${totalSyncedResumes} resumes and ${totalSyncedJobs} job descriptions`,
+      synced_resumes: totalSyncedResumes,
+      failed_resumes: failedResumes,
+      synced_jobs: totalSyncedJobs,
+      failed_jobs: failedJobs,
+    });
   } catch (error) {
     console.error('Error triggering full sync:', error);
     res.status(500).json({ error: 'Failed to trigger full sync' });
