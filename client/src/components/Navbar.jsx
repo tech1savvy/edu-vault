@@ -202,6 +202,11 @@ function Navbar() {
                       Users
                     </Link>
                   </li>
+                  <li>
+                    <Link className="dropdown-item" to="/admin/analytics">
+                      Analytics
+                    </Link>
+                  </li>
                 </ul>
               </li>
             )}
