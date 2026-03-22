@@ -17,6 +17,7 @@ import JobDescriptionFormPage from "./pages/JobDescriptionFormPage";
 import UsersPage from "./pages/UsersPage";
 import UserDetailPage from "./pages/UserDetailPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import JobApplicationsPage from "./pages/JobApplicationsPage";
 import AdminRoute from "./components/AdminRoute";
 
 // Form Components
@@ -107,6 +108,14 @@ function App() {
             element={
               <AdminRoute>
                 <AnalyticsPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/job-descriptions/:jobId/applications"
+            element={
+              <AdminRoute>
+                <JobApplicationsPage />
               </AdminRoute>
             }
           />
