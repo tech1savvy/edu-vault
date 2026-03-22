@@ -11,7 +11,7 @@ const certificationRoutes = require("./features/resume/certification");
 const educationRoutes = require("./features/resume/education");
 const experienceRoutes = require("./features/resume/experience");
 const jobDescriptionRoutes = require("./features/job-description/jobDescription.routes");
-const syncRoutes = require("./features/sync/sync.routes");
+const syncRoutes = require("./features/ml/sync.routes");
 
 router.use("/auth", authRoutes);
 
@@ -25,6 +25,7 @@ router.use("/resume/education", educationRoutes);
 router.use("/resume/experiences", experienceRoutes);
 
 router.use("/job-descriptions", jobDescriptionRoutes);
+
 router.use("/sync", syncRoutes);
 
 module.exports = router;
