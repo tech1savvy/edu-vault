@@ -44,6 +44,7 @@ import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
 import LayoutT from "./components/Portfolio/Layouts/LayoutT/LayoutT";
 
 import CVTemplate from "./components/Resume/CVTemplate";
+import FacultyMentoringDashboard from "./components/FacultyMentoringDashboard";
 
 
 function App() {
@@ -55,7 +56,7 @@ function App() {
 
       {/* 🔥 Hidden CV Template (always in DOM, invisible) */}
       <CVTemplate visible={false} />
-      
+
       <main className="p-3">
         <Routes>
           {/* Auth Routes */}
@@ -127,6 +128,9 @@ function App() {
               </AdminRoute>
             }
           />
+
+          {/* Faculty Routes */}
+          <Route path="/faculty-dashboard" element={<FacultyMentoringDashboard />} />
 
           {/* Input Routes */}
           <Route path="/input/heading" element={<HeadingForm />} />
