@@ -13,7 +13,6 @@ const UserDetailPage = () => {
 
   useEffect(() => {
     fetchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchUser = async () => {
@@ -49,7 +48,7 @@ const UserDetailPage = () => {
   const getStatusBadgeClass = (status) => {
     switch (status) {
       case 'active': return 'bg-success';
-      case 'inactive': return 'bg-warning';
+      case 'inactive': return 'bg-warning text-dark';
       case 'suspended': return 'bg-danger';
       default: return 'bg-secondary';
     }
@@ -66,7 +65,7 @@ const UserDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="text-center mt-5">
+      <div className="text-center mt-5 bg-dark min-vh-100">
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
@@ -76,7 +75,7 @@ const UserDetailPage = () => {
 
   if (error || !user) {
     return (
-      <div className="container mt-4">
+      <div className="container mt-4 bg-dark min-vh-100">
         <div className="alert alert-danger" role="alert">
           {error || 'User not found'}
         </div>
@@ -88,57 +87,57 @@ const UserDetailPage = () => {
   }
 
   return (
-    <div className="user-detail-page container-fluid py-4">
+    <div className="user-detail-page container-fluid py-4 bg-dark text-light min-vh-100">
       <button
         type="button"
-        className="btn btn-link text-decoration-none mb-3 p-0"
+        className="btn btn-link text-decoration-none mb-3 p-0 text-light"
         onClick={() => navigate('/admin/users')}
       >
         &larr; Back to Users
       </button>
 
-      <div className="card mb-4">
-        <div className="card-header bg-light">
-          <h4 className="mb-0">User Profile</h4>
+      <div className="card mb-4 bg-secondary text-light">
+        <div className="card-header bg-dark border-secondary text-light">
+          <h4 className="mb-0 text-light">User Profile</h4>
         </div>
-        <div className="card-body">
+        <div className="card-body text-light">
           <div className="row">
             <div className="col-md-6">
-              <dl className="row mb-0">
-                <dt className="col-sm-3">Name</dt>
-                <dd className="col-sm-9">{user.name || 'N/A'}</dd>
+              <dl className="row mb-0 text-light">
+                <dt className="col-sm-3 text-light">Name</dt>
+                <dd className="col-sm-9 text-light">{user.name || 'N/A'}</dd>
 
-                <dt className="col-sm-3">Email</dt>
-                <dd className="col-sm-9">{user.email}</dd>
+                <dt className="col-sm-3 text-light">Email</dt>
+                <dd className="col-sm-9 text-light">{user.email}</dd>
 
-                <dt className="col-sm-3">Role</dt>
+                <dt className="col-sm-3 text-light">Role</dt>
                 <dd className="col-sm-9">
                   <span className={`badge ${getRoleBadgeClass(user.role)}`}>
                     {user.role}
                   </span>
                 </dd>
 
-                <dt className="col-sm-3">Status</dt>
+                <dt className="col-sm-3 text-light">Status</dt>
                 <dd className="col-sm-9">
                   <span className={`badge ${getStatusBadgeClass(user.status)}`}>
                     {user.status}
                   </span>
                 </dd>
 
-                <dt className="col-sm-3">Last Login</dt>
-                <dd className="col-sm-9">{formatDate(user.lastLogin)}</dd>
+                <dt className="col-sm-3 text-light">Last Login</dt>
+                <dd className="col-sm-9 text-light">{formatDate(user.lastLogin)}</dd>
 
-                <dt className="col-sm-3">Created</dt>
-                <dd className="col-sm-9">{formatDate(user.createdAt)}</dd>
+                <dt className="col-sm-3 text-light">Created</dt>
+                <dd className="col-sm-9 text-light">{formatDate(user.createdAt)}</dd>
               </dl>
             </div>
 
             <div className="col-md-6">
               {canModifyUser() ? (
-                <div className="card bg-light border-0">
+                <div className="card bg-dark border-secondary text-light">
                   <div className="card-body">
-                    <h6 className="card-title">Quick Actions</h6>
-                    <p className="text-muted small mb-2">Change user status</p>
+                    <h6 className="card-title text-light">Quick Actions</h6>
+                    <p className="text-light small mb-2">Change user status</p>
                     <div className="btn-group" role="group">
                       <button
                         type="button"
@@ -150,7 +149,7 @@ const UserDetailPage = () => {
                       </button>
                       <button
                         type="button"
-                        className={`btn btn-sm ${user.status === 'inactive' ? 'btn-warning' : 'btn-outline-warning'}`}
+                        className={`btn btn-sm ${user.status === 'inactive' ? 'btn-warning text-dark' : 'btn-outline-warning'}`}
                         onClick={() => handleStatusChange('inactive')}
                         disabled={updating || user.status === 'inactive'}
                       >
@@ -168,7 +167,7 @@ const UserDetailPage = () => {
                   </div>
                 </div>
               ) : (
-                <div className="alert alert-info mb-0">
+                <div className="alert alert-secondary mb-0 text-light">
                   {user.role === 'administrator'
                     ? 'Administrator accounts cannot be modified.'
                     : 'You cannot modify your own account.'}
@@ -179,13 +178,13 @@ const UserDetailPage = () => {
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header bg-light">
-          <h4 className="mb-0">Resume Summary</h4>
-          <p className="text-muted small mb-0">Profile data from resume builder</p>
+      <div className="card bg-secondary text-light">
+        <div className="card-header bg-dark border-secondary text-light">
+          <h4 className="mb-0 text-light">Resume Summary</h4>
+          <p className="text-light small mb-0">Profile data from resume builder</p>
         </div>
-        <div className="card-body">
-          <p className="text-muted">
+        <div className="card-body text-light">
+          <p className="text-light">
             Full resume view will be implemented in a future update.
           </p>
         </div>
