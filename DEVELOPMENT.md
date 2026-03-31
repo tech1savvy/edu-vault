@@ -14,6 +14,14 @@ This guide covers local development setup for all EduVault services.
   # Windows
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
+
+  If Python is already installed on your system, uv will detect and use it without configuration. However, uv can also install and manage Python versions. uv automatically installs missing Python versions as needed — you don't need to install Python to get started.
+
+  To install the latest Python version:
+
+  ```bash
+  uv python install
+  ```
 - Docker (for databases only)
 
 ### Installing Node.js
