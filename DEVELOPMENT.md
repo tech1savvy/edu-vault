@@ -9,6 +9,21 @@ This guide covers local development setup for all EduVault services.
 - [uv](https://github.com/astral-sh/uv) (Python package manager)
 - Docker (for databases only)
 
+### Installing Node.js
+
+Use [webi](https://webinstall.dev/) for easy installation:
+
+```bash
+# Linux / macOS
+curl -sS https://webi.sh/node | sh
+source ~/.config/envman/PATH.env
+
+# Windows
+curl.exe https://webi.ms/node | powershell
+```
+
+Or download directly from https://nodejs.org
+
 ## Starting Databases
 
 Start only the required databases with the dev compose file:
