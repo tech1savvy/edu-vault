@@ -62,7 +62,7 @@ services:
     build:
       context: ./client
     container_name: eduvault-client
-    command: pnpm dev -- --host
+    command: npm run dev -- --host
     ports:
       - "5173:5173"
     environment:
