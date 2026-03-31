@@ -4,6 +4,7 @@ const findAll = async (page = 1, limit = 20) => {
   const offset = (page - 1) * limit;
   
   const { count, rows } = await User.findAndCountAll({
+    where: { role: 'student' },
     attributes: ['id', 'name', 'email', 'role', 'status', 'lastLogin', 'createdAt'],
     order: [['createdAt', 'DESC']],
     limit: parseInt(limit),
