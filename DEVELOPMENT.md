@@ -7,6 +7,13 @@ This guide covers local development setup for all EduVault services.
 - Node.js 20+
 - Python 3.10+
 - [uv](https://github.com/astral-sh/uv) (Python package manager)
+  ```bash
+  # Linux / macOS
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+
+  # Windows
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
 - Docker (for databases only)
 
 ### Installing Node.js
