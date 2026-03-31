@@ -93,17 +93,6 @@ Each resume section follows this pattern:
 - `Section.jsx` - View mode (read data)
 - `Forms/SectionForm.jsx` - Edit mode (add/update)
 
-## API Integration
-
-API calls go to backend at `http://localhost:8000`:
-
-```javascript
-// Example: Fetch skills
-const response = await axios.get('/api/resume/skills', {
-  headers: { Authorization: `Bearer ${token}` }
-});
-```
-
 ## Development
 
-Runs in Docker only - see [root README](../README.md).
+See [DEVELOPMENT.md](../DEVELOPMENT.md) for setup instructions.

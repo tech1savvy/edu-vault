@@ -31,28 +31,7 @@ Frontend → Backend → ML Service (FastAPI) → Qdrant
 
 ## Development
 
-Runs in Docker only. See main `docker-compose.yml` at project root.
-
-```bash
-# Build
-docker compose build ml
-
-# Run
-docker compose up -d ml
-
-# Logs
-docker compose logs -f ml
-```
-
-For local development:
-
-```bash
-# Install dependencies
-uv sync
-
-# Run
-uv run uvicorn main:app --reload --port 8001
-```
+See [DEVELOPMENT.md](../DEVELOPMENT.md) for setup instructions.
 
 ## API Endpoints
 

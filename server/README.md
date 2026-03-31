@@ -1,6 +1,6 @@
 # EduVault Server
 
-Backend API for EduVault. Runs in Docker only - see [root README](../README.md).
+Backend API for EduVault. See [DEVELOPMENT.md](../DEVELOPMENT.md) for setup.
 
 ## Tech Stack
 
