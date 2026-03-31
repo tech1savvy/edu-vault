@@ -44,10 +44,6 @@ const UsersPage = () => {
     }
   };
 
-  const getRoleBadgeClass = (role) => {
-    return role === 'administrator' ? 'bg-primary' : 'bg-secondary';
-  };
-
   if (loading && users.length === 0) {
     return (
       <div className="text-center mt-5">
@@ -71,8 +67,8 @@ const UsersPage = () => {
   return (
     <div className="users-page container-fluid py-4">
       <header className="mb-4">
-        <h1>User Management</h1>
-        <p className="text-muted">View and manage user accounts</p>
+        <h1>Student Management</h1>
+        <p className="text-muted">View and manage student accounts</p>
       </header>
 
       <div className="card">
@@ -83,7 +79,6 @@ const UsersPage = () => {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Role</th>
                   <th>Status</th>
                   <th>Last Login</th>
                   <th>Actions</th>
@@ -94,11 +89,6 @@ const UsersPage = () => {
                   <tr key={user.id}>
                     <td>{user.name || 'N/A'}</td>
                     <td>{user.email}</td>
-                    <td>
-                      <span className={`badge ${getRoleBadgeClass(user.role)}`}>
-                        {user.role}
-                      </span>
-                    </td>
                     <td>
                       <span className={`badge ${getStatusBadgeClass(user.status)}`}>
                         {user.status}
@@ -166,7 +156,7 @@ const UsersPage = () => {
           )}
 
           <div className="text-center text-muted mt-2">
-            Showing {users.length} of {pagination.total} users
+            Showing {users.length} of {pagination.total} students
           </div>
         </div>
       </div>
