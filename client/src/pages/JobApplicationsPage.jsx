@@ -63,7 +63,7 @@ const JobApplicationsPage = () => {
 
   if (loading) {
     return (
-      <div className="text-center mt-5">
+      <div className="text-center mt-5 bg-dark min-vh-100">
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
@@ -72,18 +72,18 @@ const JobApplicationsPage = () => {
   }
 
   return (
-    <div className="applications-page container-fluid py-4">
+    <div className="applications-page container-fluid py-4 bg-dark text-light min-vh-100">
       <button
         type="button"
-        className="btn btn-link text-decoration-none mb-3 p-0"
+        className="btn btn-link text-decoration-none mb-3 p-0 text-light"
         onClick={() => navigate(-1)}
       >
         &larr; Back
       </button>
 
       <header className="mb-4">
-        <h1>Job Applications</h1>
-        <p className="text-muted">{applications.length} application(s)</p>
+        <h1 className="text-light">Job Applications</h1>
+        <p className="text-light">{applications.length} application(s)</p>
       </header>
 
       {error && (
@@ -93,17 +93,17 @@ const JobApplicationsPage = () => {
       )}
 
       {applications.length === 0 ? (
-        <div className="card">
+        <div className="card bg-secondary text-light">
           <div className="card-body text-center py-5">
-            <i className="bi bi-inbox fs-1 text-muted"></i>
-            <p className="text-muted mt-2 mb-0">No applications yet.</p>
+            <i className="bi bi-inbox fs-1 text-light"></i>
+            <p className="text-light mt-2 mb-0">No applications yet.</p>
           </div>
         </div>
       ) : (
-        <div className="card">
+        <div className="card bg-secondary text-light">
           <div className="card-body">
             <div className="table-responsive">
-              <table className="table table-hover align-middle">
+              <table className="table table-dark table-hover align-middle">
                 <thead>
                   <tr>
                     <th>Applicant</th>

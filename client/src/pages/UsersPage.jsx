@@ -46,7 +46,7 @@ const UsersPage = () => {
 
   if (loading && users.length === 0) {
     return (
-      <div className="text-center mt-5">
+      <div className="text-center mt-5 bg-dark min-vh-100">
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
@@ -56,7 +56,7 @@ const UsersPage = () => {
 
   if (error) {
     return (
-      <div className="container mt-4">
+      <div className="container mt-4 bg-dark min-vh-100">
         <div className="alert alert-danger" role="alert">
           {error}
         </div>
@@ -65,16 +65,16 @@ const UsersPage = () => {
   }
 
   return (
-    <div className="users-page container-fluid py-4">
+    <div className="users-page container-fluid py-4 bg-dark text-light min-vh-100">
       <header className="mb-4">
-        <h1>Student Management</h1>
-        <p className="text-muted">View and manage student accounts</p>
+        <h1 className="text-light">Student Management</h1>
+        <p className="text-light">View and manage student accounts</p>
       </header>
 
-      <div className="card">
+      <div className="card bg-secondary text-light">
         <div className="card-body">
           <div className="table-responsive">
-            <table className="table table-hover align-middle">
+            <table className="table table-dark table-hover align-middle">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -155,7 +155,7 @@ const UsersPage = () => {
             </nav>
           )}
 
-          <div className="text-center text-muted mt-2">
+          <div className="text-center text-light mt-2">
             Showing {users.length} of {pagination.total} students
           </div>
         </div>

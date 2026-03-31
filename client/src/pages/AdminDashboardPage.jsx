@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/adminApi';
 import { useNavigate } from 'react-router-dom';
-import './AdminDashboardPage.css'; // Import the new stylesheet
+import './AdminDashboardPage.css';
 
 const AdminDashboardPage = () => {
   const [jobDescriptions, setJobDescriptions] = useState([]);
@@ -87,26 +87,26 @@ const AdminDashboardPage = () => {
   };
 
   if (loading && !isSyncing) return (
-    <div className="loading-spinner">
+    <div className="loading-spinner bg-dark text-light">
       <div className="spinner-border text-primary" role="status">
         <span className="visually-hidden">Loading...</span>
       </div>
-      <p className="mt-2">Loading...</p>
+      <p className="mt-2 text-light">Loading...</p>
     </div>
   );
 
-  if (error) return <div className="error-message text-danger"><h3>Error</h3><p>{error}</p></div>;
-  if (!isAdmin) return <div className="access-denied text-danger"><h3>Access Denied</h3><p>Please login as an administrator.</p></div>;
+  if (error) return <div className="error-message text-danger bg-dark"><h3>Error</h3><p>{error}</p></div>;
+  if (!isAdmin) return <div className="access-denied text-danger bg-dark"><h3>Access Denied</h3><p>Please login as an administrator.</p></div>;
 
   return (
-    <div className="admin-dashboard container-fluid">
+    <div className="admin-dashboard container-fluid bg-dark text-light min-vh-100 p-4">
       <header className="dashboard-header">
-        <h1>Admin Dashboard</h1>
+        <h1 className="text-light mb-0">Admin Dashboard</h1>
         <div className="actions-bar">
           <button onClick={handleCreateJobDescription} className="btn btn-success">
             <i className="bi bi-plus-lg"></i> Create Job
           </button>
-          <button onClick={handleTriggerFullSync} className="btn btn-warning" disabled={isSyncing}>
+          <button onClick={handleTriggerFullSync} className="btn btn-warning text-dark" disabled={isSyncing}>
             {isSyncing ? (
               <>
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -120,31 +120,31 @@ const AdminDashboardPage = () => {
           </button>
         </div>
       </header>
-      {syncMessage && <p className="mt-3 text-center">{syncMessage}</p>}
+      {syncMessage && <p className="mt-3 text-center text-light">{syncMessage}</p>}
 
-      <section className="mb-5">
-        <h2 className="mb-3">Job Descriptions</h2>
+      <section className="mb-5 mt-4">
+        <h2 className="mb-3 text-light">Job Descriptions</h2>
         {jobDescriptions.length === 0 && !loading ? (
-          <p>No job descriptions found.</p>
+          <p className="text-light">No job descriptions found.</p>
         ) : (
           <div className="row">
             {jobDescriptions.map((job) => (
               <div key={job.id} className="col-md-6 col-lg-4 mb-4">
-                <div className="card job-card">
+                <div className="card job-card bg-secondary text-light h-100">
                   <div className="card-body">
-                    <h5 className="card-title">{job.title}</h5>
-                    <p className="card-text">{job.description.substring(0, 120)}...</p>
+                    <h5 className="card-title text-light">{job.title}</h5>
+                    <p className="card-text text-light">{job.description.substring(0, 120)}...</p>
                   </div>
-                  <div className="card-footer job-card-actions">
-                      <button onClick={() => handleViewJobDescription(job.id)} className="btn btn-info btn-sm">
-                        <i className="bi bi-eye"></i> View/Edit
-                      </button>
-                      <button onClick={() => handleDeleteJobDescription(job.id)} className="btn btn-danger btn-sm">
-                        <i className="bi bi-trash"></i> Delete
-                      </button>
-                      <button onClick={() => handleMatchJobDescription(job.id)} className="btn btn-primary btn-sm">
-                        <i className="bi bi-bullseye"></i> Match Resumes
-                      </button>
+                  <div className="card-footer job-card-actions bg-dark border-secondary">
+                    <button onClick={() => handleViewJobDescription(job.id)} className="btn btn-info btn-sm">
+                      <i className="bi bi-eye"></i> View/Edit
+                    </button>
+                    <button onClick={() => handleDeleteJobDescription(job.id)} className="btn btn-danger btn-sm">
+                      <i className="bi bi-trash"></i> Delete
+                    </button>
+                    <button onClick={() => handleMatchJobDescription(job.id)} className="btn btn-primary btn-sm">
+                      <i className="bi bi-bullseye"></i> Match Resumes
+                    </button>
                   </div>
                 </div>
               </div>
