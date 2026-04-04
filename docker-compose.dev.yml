@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: eduvault-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-edu_vault}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:v1.9.1
+    container_name: eduvault-qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  qdrant_data:

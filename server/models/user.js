@@ -20,6 +20,15 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.ENUM('student', 'administrator'),
       defaultValue: 'student'
+    },
+    status: {
+      type: DataTypes.ENUM('active', 'inactive', 'suspended'),
+      defaultValue: 'active'
+    },
+    lastLogin: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: 'last_login'
     }
   }, {
     sequelize,

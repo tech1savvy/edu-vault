@@ -23,11 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -35,11 +30,11 @@ jobs:
 
       - name: Install client dependencies
         working-directory: client
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Lint
         working-directory: client
-        run: pnpm lint
+        run: npm run lint
 
   # ===========================================
   # Integration Tests (everything in Docker)
@@ -79,10 +74,10 @@ jobs:
         run: sleep 15
 
       - name: Run database migrations
-        run: docker compose exec -T backend pnpm exec sequelize-cli db:migrate
+        run: docker compose exec -T backend npx sequelize-cli db:migrate
 
       - name: Seed test data
-        run: docker compose exec -T backend pnpm exec sequelize-cli db:seed:all
+        run: docker compose exec -T backend npx sequelize-cli db:seed:all
 
       - name: Run integration health check
         run: curl -f http://localhost:8000 || exit 1

@@ -1,0 +1,30 @@
+.completion-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  color: #f8f9fa;
+}
+
+.analytics-page .card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.analytics-page .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.analytics-page h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.analytics-page h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}

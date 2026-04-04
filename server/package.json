@@ -1,6 +1,5 @@
 {
   "name": "eduvault",
-  "packageManager": "pnpm@10.28.0",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

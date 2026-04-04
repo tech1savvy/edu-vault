@@ -1,2 +1,6 @@
 # Ignore lock files
 package-lock.json
+
+# Logs
+*.log
+.qdrant-initialized
