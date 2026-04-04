@@ -180,8 +180,34 @@ function Navbar() {
           </ul>
           <ul className="navbar-nav">
             {isAdmin && (
-              <li className="nav-item">
-                <Link className="nav-link text-success" to="/admin/dashboard">Admin Dashboard</Link>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link text-success dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownAdmin"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Admin
+                </a>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
+                  <li>
+                    <Link className="dropdown-item" to="/admin/dashboard">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/admin/users">
+                      Users
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/admin/analytics">
+                      Analytics
+                    </Link>
+                  </li>
+                </ul>
               </li>
             )}
             {user ? (

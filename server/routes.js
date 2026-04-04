@@ -12,6 +12,9 @@ const educationRoutes = require("./features/resume/education");
 const experienceRoutes = require("./features/resume/experience");
 const jobDescriptionRoutes = require("./features/job-description/jobDescription.routes");
 const syncRoutes = require("./features/ml/sync.routes");
+const userManagementRoutes = require("./features/user-management/userManagement.routes");
+const analyticsRoutes = require("./features/analytics/analytics.routes");
+const jobApplicationsRoutes = require("./features/job-applications/jobApplications.routes");
 
 router.use("/auth", authRoutes);
 
@@ -27,5 +30,11 @@ router.use("/resume/experiences", experienceRoutes);
 router.use("/job-descriptions", jobDescriptionRoutes);
 
 router.use("/sync", syncRoutes);
+
+router.use("/users", userManagementRoutes);
+
+router.use("/analytics", analyticsRoutes);
+
+router.use("/applications", jobApplicationsRoutes);
 
 module.exports = router;

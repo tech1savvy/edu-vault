@@ -4,24 +4,15 @@ AI-Augmented Centralized Student Profiling platform for Higher Education Institu
 
 ## Quick Start
 
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed setup instructions.
+
 ```bash
-# 1. Start all services
+# Start databases only (for local dev)
+docker compose -f docker-compose.dev.yml up -d
+
+# Or start everything in Docker
 docker compose up -d
-
-# 2. Setup database
-docker compose exec backend pnpm exec sequelize-cli db:migrate
-docker compose exec backend pnpm exec sequelize-cli db:seed:all
-
-# 3. Open frontend
-http://localhost:5173
 ```
-
-## Test Accounts
-
-| Role    | Email                | Password    |
-| ------- | -------------------- | ----------- |
-| Student | student1@example.com | password123 |
-| Admin   | admin@example.com    | password123 |
 
 ## Architecture
 

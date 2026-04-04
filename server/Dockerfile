@@ -1,17 +1,14 @@
 # Use lightweight Node image
 FROM node:20-alpine
 
-# Install pnpm
-RUN npm install -g pnpm
-
 # Create app directory
 WORKDIR /app
 
 # Copy package files first (better caching)
-COPY package.json pnpm-lock.yaml ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN pnpm install --prod --frozen-lockfile
+RUN npm ci --omit=dev
 
 # Copy source code
 COPY . .
