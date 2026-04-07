@@ -1,0 +1,39 @@
+---
+- name: Check if Docker is installed
+  ansible.builtin.shell: command -v docker
+  register: docker_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Docker
+  when: docker_check.rc != 0
+  block:
+    - name: Install Docker using dnf
+      ansible.builtin.shell: dnf install -y docker
+      args:
+        executable: /bin/bash
+
+    - name: Install docker-compose standalone using curl
+      ansible.builtin.get_url:
+        url: https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+      become_user: root
+      when: docker_check.rc != 0
+
+- name: Create docker group
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Start and enable Docker service
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add {{ app_user }} to docker group
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    groups: docker
+    append: yes

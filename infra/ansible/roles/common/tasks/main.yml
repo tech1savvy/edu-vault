@@ -1,0 +1,12 @@
+---
+- name: Check if git is installed
+  ansible.builtin.command: which git
+  register: git_check
+  changed_when: false
+  failed_when: false
+
+- name: Install git
+  ansible.builtin.dnf:
+    name: git
+    state: present
+  when: git_check.rc != 0
