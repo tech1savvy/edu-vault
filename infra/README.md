@@ -114,7 +114,7 @@ cat ~/.ssh/id_rsa.pub
 cd ~/Projects
 
 # Clone the repository
-git clone https://github.com/Asingh-2430/edu-vault.git
+git clone https://github.com/tech1savvy/edu-vault.git
 
 # Enter the project directory
 cd edu-vault
@@ -250,7 +250,7 @@ eduvault-prod ansible_host=YOUR_SERVER_IP_HERE
 [app_servers:vars]
 app_user=ec2-user
 app_dir=/home/ec2-user/edu-vault
-app_repo=https://github.com/Asingh-2430/edu-vault.git
+app_repo=https://github.com/tech1savvy/edu-vault.git
 ```
 
 ---
@@ -469,7 +469,7 @@ Kill the process or change the port in docker-compose.yml.
 
 ```bash
 # 1. Clone repo
-git clone https://github.com/Asingh-2430/edu-vault.git
+git clone https://github.com/tech1savvy/edu-vault.git
 cd edu-vault/infra
 
 # 2. Configure AWS
