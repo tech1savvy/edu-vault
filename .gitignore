@@ -1,6 +1,47 @@
-# Ignore lock files
+# Dependencies
+node_modules/
 package-lock.json
 
 # Logs
 *.log
 .qdrant-initialized
+
+# Environment files (contain secrets)
+.env
+.env.*
+.env.local
+.env.production
+
+# Ansible secrets (NEVER commit)
+infra/ansible/secrets.yml
+infra/ansible/*.vault
+
+# Terraform state (contains sensitive data)
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/.terraform/
+infra/terraform/.terraform.lock.hcl
+
+# Terraform backup files
+*.backup
+*.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# AWS credentials
+.aws/
+credentials
+config
+
+# SSH keys
+*.pem
+*.key
+id_rsa*

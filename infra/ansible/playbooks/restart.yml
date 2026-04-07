@@ -1,0 +1,40 @@
+---
+- name: Restart EduVault Services
+  hosts: app_servers
+  become: yes
+  gather_facts: yes
+
+  vars_files:
+    - secrets.yml
+
+  tasks:
+    - name: Stop services
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_dir }}"
+        state: absent
+
+    - name: Start services
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_dir }}"
+        state: present
+        pull: yes
+
+    - name: Wait for services to be ready
+      ansible.builtin.wait_for:
+        port: "{{ item }}"
+        host: "{{ ansible_host }}"
+        timeout: 60
+      loop:
+        - 8000
+        - 8001
+        - 5173
+
+    - name: Show service status
+      ansible.builtin.shell: |
+        cd {{ app_dir }}
+        docker-compose ps
+      register: status
+
+    - name: Display status
+      ansible.builtin.debug:
+        var: status.stdout_lines

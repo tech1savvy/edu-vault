@@ -1,0 +1,29 @@
+# EduVault Terraform Configuration
+
+# AWS Region
+aws_region = "ap-south-1"
+
+# Project Configuration
+project_name = "eduvault"
+environment  = "development"
+
+# EC2 Instance Configuration
+instance_type = "t3.micro"
+volume_size   = 30
+volume_type   = "gp3"
+
+# SSH Configuration
+# Leave empty to create a new key pair, or specify existing key name
+ssh_key_pair_name   = ""
+ssh_public_key_path = ""
+
+# Allowed SSH CIDRs (restrict to your team's IP addresses for security)
+allowed_ssh_cidrs = ["0.0.0.0/0"]
+
+# Tags
+common_tags = {
+  Project     = "EduVault"
+  ManagedBy   = "Terraform"
+  Environment = "development"
+  Team        = "DevOps-Team"
+}
