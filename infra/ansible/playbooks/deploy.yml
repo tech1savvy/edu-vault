@@ -16,6 +16,7 @@
     - role: common
     - role: docker
     - role: app
+    - role: monitoring
 
   post_tasks:
     - name: Verify services are running
