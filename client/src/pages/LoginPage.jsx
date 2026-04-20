@@ -7,8 +7,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  const [error, setError] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
       const { token, user } = await login(email, password); // Get user object from response
       localStorage.setItem('token', token);
@@ -21,7 +24,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error('Login failed:', error);
-      // You might want to show an error message to the user
+      setError(error.message);
     }
   };
 
@@ -32,6 +35,7 @@ const LoginPage = () => {
           <div className="card">
             <div className="card-body">
               <h2 className="card-title text-center">Login</h2>
+              {error && <div className="alert alert-danger">{error}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email address</label>

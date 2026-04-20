@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import SkillsForm from "./Forms/SkillsForm";
+import { ResumeContext } from "../../context/resumeContext";
 
 const Skills = ({ isInput = false }) => {
-  const [skills, setSkills] = useState([]);
+  const { skills, setSkills } = useContext(ResumeContext);
 
   const addSkill = (skill) => setSkills([...skills, skill]);
   const removeSkill = (index) => setSkills(skills.filter((_, i) => i !== index));

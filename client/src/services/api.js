@@ -20,23 +20,23 @@ export const login = async (email, password) => {
   if (response.ok) {
     return data;
   } else {
-    throw new Error(data.message || 'Something went wrong');
+    throw new Error(data.error || data.message || 'Something went wrong');
   }
 };
 
-export const signup = async (name, email, password) => {
+export const signup = async (name, email, password, confirmPassword, role = 'student') => {
   const response = await fetch(`${API_URL}/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ name, email, password }),
+    body: JSON.stringify({ name, email, password, confirmPassword, role }),
   });
   const data = await response.json();
   if (response.ok) {
     return data;
   } else {
-    throw new Error(data.message || 'Something went wrong');
+    throw new Error(data.error || data.message || 'Something went wrong');
   }
 };
 
