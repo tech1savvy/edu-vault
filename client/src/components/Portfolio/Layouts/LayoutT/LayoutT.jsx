@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./LayoutT.css";
 import Header from "./Header";
 import About from "./About";
@@ -9,6 +9,8 @@ import Skills from "./Skills";
 import Achievements from "./Achievements";
 import Certifications from "./Certifications";
 import Contact from "./Contact";
+
+import { ResumeContext } from "../../../../context/resumeContext";
 
 import {
   getHeading,
@@ -35,6 +37,17 @@ const LayoutT = () => {
     achievements: [],
     certifications: [],
   });
+  
+  // Context fallback values
+  const {
+    heading: ctxHeading = {},
+    education: ctxEducation = [],
+    experiences: ctxExperiences = [],
+    projects: ctxProjects = [],
+    skills: ctxSkills = [],
+    achievements: ctxAchievements = [],
+    certifications: ctxCertifications = [],
+  } = useContext(ResumeContext) || {};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,6 +86,15 @@ const LayoutT = () => {
     fetchData();
   }, []);
 
+  // Prefer fetched data, fallback to context
+  const finalHeading = data.heading ?? (Object.keys(ctxHeading || {}).length ? ctxHeading : null);
+  const finalEducation = (data.education && data.education.length) ? data.education : ctxEducation || [];
+  const finalExperience = (data.experience && data.experience.length) ? data.experience : ctxExperiences || [];
+  const finalProjects = (data.projects && data.projects.length) ? data.projects : ctxProjects || [];
+  const finalSkills = (data.skills && data.skills.length) ? data.skills : ctxSkills || [];
+  const finalAchievements = (data.achievements && data.achievements.length) ? data.achievements : ctxAchievements || [];
+  const finalCertifications = (data.certifications && data.certifications.length) ? data.certifications : ctxCertifications || [];
+
   return (
     <div className="portfolio-layout-t" data-theme={theme}>
       {/* Background Effects */}
@@ -104,17 +126,17 @@ const LayoutT = () => {
       {/* ------------ PRINTABLE AREA ------------ */}
       <div id="resume-root">
         <div className="portfolio-container">
-          <Header data={data.heading} />
+          <Header data={finalHeading} />
 
           <main className="portfolio-content">
-            <About data={data.heading} />
-            <Experience data={data.experience} />
-            <Education data={data.education} />
-            <Projects data={data.projects} />
-            <Skills data={data.skills} />
-            <Achievements data={data.achievements} />
-            <Certifications data={data.certifications} />
-            <Contact data={data.heading} />
+            <About data={finalHeading} />
+            <Experience data={finalExperience} />
+            <Education data={finalEducation} />
+            <Projects data={finalProjects} />
+            <Skills data={finalSkills} />
+            <Achievements data={finalAchievements} />
+            <Certifications data={finalCertifications} />
+            <Contact data={finalHeading} />
           </main>
 
           <footer className="portfolio-footer">
