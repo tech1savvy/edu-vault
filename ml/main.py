@@ -1,4 +1,5 @@
 import os
+import time
 from fastapi import FastAPI
 from pydantic import BaseModel
 from prometheus_client import make_asgi_app, Counter, Histogram
@@ -14,23 +15,21 @@ app = FastAPI(title="ML Service", description="Embedding and matching service")
 
 # Create metrics for HTTP requests
 http_requests_total = Counter(
-    "http_requests_total",
-    "Total HTTP requests",
-    ["method", "status", "endpoint"]
+    "http_requests_total", "Total HTTP requests", ["method", "status", "endpoint"]
 )
 
 http_request_duration = Histogram(
     "http_request_duration_seconds",
     "HTTP request duration",
-    ["method", "endpoint"],
-    buckets=(0.01, 0.05, 0.1, 0.5, 1.0, 2.0, 5.0)
+    ["method", "status", "endpoint"],
+    buckets=(0.01, 0.05, 0.1, 0.5, 1.0, 2.0, 5.0),
 )
 
 # Embedding generation metrics
 embedding_duration = Histogram(
     "embedding_duration_seconds",
     "Time to generate embeddings",
-    buckets=(0.1, 0.5, 1.0, 2.0, 5.0, 10.0)
+    buckets=(0.1, 0.5, 1.0, 2.0, 5.0, 10.0),
 )
 
 # Expose /metrics endpoint for Prometheus scraping
@@ -42,35 +41,31 @@ app.mount("/metrics", metrics_app)
 # Track request counts and durations
 # ==============================================================================
 
+
 @app.middleware("http")
 async def track_metrics(request, call_next):
     method = request.method
     endpoint = request.url.path
-    
-    # Don't track metrics endpoint itself
+
     if endpoint == "/metrics":
         return await call_next(request)
-    
-    import time
+
     start_time = time.perf_counter()
-    
+
     response = await call_next(request)
-    
+
     duration = time.perf_counter() - start_time
-    
-    # Record metrics
+
     http_requests_total.labels(
-        method=method,
-        status=str(response.status_code),
-        endpoint=endpoint
+        method=method, status=str(response.status_code), endpoint=endpoint
     ).inc()
-    
+
     http_request_duration.labels(
-        method=method,
-        endpoint=endpoint
+        method=method, status=str(response.status_code), endpoint=endpoint
     ).observe(duration)
-    
+
     return response
+
 
 PORT = int(os.getenv("ML_SERVICE_PORT", "8001"))
 
@@ -117,14 +112,12 @@ def health_check():
 
 @app.post("/embed")
 def embed_text(request: EmbedRequest):
-    import time
     start_time = time.perf_counter()
-    
+
     embedding = generate_embedding(request.text)
-    
-    # Track embedding generation time
+
     embedding_duration.observe(time.perf_counter() - start_time)
-    
+
     return {"embedding": embedding}
 
 
