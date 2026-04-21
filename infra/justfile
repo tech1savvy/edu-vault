@@ -1,0 +1,47 @@
+# EduVault Infrastructure Justfile
+
+set dotenv-load := true
+set dotenv-override := true
+export AWS_PROFILE := "tech1savvy"
+
+_default:
+    @just --list
+
+# ==============================================================================
+# Terraform Commands
+# ==============================================================================
+
+init:
+    cd terraform && terraform init
+
+plan:
+    cd terraform && terraform plan -out=.tfplan
+
+apply:
+    cd terraform && terraform apply .tfplan
+
+destroy:
+    cd terraform && terraform destroy
+
+output:
+    cd terraform && terraform output
+
+# ==============================================================================
+# Deployment Commands
+# ==============================================================================
+
+deploy: plan apply play
+    @echo "Deployment complete!"
+
+play:
+    python3 scripts/update_ansible_inventory.py && cd ansible && ansible-playbook -i inventory/hosts.ini playbooks/deploy.yml
+
+ping:
+    cd ansible && ansible all -i inventory/hosts.ini -m ping
+
+# ==============================================================================
+# Utility Commands
+# ==============================================================================
+
+ssh:
+    cd terraform && ssh -i ~/.ssh/id_ed25519 ec2-user@$(terraform output -json instance | jq -r '.public_ip')
