@@ -1,0 +1,100 @@
+---
+- name: Include secrets
+  ansible.builtin.include_vars:
+    file: ../../secrets.yml
+
+- name: Create app directory
+  ansible.builtin.file:
+    path: "{{ app_dir }}"
+    state: directory
+    owner: "{{ app_user }}"
+    mode: '0755'
+
+- name: Clone or update repository
+  ansible.builtin.git:
+    repo: "{{ app_repo }}"
+    dest: "{{ app_dir }}"
+    version: "{{ app_branch | default('main') }}"
+    force: yes
+    accept_hostkey: yes
+  become_user: "{{ app_user }}"
+
+- name: Create environment file
+  ansible.builtin.template:
+    src: .env.j2
+    dest: "{{ app_dir }}/.env"
+    owner: "{{ app_user }}"
+    mode: '0600'
+  notify: restart app
+
+- name: Create docker network
+  ansible.builtin.shell: docker network create eduvault_network 2>/dev/null || true
+
+- name: Ensure volumes exist
+  ansible.builtin.shell: |
+    docker volume create edu_vault_postgres_data 2>/dev/null || true
+    docker volume create edu_vault_qdrant_data 2>/dev/null || true
+  become_user: "{{ app_user }}"
+
+- name: Stop existing containers
+  ansible.builtin.shell: |
+    cd {{ app_dir }}
+    docker-compose down 2>/dev/null || true
+  become_user: "{{ app_user }}"
+  failed_when: false
+
+- name: Build and start containers
+  ansible.builtin.shell: |
+    cd {{ app_dir }}
+    docker-compose up -d --build
+  become_user: "{{ app_user }}"
+  async: 900
+  poll: 30
+  register: compose_up
+
+- name: Wait for containers to start
+  ansible.builtin.pause:
+    seconds: 30
+
+- name: Wait for backend to be ready
+  ansible.builtin.wait_for:
+    port: 8000
+    host: "{{ ansible_host }}"
+    timeout: 120
+    delay: 10
+  ignore_errors: yes
+
+- name: Run database migrations
+  ansible.builtin.shell: |
+    cd {{ app_dir }}
+    docker-compose exec -T backend npx sequelize-cli db:migrate
+  become_user: "{{ app_user }}"
+  register: migrate_result
+  failed_when: false
+
+- name: Display migration result
+  ansible.builtin.debug:
+    msg: "{{ migrate_result.stdout_lines }}"
+
+- name: Run database seeds
+  ansible.builtin.shell: |
+    cd {{ app_dir }}
+    docker-compose exec -T backend npx sequelize-cli db:seed:all
+  become_user: "{{ app_user }}"
+  register: seed_result
+  failed_when: false
+
+- name: Display seed result
+  ansible.builtin.debug:
+    msg: "{{ seed_result.stdout_lines }}"
+
+- name: Ensure containers are running
+  ansible.builtin.shell: |
+    cd {{ app_dir }}
+    docker-compose ps
+  become_user: "{{ app_user }}"
+  register: status
+
+- name: Display final status
+  ansible.builtin.debug:
+    var: status.stdout_lines

@@ -11,6 +11,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - eduvault-network
 
   qdrant:
     image: qdrant/qdrant:v1.9.1
@@ -20,6 +22,8 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     restart: unless-stopped
+    networks:
+      - eduvault-network
 
   backend:
     build:
@@ -42,6 +46,8 @@ services:
       - qdrant
       - ml
     restart: unless-stopped
+    networks:
+      - eduvault-network
 
   ml:
     build:
@@ -57,6 +63,8 @@ services:
     depends_on:
       - qdrant
     restart: unless-stopped
+    networks:
+      - eduvault-network
 
   client:
     build:
@@ -71,7 +79,16 @@ services:
       - ./client:/app
       - /app/node_modules
     restart: unless-stopped
+    networks:
+      - eduvault-network
 
 volumes:
   postgres_data:
   qdrant_data:
+
+# ==============================================================================
+# Networks
+# ==============================================================================
+networks:
+  eduvault-network:
+    driver: bridge

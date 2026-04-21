@@ -1,0 +1,18 @@
+# Remote Backend Configuration (Optional)
+# Uncomment and configure for team collaboration
+# This stores Terraform state in S3, enabling team members to work on the same infrastructure
+
+# terraform {
+#   backend "s3" {
+#     bucket         = "eduvault-terraform-state"
+#     key            = "terraform.tfstate"
+#     region         = "ap-south-1"
+#     encrypt        = true
+#     dynamodb_table = "eduvault-terraform-locks"
+#   }
+# }
+
+# To use remote backend:
+# 1. Create S3 bucket and DynamoDB table manually or via separate Terraform
+# 2. Uncomment the above block
+# 3. Run: terraform init -migrate-state
