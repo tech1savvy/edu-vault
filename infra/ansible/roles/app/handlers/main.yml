@@ -1,0 +1,6 @@
+---
+- name: restart app
+  ansible.builtin.shell: |
+    cd {{ app_dir }}
+    docker compose restart
+  become_user: "{{ app_user }}"

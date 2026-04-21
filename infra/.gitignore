@@ -1,0 +1,16 @@
+# Terraform working files
+terraform/.terraform/
+terraform/*.tfstate
+terraform/.tfplan
+terraform/terraform.tfvars
+terraform/.terraform.lock.hcl
+
+# Ansible inventory (auto-generated)
+ansible/inventory/hosts.ini
+
+# Ansible retry files
+*.retry
+
+# Temp files
+*.backup
+*.bak

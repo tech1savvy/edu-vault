@@ -1,0 +1,46 @@
+---
+- name: Deploy EduVault Application
+  hosts: app_servers
+  become: yes
+  gather_facts: yes
+
+  vars_files:
+    - secrets.yml
+
+  pre_tasks:
+    - name: Display deployment info
+      ansible.builtin.debug:
+        msg: "Deploying EduVault to {{ ansible_host }}"
+
+  roles:
+    - role: common
+    - role: docker
+    - role: app
+
+  post_tasks:
+    - name: Verify services are running
+      ansible.builtin.shell: |
+        cd {{ app_dir }}
+        docker compose ps
+      register: service_status
+
+    - name: Show service status
+      ansible.builtin.debug:
+        var: service_status.stdout_lines
+
+    - name: Test backend API
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:8000/api/auth/login"
+        method: POST
+        body_format: json
+        body:
+          email: "{{ test_user_email }}"
+          password: "{{ test_user_password }}"
+        validate_certs: no
+        timeout: 10
+      register: api_test
+      ignore_errors: yes
+
+    - name: Show API test result
+      ansible.builtin.debug:
+        msg: "Backend API is {{ 'responding' if api_test.status is defined and api_test.status == 200 else 'not responding' }}"
