@@ -39,7 +39,7 @@ Thumbs.db
 # AWS credentials
 .aws/
 credentials
-config
+.aws/config
 
 # SSH keys
 *.pem

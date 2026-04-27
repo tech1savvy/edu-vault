@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 LOG_FORMAT = "%(asctime)s %(levelname)s %(name)s: %(message)s"
@@ -36,11 +37,16 @@ def setup_logger(name: str = "semantic-ranking") -> logging.Logger:
         )
     )
 
-    file_handler = logging.FileHandler("error.log")
+    log_dir = os.getenv("LOG_DIR", "")
+
+    error_path = os.path.join(log_dir, "error.log") if log_dir else "error.log"
+    combined_path = os.path.join(log_dir, "combined.log") if log_dir else "combined.log"
+
+    file_handler = logging.FileHandler(error_path)
     file_handler.setLevel(logging.ERROR)
     file_handler.setFormatter(logging.Formatter(LOG_FORMAT, datefmt=DATE_FORMAT))
 
-    combined_handler = logging.FileHandler("combined.log")
+    combined_handler = logging.FileHandler(combined_path)
     combined_handler.setLevel(logging.DEBUG)
     combined_handler.setFormatter(logging.Formatter(LOG_FORMAT, datefmt=DATE_FORMAT))
 

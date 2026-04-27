@@ -64,6 +64,8 @@ async def track_metrics(request, call_next):
         method=method, status=str(response.status_code), endpoint=endpoint
     ).observe(duration)
 
+    logger.info(f"{method} {endpoint} {response.status_code} ({duration:.3f}s)")
+
     return response
 
 
@@ -112,6 +114,7 @@ def health_check():
 
 @app.post("/embed")
 def embed_text(request: EmbedRequest):
+    logger.info("Generating embedding")
     start_time = time.perf_counter()
 
     embedding = generate_embedding(request.text)
