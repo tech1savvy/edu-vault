@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/adminApi';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Activity, Users, BookOpen, Target, CheckCircle } from 'lucide-react';
 import './AnalyticsPage.css';
+
+const COLORS = ['#20c997', '#ffc107', '#dc3545'];
+const ROLE_COLORS = ['#0d6efd', '#6610f2', '#6f42c1', '#d63384'];
 
 const AnalyticsPage = () => {
   const [stats, setStats] = useState(null);
@@ -31,10 +36,8 @@ const AnalyticsPage = () => {
 
   if (loading) {
     return (
-      <div className="text-center mt-5 bg-dark min-vh-100">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      <div className="d-flex justify-content-center align-items-center bg-dark min-vh-100">
+        <div className="spinner-border text-primary" role="status"></div>
       </div>
     );
   }
@@ -42,118 +45,153 @@ const AnalyticsPage = () => {
   if (error) {
     return (
       <div className="container mt-4 bg-dark min-vh-100">
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
+        <div className="alert alert-danger" role="alert">{error}</div>
       </div>
     );
   }
 
+  // Formatting Readiness Data for Recharts
+  const readinessData = stats?.readinessDistribution ? [
+    { name: 'Placement Ready', value: stats.readinessDistribution.ready },
+    { name: 'Moderate', value: stats.readinessDistribution.moderate },
+    { name: 'At Risk', value: stats.readinessDistribution.atRisk },
+  ] : [];
+
   return (
-    <div className="analytics-page container-fluid py-4 bg-dark text-light min-vh-100">
-      <header className="mb-4">
-        <h1 className="text-light">Analytics Dashboard</h1>
-        <p className="text-light">Platform overview and statistics</p>
+    <div className="analytics-page container-fluid py-5 bg-dark text-light min-vh-100">
+      <header className="mb-5 text-center">
+        <h1 className="text-light fw-bold">🎓 Institutional Analytics Dashboard</h1>
+        <p className="text-secondary fs-5">Placement readiness & platform utilization overview</p>
       </header>
 
-      <div className="row g-4 mb-4">
+      {/* Top Banner KPI Cards */}
+      <div className="row g-4 mb-5">
         <div className="col-md-6 col-lg-3">
-          <div className="card h-100 bg-secondary text-light">
-            <div className="card-body text-center">
-              <h3 className="text-primary mb-2">{stats?.totalUsers || 0}</h3>
-              <p className="mb-0 text-light">Total Users</p>
-            </div>
-            <div className="card-footer bg-dark border-secondary">
-              <small className="text-light">
-                {stats?.totalStudents || 0} students, {stats?.totalAdmins || 0} admins
-              </small>
+          <div className="card h-100 bg-secondary text-light border-0 shadow-lg rounded-4 hover-lift">
+            <div className="card-body text-center py-4">
+              <Users className="text-primary mb-3" size={32} />
+              <h2 className="text-primary fw-bold mb-1">{stats?.totalUsers || 0}</h2>
+              <p className="mb-0 text-white-50">Total Users</p>
             </div>
           </div>
         </div>
 
         <div className="col-md-6 col-lg-3">
-          <div className="card h-100 bg-secondary text-light">
-            <div className="card-body text-center">
-              <h3 className="text-success mb-2">{stats?.activeUsers || 0}</h3>
-              <p className="mb-0 text-light">Active Users</p>
-            </div>
-            <div className="card-footer bg-dark border-secondary">
-              <small className="text-light">
-                {stats?.totalUsers - stats?.activeUsers || 0} inactive/suspended
-              </small>
+          <div className="card h-100 bg-secondary text-light border-0 shadow-lg rounded-4 hover-lift">
+            <div className="card-body text-center py-4">
+              <Activity className="text-success mb-3" size={32} />
+              <h2 className="text-success fw-bold mb-1">{stats?.activeUsers || 0}</h2>
+              <p className="mb-0 text-white-50">Active Users</p>
             </div>
           </div>
         </div>
 
         <div className="col-md-6 col-lg-3">
-          <div className="card h-100 bg-secondary text-light">
-            <div className="card-body text-center">
-              <h3 className="text-info mb-2">{stats?.totalJobs || 0}</h3>
-              <p className="mb-0 text-light">Job Descriptions</p>
+          <div className="card h-100 bg-secondary text-light border-0 shadow-lg rounded-4 hover-lift">
+            <div className="card-body text-center py-4">
+              <BookOpen className="text-info mb-3" size={32} />
+              <h2 className="text-info fw-bold mb-1">{stats?.totalJobs || 0}</h2>
+              <p className="mb-0 text-white-50">Job Benchmarks</p>
             </div>
           </div>
         </div>
 
         <div className="col-md-6 col-lg-3">
-          <div className="card h-100 bg-secondary text-light">
-            <div className="card-body text-center">
-              <h3 className="text-warning mb-2">{stats?.totalMatches || 0}</h3>
-              <p className="mb-0 text-light">Total Matches</p>
+          <div className="card h-100 bg-secondary text-light border-0 shadow-lg rounded-4 hover-lift">
+            <div className="card-body text-center py-4">
+              <Target className="text-warning mb-3" size={32} />
+              <h2 className="text-warning fw-bold mb-1">{stats?.totalMatches || 0}</h2>
+              <p className="mb-0 text-white-50">AI Vector Matches</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="row g-4 mb-4">
-        <div className="col-md-6">
-          <div className="card h-100 bg-secondary text-light">
-            <div className="card-header bg-dark border-secondary">
-              <h5 className="mb-0 text-light">Resume Completion</h5>
+      <div className="row g-4 mb-5">
+        
+        {/* ML Readiness Distribution Chart */}
+        <div className="col-lg-6">
+          <div className="card h-100 bg-secondary text-light border-0 shadow-lg rounded-4 p-3">
+            <div className="card-header bg-transparent border-0 d-flex align-items-center">
+              <CheckCircle className="text-success me-2" size={24} />
+              <h4 className="mb-0 fw-bold">Placement Readiness Distribution</h4>
             </div>
-            <div className="card-body text-center">
-              <div className="completion-circle mx-auto mb-3">
-                <h2 className={`mb-0 ${getCompletionColor(stats?.avgResumeCompletion || 0)}`}>
-                  {stats?.avgResumeCompletion || 0}%
-                </h2>
-              </div>
-              <p className="text-light mb-0">Average Resume Completeness</p>
+            <div className="card-body text-center" style={{ height: '350px' }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                    <Pie
+                        data={readinessData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={100}
+                        innerRadius={60}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                        {readinessData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ backgroundColor: '#222', borderColor: '#444' }} itemStyle={{ color: '#fff' }} />
+                    <Legend />
+                    </PieChart>
+                </ResponsiveContainer>
             </div>
           </div>
         </div>
 
-        <div className="col-md-6">
-          <div className="card h-100 bg-secondary text-light">
-            <div className="card-header bg-dark border-secondary">
-              <h5 className="mb-0 text-light">Match Quality</h5>
+        {/* Role Targeting Distribution */}
+        <div className="col-lg-6">
+          <div className="card h-100 bg-secondary text-light border-0 shadow-lg rounded-4 p-3">
+            <div className="card-header bg-transparent border-0 d-flex align-items-center">
+              <Target className="text-info me-2" size={24} />
+              <h4 className="mb-0 fw-bold">Target Role Distribution</h4>
             </div>
-            <div className="card-body text-center">
-              <div className="completion-circle mx-auto mb-3">
-                <h2 className="text-primary mb-0">
-                  {stats?.avgMatchScore || 0}
-                </h2>
-              </div>
-              <p className="text-light mb-0">Average Match Score (0-1)</p>
+            <div className="card-body" style={{ height: '350px' }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                        data={stats?.roleDistribution || []}
+                        margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                    >
+                        <XAxis dataKey="name" stroke="#fff" tick={{ fill: '#aaa' }} />
+                        <YAxis stroke="#fff" tick={{ fill: '#aaa' }} />
+                        <Tooltip contentStyle={{ backgroundColor: '#222', borderColor: '#444' }} cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }} />
+                        <Bar dataKey="value" radius={[10, 10, 0, 0]}>
+                            {(stats?.roleDistribution || []).map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={ROLE_COLORS[index % ROLE_COLORS.length]} />
+                            ))}
+                        </Bar>
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
           </div>
         </div>
+        
       </div>
 
-      <div className="card bg-secondary text-light">
-        <div className="card-header bg-dark border-secondary">
-          <h5 className="mb-0 text-light">Top Skills</h5>
-        </div>
-        <div className="card-body">
-          {stats?.topSkills && stats.topSkills.length > 0 ? (
-            <div className="d-flex flex-wrap gap-2">
-              {stats.topSkills.map((skill, index) => (
-                <span key={index} className="badge bg-primary fs-6">
-                  {skill.name} <span className="badge bg-light text-dark ms-1">{skill.count}</span>
-                </span>
-              ))}
+      <div className="row g-4">
+        {/* Top Missing Skills */}
+        <div className="col-12">
+            <div className="card bg-secondary text-light border-0 shadow-lg rounded-4 p-3 mb-5">
+            <div className="card-header bg-transparent border-seconday border-bottom pb-3">
+                <h4 className="mb-0 fw-bold">Top Missing Skills Across Batch</h4>
             </div>
-          ) : (
-            <p className="text-light mb-0">No skills data available yet.</p>
-          )}
+            <div className="card-body mt-3">
+                {stats?.topSkills && stats.topSkills.length > 0 ? (
+                <div className="d-flex flex-wrap gap-3">
+                    {stats.topSkills.map((skill, index) => (
+                    <span key={index} className="badge bg-dark border border-secondary px-4 py-3 rounded-pill fs-6 shadow-sm">
+                        {skill.name} <span className="badge bg-primary rounded-circle ms-2">{skill.count}</span>
+                    </span>
+                    ))}
+                </div>
+                ) : (
+                <p className="text-white-50 fs-5">No skills data available yet.</p>
+                )}
+            </div>
+            </div>
         </div>
       </div>
     </div>

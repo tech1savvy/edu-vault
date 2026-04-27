@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ResumeContext } from "../../../context/resumeContext";
 
 function HeadingForm() {
-  const { setHeading } = useContext(ResumeContext);
+  const { heading, setHeading } = useContext(ResumeContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -33,7 +33,10 @@ function HeadingForm() {
       title: formData.title,
       summary: formData.description,
     });
+    // Removed auto navigation to output/heading
+  };
 
+  const handleNext = () => {
     navigate("/output/heading");
   };
 
@@ -98,10 +101,53 @@ function HeadingForm() {
           onChange={handleChange}
         />
 
-        <button type="submit" className="btn btn-primary">
-          Save & Preview
-        </button>
+        <div className="d-flex gap-2">
+          <button type="submit" className="btn btn-primary">
+            Save Heading
+          </button>
+        </div>
       </form>
+
+      <hr />
+
+      <div className="container mt-3">
+        <h4>Preview</h4>
+        {!heading || Object.keys(heading).length === 0 ? (
+          <p>No heading information added yet.</p>
+        ) : (
+          <ul className="list-group mb-3">
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <strong>{heading.name || heading.fullName}</strong> {heading.title && `| ${heading.title}`} <br />
+                {heading.email && <span>Email: {heading.email} <br /></span>}
+                {heading.website && <span>Portfolio: {heading.website} <br /></span>}
+                {heading.summary && <p className="mb-0 mt-2">{heading.summary}</p>}
+              </div>
+              <button 
+                className="btn btn-outline-danger btn-sm" 
+                onClick={() => {
+                  setHeading({});
+                  setFormData({
+                    fullName: "",
+                    contact: "",
+                    linkedin: "",
+                    github: "",
+                    portfolio: "",
+                    title: "",
+                    description: "",
+                  });
+                }}
+              >
+                Remove
+              </button>
+            </li>
+          </ul>
+        )}
+
+        <button className="btn btn-success" onClick={handleNext}>
+          Save & Next
+        </button>
+      </div>
     </div>
   );
 }

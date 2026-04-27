@@ -126,6 +126,7 @@ import { ResumeContext } from "../../../../context/resumeContext";
 
 // local pieces (same as before)
 import Header from "./Header";
+import About from "./About";
 import Experience from "./Experience";
 import Education from "./Education";
 import Projects from "./Projects";
@@ -136,6 +137,8 @@ import Contact from "./Contact";
 
 // PDF Button Component (keep)
 import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
+import SyncProfileButton from "../../../Resume/SyncProfileButton";
+import CVTemplate from "../../../Resume/CVTemplate";
 
 // API helpers (same as LayoutT)
 import {
@@ -244,8 +247,15 @@ export default function LayoutS() {
   return (
     <div className="ls-root" data-theme={theme}>
 
+      {/* Ambient Background Elements */}
+      <div className="ls-ambient-bg no-print">
+        <div className="ls-orb-1"></div>
+        <div className="ls-orb-2"></div>
+        <div className="ls-orb-3"></div>
+      </div>
+
       {/* -------------------- THEME BUTTONS (TOP RIGHT) -------------------- */}
-      <div className="ls-theme-ui" role="toolbar" aria-label="Theme switcher">
+      <div className="ls-theme-ui no-print" role="toolbar" aria-label="Theme switcher">
         <button
           aria-pressed={theme === "sunset"}
           title="Sunset Theme"
@@ -279,49 +289,48 @@ export default function LayoutS() {
       <div id="resume-root">
 
         <main className="ls-container">
-          <Header data={heading || {}} />
+          
+          <aside className="ls-sidebar-wrapper">
+            <Header data={heading || {}} />
+            <Contact data={heading || {}} />
+          </aside>
 
-          {/* show a simple loading or error notice inside the content area (non-blocking) */}
-          {loading && <div className="ls-loading-banner">Loading...</div>}
-          {fetchError && <div className="ls-error-banner">Unable to fetch remote data — using local preview.</div>}
+          <div className="ls-content">
+            {/* show a simple loading notice inside the content area (non-blocking) */}
+            {loading && <div className="ls-section" style={{ textAlign: 'center', opacity: 0.5 }}>Loading...</div>}
 
-          <section className="ls-cards">
-            <article className="ls-card">
-              <Experience data={experiences || [] } />
-            </article>
+            <About data={heading || {}} />
+            <Experience data={experiences || [] } />
+            <Education data={education || [] } />
+            <Projects data={projects || [] } />
+            <Skills data={skills || [] } />
+            <Achievements data={achievements || [] } />
+            <Certifications data={certifications || [] } />
+          </div>
 
-            <article className="ls-card">
-              <Education data={education || [] } />
-            </article>
-
-            <article className="ls-card">
-              <Projects data={projects || [] } />
-            </article>
-
-            <article className="ls-card">
-              <Skills data={skills || [] } />
-            </article>
-
-            <article className="ls-card">
-              <Achievements data={achievements || [] } />
-            </article>
-
-            <article className="ls-card">
-              <Certifications data={certifications || [] } />
-            </article>
-
-            <article className="ls-card">
-              <Contact data={heading || {}} />
-            </article>
-          </section>
         </main>
 
       </div>
       {/* -------------------- PRINTABLE AREA ENDS HERE -------------------- */}
 
+      {/* Hidden standard CV template for PDF export */}
+      <CVTemplate 
+        visible={false} 
+        dataProp={{
+          heading,
+          experiences,
+          education,
+          projects,
+          skills,
+          achievements,
+          certifications
+        }} 
+      />
+
       {/* -------------------- PDF DOWNLOAD BUTTON -------------------- */}
-      <div style={{ textAlign: "center", margin: "40px 0" }}>
-        <DownloadPdfButton filename="My-Resume.pdf" />
+      <div style={{ textAlign: "center", margin: "40px 0", display: "flex", justifyContent: "center", gap: "15px" }}>
+        <SyncProfileButton />
+        <DownloadPdfButton filename={`${heading?.name ? heading.name.replace(/\s+/g, '-') : 'My'}-Resume.pdf`} />
       </div>
 
     </div>

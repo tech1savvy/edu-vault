@@ -4,14 +4,7 @@ WORKDIR /app
 
 COPY pyproject.toml ./
 
-RUN pip install --no-cache-dir \
-    fastembed==0.7.3 \
-    fastapi>=0.100.0 \
-    uvicorn>=0.23.0 \
-    qdrant-client>=1.9.0 \
-    httpx>=0.25.0 \
-    python-dotenv>=1.0.0 \
-    psycopg2-binary>=2.9.0
+RUN pip install --no-cache-dir .
 
 COPY . .
 
