@@ -101,10 +101,18 @@ function ExperienceForm() {
       {experiences.length === 0 && <p>No experiences added yet.</p>}
       <ul className="list-group">
         {experiences.map((exp, idx) => (
-          <li key={idx} className="list-group-item">
-            <strong>{exp.type}:</strong> {exp.role} at {exp.company} <br />
-            <small>{exp.duration}</small>
-            <p>{exp.details}</p>
+          <li key={idx} className="list-group-item d-flex justify-content-between align-items-start">
+            <div>
+              <strong>{exp.type}:</strong> {exp.role} at {exp.company} <br />
+              <small>{exp.duration}</small>
+              <p className="mb-0">{exp.details}</p>
+            </div>
+            <button 
+              className="btn btn-outline-danger btn-sm" 
+              onClick={() => setExperiences(experiences.filter((_, i) => i !== idx))}
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>

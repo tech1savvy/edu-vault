@@ -117,15 +117,23 @@ function ProjectsForm() {
       {projects.length === 0 && <p>No projects added yet.</p>}
       <ul className="list-group">
         {projects.map((proj, idx) => (
-          <li key={idx} className="list-group-item">
-            <strong>{proj.title}</strong> <br />
-            <small>{proj.timeline}</small>
-            <p>{proj.description}</p>
-            <em>{proj.techStack}</em> <br />
-            <span className="badge bg-info">{proj.type}</span>
-            {proj.type === "Group" && (
-              <p>Collaborators: {proj.collaborators}</p>
-            )}
+          <li key={idx} className="list-group-item d-flex justify-content-between align-items-start">
+            <div>
+              <strong>{proj.title}</strong> <br />
+              <small>{proj.timeline}</small>
+              <p className="mb-1">{proj.description}</p>
+              <em>{proj.techStack}</em> <br />
+              <span className="badge bg-info">{proj.type}</span>
+              {proj.type === "Group" && (
+                <p className="mb-0 mt-1">Collaborators: {proj.collaborators}</p>
+              )}
+            </div>
+            <button 
+              className="btn btn-outline-danger btn-sm" 
+              onClick={() => setProjects(projects.filter((_, i) => i !== idx))}
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>

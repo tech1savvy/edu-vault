@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ResumeContext } from "../../../context/resumeContext";
 
 function EducationForm() {
-  const { setEducation } = useContext(ResumeContext);
+  const { education = [], setEducation } = useContext(ResumeContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -19,15 +19,28 @@ function EducationForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleAdd = (e) => {
     e.preventDefault();
-    setEducation((prev) => [...prev, formData]); // SAFE & CORRECT
+    if (formData.degree.trim() || formData.college.trim()) {
+      setEducation((prev) => [...prev, formData]);
+      setFormData({
+        degree: "",
+        college: "",
+        location: "",
+        startDate: "",
+        endDate: "",
+        score: "",
+      });
+    }
+  };
+
+  const handleNext = () => {
     navigate("/output/education");
   };
 
   return (
     <div className="form-container">
-      <form onSubmit={handleSubmit} className="container mt-3">
+      <form onSubmit={handleAdd} className="container mt-3">
         <h3 className="mb-3">Education</h3>
 
         <input
@@ -78,10 +91,39 @@ function EducationForm() {
           onChange={handleChange}
         />
 
-        <button type="submit" className="btn btn-success">
-          Save & Preview
+        <button type="submit" className="btn btn-primary" onClick={handleAdd}>
+          Add Education
         </button>
       </form>
+
+      <hr />
+
+      <div className="container mt-3">
+        <h4>Preview</h4>
+        {education.length === 0 && <p>No education added yet.</p>}
+        <ul className="list-group mb-3">
+          {education.map((edu, idx) => (
+            <li key={idx} className="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <strong>{edu.degree}</strong> at {edu.college} <br />
+                <small>{edu.startDate} {edu.endDate ? `- ${edu.endDate}` : ""}</small>
+                {edu.location && <p className="mb-0 text-muted">{edu.location}</p>}
+                {edu.score && <p className="mb-0">Score: {edu.score}</p>}
+              </div>
+              <button 
+                className="btn btn-outline-danger btn-sm" 
+                onClick={() => setEducation(education.filter((_, i) => i !== idx))}
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <button className="btn btn-success" onClick={handleNext}>
+          Save & Preview
+        </button>
+      </div>
     </div>
   );
 }

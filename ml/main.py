@@ -106,6 +106,11 @@ class MatchRequest(BaseModel):
     text: str
     limit: int = 10
 
+class MatchStudentRequest(BaseModel):
+    user_id: int
+    text: str
+    limit: int = 1
+
 
 @app.get("/health")
 def health_check():
@@ -213,6 +218,26 @@ def match(request: MatchRequest):
 
     return {
         "job_id": request.job_id,
+        "matches": matches,
+    }
+
+
+@app.post("/match/student")
+def match_student(request: MatchStudentRequest):
+    logger.info(f"Finding job matches for student {request.user_id}")
+
+    student_vector = get_vector(f"user-{request.user_id}")
+    if student_vector:
+        embedding = student_vector["vector"]
+    else:
+        embedding = generate_embedding(request.text)
+
+    matches = query_similar(
+        embedding=embedding, limit=request.limit, filter_type="job"
+    )
+
+    return {
+        "user_id": request.user_id,
         "matches": matches,
     }
 

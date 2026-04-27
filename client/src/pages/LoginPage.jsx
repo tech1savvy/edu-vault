@@ -19,6 +19,10 @@ const LoginPage = () => {
 
       if (user && user.role === 'administrator') {
         navigate('/admin/dashboard');
+      } else if (user && user.role === 'mentor') {
+        navigate('/mentor-dashboard');
+      } else if (user && user.role === 'student') {
+        navigate('/');
       } else {
         navigate('/');
       }
