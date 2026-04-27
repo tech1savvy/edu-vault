@@ -9,7 +9,7 @@ const handleSignup = async (req, res) => {
     if (error.name === 'SequelizeUniqueConstraintError') {
       return res.status(409).json({ error: 'Email already in use' });
     }
-    logger.error(error);
+    logger.error('Signup error', { message: error.message, stack: error.stack });
     res.status(500).json({ error: error.message });
   }
 };
@@ -26,7 +26,7 @@ const handleLogin = async (req, res) => {
     };
     res.status(200).json({ user: userWithoutPassword, token });
   } catch (error) {
-    logger.error(error);
+    logger.error('Login error', { message: error.message, stack: error.stack });
     res.status(401).json({ error: error.message });
   }
 };
