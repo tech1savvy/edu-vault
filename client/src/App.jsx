@@ -39,15 +39,35 @@ import Certifications from "./components/Resume/Certifications";
 import Achievements from "./components/Resume/Achievements";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import LayoutS from "./components/Portfolio/Layouts/LayoutS/LayoutS";
 import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
 import LayoutT from "./components/Portfolio/Layouts/LayoutT/LayoutT";
 
+import CVTemplate from "./components/Resume/CVTemplate";
+import FacultyMentoringDashboard from "./components/FacultyMentoringDashboard";
+import MentorDashboard from "./pages/MentorDashboard";
+
+import { Navigate } from "react-router-dom";
+
+
+const RoleRoute = ({ allowedRoles, children }) => {
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  
+  if (!user || !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" />;
+  }
+  return children;
+};
+
 function App() {
-  // Removed useAuth and useEffect for setupAxiosInterceptors
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
   return (
     <>
       <Navbar />
+
       <main className="p-3">
         <Routes>
           {/* Auth Routes */}
@@ -120,41 +140,49 @@ function App() {
             }
           />
 
-          {/* Input Routes */}
-          <Route path="/input/heading" element={<HeadingForm />} />
-          <Route path="/input/experience" element={<ExperienceForm />} />
-          <Route path="/input/education" element={<EducationForm />} />
-          <Route path="/input/skills" element={<Skills isInput={true} />} />
-          <Route path="/input/projects" element={<ProjectsForm />} />
-          <Route
-            path="/input/certifications"
-            element={<CertificationsForm />}
-          />
-          <Route path="/input/achievements" element={<AchievementsForm />} />
+          {/* Faculty & Mentor Routes */}
+          <Route path="/faculty-dashboard" element={<RoleRoute allowedRoles={['administrator', 'mentor']}><FacultyMentoringDashboard /></RoleRoute>} />
+          <Route path="/mentor-dashboard" element={<RoleRoute allowedRoles={['administrator', 'mentor']}><MentorDashboard /></RoleRoute>} />
 
-          {/* Output Routes */}
-          <Route path="/output/heading" element={<Heading />} />
-          <Route path="/output/experience" element={<Experience />} />
-          <Route path="/output/education" element={<Education />} />
-          <Route path="/output/skills" element={<Skills isInput={false} />} />
-          <Route path="/output/projects" element={<Projects />} />
-          <Route path="/output/certifications" element={<Certifications />} />
-          <Route path="/output/achievements" element={<Achievements />} />
 
-          {/* Portfolio Route */}
-          <Route path="/portfolio/layout-k" element={<LayoutK />} />
-          <Route path="/portfolio/layout-t" element={<LayoutT />} />
+
+          {/* Input Routes (Student Only) */}
+          <Route path="/input/heading" element={<RoleRoute allowedRoles={['student']}><HeadingForm /></RoleRoute>} />
+          <Route path="/input/experience" element={<RoleRoute allowedRoles={['student']}><ExperienceForm /></RoleRoute>} />
+          <Route path="/input/education" element={<RoleRoute allowedRoles={['student']}><EducationForm /></RoleRoute>} />
+          <Route path="/input/skills" element={<RoleRoute allowedRoles={['student']}><Skills isInput={true} /></RoleRoute>} />
+          <Route path="/input/projects" element={<RoleRoute allowedRoles={['student']}><ProjectsForm /></RoleRoute>} />
+          <Route path="/input/certifications" element={<RoleRoute allowedRoles={['student']}><CertificationsForm /></RoleRoute>} />
+          <Route path="/input/achievements" element={<RoleRoute allowedRoles={['student']}><AchievementsForm /></RoleRoute>} />
+
+          {/* Output Routes (Student Only) */}
+          <Route path="/output/heading" element={<RoleRoute allowedRoles={['student']}><Heading /></RoleRoute>} />
+          <Route path="/output/experience" element={<RoleRoute allowedRoles={['student']}><Experience /></RoleRoute>} />
+          <Route path="/output/education" element={<RoleRoute allowedRoles={['student']}><Education /></RoleRoute>} />
+          <Route path="/output/skills" element={<RoleRoute allowedRoles={['student']}><Skills isInput={false} /></RoleRoute>} />
+          <Route path="/output/projects" element={<RoleRoute allowedRoles={['student']}><Projects /></RoleRoute>} />
+          <Route path="/output/certifications" element={<RoleRoute allowedRoles={['student']}><Certifications /></RoleRoute>} />
+          <Route path="/output/achievements" element={<RoleRoute allowedRoles={['student']}><Achievements /></RoleRoute>} />
+
+          {/* Portfolio Route (Student Only) */}
+          <Route path="/portfolio/layout-s" element={<RoleRoute allowedRoles={['student']}><LayoutS /></RoleRoute>} />
+          <Route path="/portfolio/layout-k" element={<RoleRoute allowedRoles={['student']}><LayoutK /></RoleRoute>} />
+          <Route path="/portfolio/layout-t" element={<RoleRoute allowedRoles={['student']}><LayoutT /></RoleRoute>} />
 
           {/* Default Route */}
           <Route
             path="/"
             element={
-              <div className="container text-center mt-5">
-                <h2>Welcome to EduVault Resume Builder</h2>
-                <p>
-                  Select a component from the navigation menu to get started.
-                </p>
-              </div>
+              user && (user.role === 'administrator' || user.role === 'mentor') ? (
+                  <Navigate to="/mentor-dashboard" />
+              ) : (
+                <div className="container text-center mt-5">
+                  <h2>Welcome to EduVault Resume Builder</h2>
+                  <p>
+                    Select a component from the navigation menu to get started.
+                  </p>
+                </div>
+              )
             }
           />
         </Routes>

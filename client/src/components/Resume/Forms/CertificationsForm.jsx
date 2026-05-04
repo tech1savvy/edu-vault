@@ -4,6 +4,8 @@ import { ResumeContext } from "../../../context/resumeContext";
 function CertificationsForm() {
   const { certifications, setCertifications } = useContext(ResumeContext);
 
+  const [editIndex, setEditIndex] = useState(null);
+
   const [form, setForm] = useState({
     name: "",
     issuer: "",
@@ -17,7 +19,14 @@ function CertificationsForm() {
 
   const handleAdd = () => {
     if (form.name.trim()) {
-      setCertifications([...certifications, form]);
+      if (editIndex !== null) {
+        const updatedCertifications = [...certifications];
+        updatedCertifications[editIndex] = form;
+        setCertifications(updatedCertifications);
+        setEditIndex(null);
+      } else {
+        setCertifications([...certifications, form]);
+      }
       setForm({
         name: "",
         issuer: "",
@@ -90,9 +99,19 @@ function CertificationsForm() {
         </div>
       </div>
 
-      <button className="btn btn-primary" onClick={handleAdd}>
-        Add Certification
-      </button>
+      <div className="d-flex gap-2">
+        <button className={editIndex !== null ? "btn btn-success" : "btn btn-primary"} onClick={handleAdd}>
+          {editIndex !== null ? "Update Certification" : "Add Certification"}
+        </button>
+        {editIndex !== null && (
+          <button className="btn btn-secondary" onClick={() => {
+            setEditIndex(null);
+            setForm({ name: "", issuer: "", date: "", credentialId: "" });
+          }}>
+            Cancel
+          </button>
+        )}
+      </div>
 
       <hr />
 
@@ -118,12 +137,24 @@ function CertificationsForm() {
                   </div>
                 )}
               </div>
-              <button
-                className="btn btn-outline-danger btn-sm"
-                onClick={() => handleRemove(idx)}
-              >
-                Remove
-              </button>
+              <div className="d-flex flex-column gap-2">
+                <button 
+                  className="btn btn-outline-primary btn-sm" 
+                  onClick={() => {
+                    setForm(certification);
+                    setEditIndex(idx);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={() => handleRemove(idx)}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           </li>
         ))}

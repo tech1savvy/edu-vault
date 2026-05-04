@@ -1,0 +1,123 @@
+/* client/src/components/Resume/CVTemplate.css */
+
+.cv-template {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333333;
+  line-height: 1.4;
+  background-color: white;
+  width: 210mm;
+  padding: 15mm;
+  box-sizing: border-box;
+  font-size: 11pt; /* standard CV size */
+}
+
+/* Header */
+.cv-template h1 {
+  font-size: 24pt;
+  text-transform: uppercase;
+  color: #1a365d; /* Dark blue matching screenshot */
+  text-align: center;
+  margin: 0 0 5px 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.cv-template .cv-contact {
+  text-align: center;
+  font-size: 10pt;
+  color: #555555;
+  margin-bottom: 12px;
+}
+
+.cv-template .cv-contact a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+/* Sections */
+.cv-template .cv-section-title {
+  font-size: 12pt;
+  text-transform: uppercase;
+  color: #1a365d;
+  font-weight: 700;
+  margin: 18px 0 4px 0;
+}
+
+.cv-template .cv-divider {
+  border: none;
+  border-top: 2px solid #3182ce; /* Light blue divider */
+  margin: 0 0 10px 0;
+}
+
+/* Items inside sections */
+.cv-template .cv-item {
+  margin-bottom: 12px;
+}
+
+.cv-template .cv-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.cv-template .cv-item-title {
+  font-weight: 700;
+  color: #222;
+}
+.cv-template .cv-item-title a {
+  color: #0056b3;
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.cv-template .cv-item-subtitle {
+  font-style: italic;
+  color: #444;
+  font-size: 10.5pt;
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+.cv-template .cv-item-date {
+  font-style: italic;
+  font-size: 10pt;
+  color: #666;
+}
+
+/* Lists and paragraphs */
+.cv-template .cv-list {
+  margin: 4px 0 0 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.cv-template .cv-list li {
+  margin-bottom: 4px;
+}
+
+.cv-template .cv-paragraph {
+  margin: 0 0 10px 0;
+  text-align: justify;
+}
+
+.cv-template .cv-skills-row {
+  margin-bottom: 4px;
+}
+
+.cv-template .cv-skills-row strong {
+  color: #222;
+}
+
+/* Bullet styling for certifications */
+.cv-template .cv-cert-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+.cv-template .cv-cert-list li {
+  margin-bottom: 6px;
+  color: #333;
+}
+.cv-template .cv-cert-list strong {
+  color: #222;
+}

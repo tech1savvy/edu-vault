@@ -4,6 +4,8 @@ import { ResumeContext } from "../../../context/resumeContext";
 function ProjectsForm() {
   const { projects, setProjects } = useContext(ResumeContext);
 
+  const [editIndex, setEditIndex] = useState(null);
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -18,7 +20,14 @@ function ProjectsForm() {
   };
 
   const handleAdd = () => {
-    setProjects([...projects, form]);
+    if (editIndex !== null) {
+      const updatedProjects = [...projects];
+      updatedProjects[editIndex] = form;
+      setProjects(updatedProjects);
+      setEditIndex(null);
+    } else {
+      setProjects([...projects, form]);
+    }
     setForm({
       title: "",
       description: "",
@@ -107,9 +116,19 @@ function ProjectsForm() {
         </div>
       )}
 
-      <button className="btn btn-primary" onClick={handleAdd}>
-        Add Project
-      </button>
+      <div className="d-flex gap-2">
+        <button className={editIndex !== null ? "btn btn-success" : "btn btn-primary"} onClick={handleAdd}>
+          {editIndex !== null ? "Update Project" : "Add Project"}
+        </button>
+        {editIndex !== null && (
+          <button className="btn btn-secondary" onClick={() => {
+            setEditIndex(null);
+            setForm({ title: "", description: "", techStack: "", timeline: "", type: "Individual", collaborators: "" });
+          }}>
+            Cancel
+          </button>
+        )}
+      </div>
 
       <hr />
 
@@ -117,15 +136,35 @@ function ProjectsForm() {
       {projects.length === 0 && <p>No projects added yet.</p>}
       <ul className="list-group">
         {projects.map((proj, idx) => (
-          <li key={idx} className="list-group-item">
-            <strong>{proj.title}</strong> <br />
-            <small>{proj.timeline}</small>
-            <p>{proj.description}</p>
-            <em>{proj.techStack}</em> <br />
-            <span className="badge bg-info">{proj.type}</span>
-            {proj.type === "Group" && (
-              <p>Collaborators: {proj.collaborators}</p>
-            )}
+          <li key={idx} className="list-group-item d-flex justify-content-between align-items-start">
+            <div>
+              <strong>{proj.title}</strong> <br />
+              <small>{proj.timeline}</small>
+              <p className="mb-1">{proj.description}</p>
+              <em>{proj.techStack}</em> <br />
+              <span className="badge bg-info">{proj.type}</span>
+              {proj.type === "Group" && (
+                <p className="mb-0 mt-1">Collaborators: {proj.collaborators}</p>
+              )}
+            </div>
+            <div className="d-flex flex-column gap-2">
+              <button 
+                className="btn btn-outline-primary btn-sm" 
+                onClick={() => {
+                  setForm(proj);
+                  setEditIndex(idx);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                Edit
+              </button>
+              <button 
+                className="btn btn-outline-danger btn-sm" 
+                onClick={() => setProjects(projects.filter((_, i) => i !== idx))}
+              >
+                Remove
+              </button>
+            </div>
           </li>
         ))}
       </ul>

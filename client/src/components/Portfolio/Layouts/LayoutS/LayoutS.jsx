@@ -1,0 +1,339 @@
+// import React, { useContext, useState } from "react";
+// import "./LayoutS.css";
+// import { ResumeContext } from "../../../../context/resumeContext";
+
+// import Header from "./Header";
+// import Experience from "./Experience";
+// import Education from "./Education";
+// import Projects from "./Projects";
+// import Skills from "./Skills";
+// import Achievements from "./Achievements";
+// import Certifications from "./Certifications";
+// import Contact from "./Contact";
+
+// // PDF Button Component
+// import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
+
+// export default function LayoutS() {
+//   // read the shape your ResumeContext provides
+//   const {
+//     heading = {},
+//     education = [],
+//     experiences = [],
+//     projects = [],
+//     skills = [],
+//     achievements = [],
+//     certifications = [],
+//   } = useContext(ResumeContext) || {};
+
+//   // theme: 'sunset' | 'mint' | 'coral'
+//   const [theme, setTheme] = useState("sunset");
+
+//   return (
+//     <div className="ls-root" data-theme={theme}>
+
+//       {/* -------------------- THEME BUTTONS (TOP RIGHT) -------------------- */}
+//       <div className="ls-theme-ui" role="toolbar" aria-label="Theme switcher">
+//         <button
+//           aria-pressed={theme === "sunset"}
+//           title="Sunset Theme"
+//           className={`ls-theme-btn ${theme === "sunset" ? "active" : ""}`}
+//           onClick={() => setTheme("sunset")}
+//         >
+//           🌅
+//         </button>
+
+//         <button
+//           aria-pressed={theme === "mint"}
+//           title="Mint Theme"
+//           className={`ls-theme-btn ${theme === "mint" ? "active" : ""}`}
+//           onClick={() => setTheme("mint")}
+//         >
+//           🪴
+//         </button>
+
+//         <button
+//           aria-pressed={theme === "coral"}
+//           title="Coral Theme"
+//           className={`ls-theme-btn ${theme === "coral" ? "active" : ""}`}
+//           onClick={() => setTheme("coral")}
+//         >
+//           🔥
+//         </button>
+//       </div>
+
+//       {/* -------------------- PRINTABLE AREA STARTS HERE -------------------- */}
+//       {/* EVERYTHING YOU WANT INSIDE THE PDF MUST BE INSIDE THIS DIV */}
+//       <div id="resume-root">
+
+//         <main className="ls-container">
+//           <Header data={heading} />
+
+//           <section className="ls-cards">
+//             <article className="ls-card">
+//               <Experience data={experiences || []} />
+//             </article>
+
+//             <article className="ls-card">
+//               <Education data={education || []} />
+//             </article>
+
+//             <article className="ls-card">
+//               <Projects data={projects || []} />
+//             </article>
+
+//             <article className="ls-card">
+//               <Skills data={skills || []} />
+//             </article>
+
+//             <article className="ls-card">
+//               <Achievements data={achievements || []} />
+//             </article>
+
+//             <article className="ls-card">
+//               <Certifications data={certifications || []} />
+//             </article>
+
+//             <article className="ls-card">
+//               <Contact data={heading} />
+//             </article>
+//           </section>
+//         </main>
+
+//       </div>
+//       {/* -------------------- PRINTABLE AREA ENDS HERE -------------------- */}
+
+//       {/* -------------------- PDF DOWNLOAD BUTTON -------------------- */}
+//       <div style={{ textAlign: "center", margin: "40px 0" }}>
+//         <DownloadPdfButton filename="My-Resume.pdf" />
+//       </div>
+
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+import React, { useContext, useEffect, useState } from "react";
+import "./LayoutS.css";
+import { ResumeContext } from "../../../../context/resumeContext";
+
+// local pieces (same as before)
+import Header from "./Header";
+import About from "./About";
+import Experience from "./Experience";
+import Education from "./Education";
+import Projects from "./Projects";
+import Skills from "./Skills";
+import Achievements from "./Achievements";
+import Certifications from "./Certifications";
+import Contact from "./Contact";
+
+// PDF Button Component (keep)
+import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
+import SyncProfileButton from "../../../Resume/SyncProfileButton";
+import CVTemplate from "../../../Resume/CVTemplate";
+
+// API helpers (same as LayoutT)
+import {
+  getHeading,
+  getProjects,
+  getSkills,
+  getExperience,
+  getEducation,
+  getAchievements,
+  getCertifications,
+} from "../../../../services/api";
+
+export default function LayoutS() {
+  // Context fallback values (used when API isn't available or before fetch)
+  const {
+    heading: ctxHeading = {},
+    education: ctxEducation = [],
+    experiences: ctxExperiences = [],
+    projects: ctxProjects = [],
+    skills: ctxSkills = [],
+    achievements: ctxAchievements = [],
+    certifications: ctxCertifications = [],
+  } = useContext(ResumeContext) || {};
+
+  // local state to hold fetched data (preferred)
+  const [, setData] = useState({
+    heading: null,
+    education: [],
+    experiences: [],
+    projects: [],
+    skills: [],
+    achievements: [],
+    certifications: [],
+  });
+
+  const [loading, setLoading] = useState(true);
+  const [, setFetchError] = useState(null);
+
+  // theme: 'sunset' | 'mint' | 'coral'
+  const [theme, setTheme] = useState("sunset");
+
+  useEffect(() => {
+    let mounted = true;
+
+    const fetchAll = async () => {
+      try {
+        setLoading(true);
+        setFetchError(null);
+
+        // fetch everything in parallel (same set as LayoutT)
+        const [
+          heading,
+          projects,
+          skills,
+          experience,
+          education,
+          achievements,
+          certifications,
+        ] = await Promise.all([
+          getHeading(),
+          getProjects(),
+          getSkills(),
+          getExperience(),
+          getEducation(),
+          getAchievements(),
+          getCertifications(),
+        ]);
+
+        if (!mounted) return;
+
+        setData({
+          heading: heading || null,
+          projects: projects || [],
+          skills: skills || [],
+          experiences: experience || [],
+          education: education || [],
+          achievements: achievements || [],
+          certifications: certifications || [],
+        });
+      } catch (err) {
+        // If API fails (server off / not authenticated), fallback to context values
+        console.error("LayoutS: failed to fetch resume data:", err);
+        setFetchError(err);
+        // We'll keep data null so UI uses context below
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    fetchAll();
+
+    return () => {
+      mounted = false;
+    };
+  }, []); // run once on mount
+
+  // Exclusively use live context data to ensure sync with input forms
+  const heading = ctxHeading || {};
+  const education = ctxEducation || [];
+  const experiences = ctxExperiences || [];
+  const projects = ctxProjects || [];
+  const skills = ctxSkills || [];
+  const achievements = ctxAchievements || [];
+  const certifications = ctxCertifications || [];
+
+  return (
+    <div className="ls-root" data-theme={theme}>
+
+      {/* Ambient Background Elements */}
+      <div className="ls-ambient-bg no-print">
+        <div className="ls-orb-1"></div>
+        <div className="ls-orb-2"></div>
+        <div className="ls-orb-3"></div>
+      </div>
+
+      {/* -------------------- THEME BUTTONS (TOP RIGHT) -------------------- */}
+      <div className="ls-theme-ui no-print" role="toolbar" aria-label="Theme switcher">
+        <button
+          aria-pressed={theme === "sunset"}
+          title="Sunset Theme"
+          className={`ls-theme-btn ${theme === "sunset" ? "active" : ""}`}
+          onClick={() => setTheme("sunset")}
+        >
+          🌅
+        </button>
+
+        <button
+          aria-pressed={theme === "mint"}
+          title="Mint Theme"
+          className={`ls-theme-btn ${theme === "mint" ? "active" : ""}`}
+          onClick={() => setTheme("mint")}
+        >
+          🪴
+        </button>
+
+        <button
+          aria-pressed={theme === "coral"}
+          title="Coral Theme"
+          className={`ls-theme-btn ${theme === "coral" ? "active" : ""}`}
+          onClick={() => setTheme("coral")}
+        >
+          🔥
+        </button>
+      </div>
+
+      {/* -------------------- PRINTABLE AREA STARTS HERE -------------------- */}
+      {/* EVERYTHING YOU WANT INSIDE THE PDF MUST BE INSIDE THIS DIV */}
+      <div id="resume-root">
+
+        <main className="ls-container">
+          
+          <aside className="ls-sidebar-wrapper">
+            <Header data={heading || {}} />
+            <Contact data={heading || {}} />
+          </aside>
+
+          <div className="ls-content">
+            {/* show a simple loading notice inside the content area (non-blocking) */}
+            {loading && <div className="ls-section" style={{ textAlign: 'center', opacity: 0.5 }}>Loading...</div>}
+
+            <About data={heading || {}} />
+            <Experience data={experiences || [] } />
+            <Education data={education || [] } />
+            <Projects data={projects || [] } />
+            <Skills data={skills || [] } />
+            <Achievements data={achievements || [] } />
+            <Certifications data={certifications || [] } />
+          </div>
+
+        </main>
+
+      </div>
+      {/* -------------------- PRINTABLE AREA ENDS HERE -------------------- */}
+
+      {/* Hidden standard CV template for PDF export */}
+      <CVTemplate 
+        visible={false} 
+        dataProp={{
+          heading,
+          experiences,
+          education,
+          projects,
+          skills,
+          achievements,
+          certifications
+        }} 
+      />
+
+      {/* -------------------- PDF DOWNLOAD BUTTON -------------------- */}
+      <div style={{ textAlign: "center", margin: "40px 0", display: "flex", justifyContent: "center", gap: "15px" }}>
+        <SyncProfileButton />
+        <DownloadPdfButton filename={`${heading?.name ? heading.name.replace(/\s+/g, '-') : 'My'}-Resume.pdf`} />
+      </div>
+
+    </div>
+  );
+}
+ 

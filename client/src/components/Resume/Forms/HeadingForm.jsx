@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ResumeContext } from "../../../context/resumeContext";
 
 function HeadingForm() {
-  const { setHeadingData } = useContext(ResumeContext);
+  const { heading, setHeading } = useContext(ResumeContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -22,13 +22,26 @@ function HeadingForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setHeadingData(formData); // save into context
-    navigate("/output/heading"); // go to preview
+
+    setHeading({
+      name: formData.fullName,
+      email: formData.contact,
+      contact: formData.contact,
+      linkedin: formData.linkedin,
+      github: formData.github,
+      website: formData.portfolio,
+      title: formData.title,
+      summary: formData.description,
+    });
+    // Removed auto navigation to output/heading
+  };
+
+  const handleNext = () => {
+    navigate("/output/heading");
   };
 
   return (
     <div className="form-container">
-      {" "}
       <form onSubmit={handleSubmit} className="container mt-3">
         <h3 className="mb-3">Heading Information</h3>
 
@@ -88,10 +101,72 @@ function HeadingForm() {
           onChange={handleChange}
         />
 
-        <button type="submit" className="btn btn-primary">
-          Save & Preview
-        </button>
+        <div className="d-flex gap-2">
+          <button type="submit" className="btn btn-primary">
+            Save Heading
+          </button>
+        </div>
       </form>
+
+      <hr />
+
+      <div className="container mt-3">
+        <h4>Preview</h4>
+        {!heading || Object.keys(heading).length === 0 ? (
+          <p>No heading information added yet.</p>
+        ) : (
+          <ul className="list-group mb-3">
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div>
+                <strong>{heading.name || heading.fullName}</strong> {heading.title && `| ${heading.title}`} <br />
+                {heading.email && <span>Email: {heading.email} <br /></span>}
+                {heading.website && <span>Portfolio: {heading.website} <br /></span>}
+                {heading.summary && <p className="mb-0 mt-2">{heading.summary}</p>}
+              </div>
+              <div className="d-flex flex-column gap-2">
+                <button 
+                  className="btn btn-outline-primary btn-sm" 
+                  onClick={() => {
+                    setFormData({
+                      fullName: heading.name || heading.fullName || "",
+                      contact: heading.contact || heading.email || "",
+                      linkedin: heading.linkedin || "",
+                      github: heading.github || "",
+                      portfolio: heading.website || heading.portfolio || "",
+                      title: heading.title || "",
+                      description: heading.summary || heading.description || "",
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
+                <button 
+                  className="btn btn-outline-danger btn-sm" 
+                  onClick={() => {
+                    setHeading({});
+                    setFormData({
+                      fullName: "",
+                      contact: "",
+                      linkedin: "",
+                      github: "",
+                      portfolio: "",
+                      title: "",
+                      description: "",
+                    });
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            </li>
+          </ul>
+        )}
+
+        <button className="btn btn-success" onClick={handleNext}>
+          Save & Next
+        </button>
+      </div>
     </div>
   );
 }
