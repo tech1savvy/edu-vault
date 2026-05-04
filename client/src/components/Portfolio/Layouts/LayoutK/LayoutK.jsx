@@ -29,13 +29,13 @@ import CVTemplate from "../../../Resume/CVTemplate";
 
 const LayoutK = () => {
   const [theme, setTheme] = useState("dark");
-  const [heading, setHeading] = useState(null);
-  const [projects, setProjects] = useState([]);
-  const [skills, setSkills] = useState([]);
-  const [experience, setExperience] = useState([]);
-  const [education, setEducation] = useState([]);
-  const [achievements, setAchievements] = useState([]);
-  const [certifications, setCertifications] = useState([]);
+  const [, setHeading] = useState(null);
+  const [, setProjects] = useState([]);
+  const [, setSkills] = useState([]);
+  const [, setExperience] = useState([]);
+  const [, setEducation] = useState([]);
+  const [, setAchievements] = useState([]);
+  const [, setCertifications] = useState([]);
 
   // Context fallback values
   const {

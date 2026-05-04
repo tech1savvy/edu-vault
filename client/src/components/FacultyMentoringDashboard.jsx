@@ -100,6 +100,7 @@ const MOCK_ACTIVITIES = {
 
 // --- Sub-Components ---
 
+// eslint-disable-next-line no-unused-vars
 const StatsCard = ({ title, value, subtext, icon: Icon, colorClass }) => (
     <div className="bg-white rounded-xl p-6 shadow-sm border border-purple-100 hover:shadow-md transition-shadow">
         <div className="flex justify-between items-start">

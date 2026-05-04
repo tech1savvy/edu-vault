@@ -28,11 +28,6 @@ const AnalyticsPage = () => {
     }
   };
 
-  const getCompletionColor = (percentage) => {
-    if (percentage >= 70) return 'text-success';
-    if (percentage >= 40) return 'text-warning';
-    return 'text-danger';
-  };
 
   if (loading) {
     return (
