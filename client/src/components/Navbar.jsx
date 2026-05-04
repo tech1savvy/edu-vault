@@ -1,8 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // Removed import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
-  const navigate = useNavigate();
 
   // Directly read user from localStorage
   const getUserFromLocalStorage = () => {

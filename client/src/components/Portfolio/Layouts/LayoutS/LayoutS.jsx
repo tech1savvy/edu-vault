@@ -164,7 +164,7 @@ export default function LayoutS() {
   } = useContext(ResumeContext) || {};
 
   // local state to hold fetched data (preferred)
-  const [data, setData] = useState({
+  const [, setData] = useState({
     heading: null,
     education: [],
     experiences: [],
@@ -175,7 +175,7 @@ export default function LayoutS() {
   });
 
   const [loading, setLoading] = useState(true);
-  const [fetchError, setFetchError] = useState(null);
+  const [, setFetchError] = useState(null);
 
   // theme: 'sunset' | 'mint' | 'coral'
   const [theme, setTheme] = useState("sunset");

@@ -30,7 +30,7 @@ import CVTemplate from "../../../Resume/CVTemplate";
 const LayoutT = () => {
   const [theme, setTheme] = useState("dark");
 
-  const [data, setData] = useState({
+  const [, setData] = useState({
     heading: null,
     projects: [],
     skills: [],

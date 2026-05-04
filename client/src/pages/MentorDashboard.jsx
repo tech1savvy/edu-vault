@@ -37,7 +37,7 @@ export default function MentorDashboard() {
       const res = await getMentorStudents();
       setStudents(res.data);
       setLoading(false);
-    } catch (err) {
+    } catch {
       setError("Failed to fetch students.");
       setLoading(false);
     }
@@ -55,7 +55,7 @@ export default function MentorDashboard() {
       ]);
       setDashboardData(dsRes.data);
       setTimeline(tlRes.data);
-    } catch (err) {
+    } catch {
       alert("Error loading student data");
     }
   };
@@ -67,7 +67,7 @@ export default function MentorDashboard() {
     try {
       const dsRes = await getStudentDashboardData(selectedStudent.id, newRole);
       setDashboardData(dsRes.data);
-    } catch(err) {
+    } catch {
       alert("Error updating target role analysis");
     }
   };
@@ -82,7 +82,7 @@ export default function MentorDashboard() {
       setTaskName("");
       setDeadline("");
       setPriority("MEDIUM");
-    } catch (err) {
+    } catch {
       alert("Failed to add action.");
     }
   };
@@ -96,7 +96,7 @@ export default function MentorDashboard() {
         await updateMentoringAction(actionId, payload);
         const tlRes = await getMentoringTimeline(selectedStudent.id);
         setTimeline(tlRes.data);
-    } catch(err) {
+    } catch {
         alert("Failed to update feedback.");
     }
   };
