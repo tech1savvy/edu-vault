@@ -123,23 +123,42 @@ function HeadingForm() {
                 {heading.website && <span>Portfolio: {heading.website} <br /></span>}
                 {heading.summary && <p className="mb-0 mt-2">{heading.summary}</p>}
               </div>
-              <button 
-                className="btn btn-outline-danger btn-sm" 
-                onClick={() => {
-                  setHeading({});
-                  setFormData({
-                    fullName: "",
-                    contact: "",
-                    linkedin: "",
-                    github: "",
-                    portfolio: "",
-                    title: "",
-                    description: "",
-                  });
-                }}
-              >
-                Remove
-              </button>
+              <div className="d-flex flex-column gap-2">
+                <button 
+                  className="btn btn-outline-primary btn-sm" 
+                  onClick={() => {
+                    setFormData({
+                      fullName: heading.name || heading.fullName || "",
+                      contact: heading.contact || heading.email || "",
+                      linkedin: heading.linkedin || "",
+                      github: heading.github || "",
+                      portfolio: heading.website || heading.portfolio || "",
+                      title: heading.title || "",
+                      description: heading.summary || heading.description || "",
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
+                <button 
+                  className="btn btn-outline-danger btn-sm" 
+                  onClick={() => {
+                    setHeading({});
+                    setFormData({
+                      fullName: "",
+                      contact: "",
+                      linkedin: "",
+                      github: "",
+                      portfolio: "",
+                      title: "",
+                      description: "",
+                    });
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
             </li>
           </ul>
         )}

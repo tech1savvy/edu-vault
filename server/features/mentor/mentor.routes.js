@@ -17,7 +17,10 @@ router.get('/students/:id', mentorController.getStudentDashboardData);
 // 3. Add mentoring action
 router.post('/actions', mentorController.postMentorAction);
 
-// 4. Get timeline
+// 4. Update mentoring action (status, feedback)
+router.put('/actions/:id', mentorController.updateMentorAction);
+
+// 5. Get timeline
 router.get('/timeline/:studentId', mentorController.getMentoringTimeline);
 
 module.exports = router;

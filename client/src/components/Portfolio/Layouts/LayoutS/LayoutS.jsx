@@ -235,14 +235,14 @@ export default function LayoutS() {
     };
   }, []); // run once on mount
 
-  // prefer fetched data, fallback to context
-  const heading = data.heading ?? (Object.keys(ctxHeading || {}).length ? ctxHeading : null);
-  const education = (data.education && data.education.length) ? data.education : ctxEducation || [];
-  const experiences = (data.experiences && data.experiences.length) ? data.experiences : ctxExperiences || [];
-  const projects = (data.projects && data.projects.length) ? data.projects : ctxProjects || [];
-  const skills = (data.skills && data.skills.length) ? data.skills : ctxSkills || [];
-  const achievements = (data.achievements && data.achievements.length) ? data.achievements : ctxAchievements || [];
-  const certifications = (data.certifications && data.certifications.length) ? data.certifications : ctxCertifications || [];
+  // Exclusively use live context data to ensure sync with input forms
+  const heading = ctxHeading || {};
+  const education = ctxEducation || [];
+  const experiences = ctxExperiences || [];
+  const projects = ctxProjects || [];
+  const skills = ctxSkills || [];
+  const achievements = ctxAchievements || [];
+  const certifications = ctxCertifications || [];
 
   return (
     <div className="ls-root" data-theme={theme}>

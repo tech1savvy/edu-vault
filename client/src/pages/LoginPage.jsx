@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../services/api';
+import { 
+  login,
+  getHeading,
+  getProjects,
+  getSkills,
+  getExperience,
+  getEducation,
+  getAchievements,
+  getCertifications
+} from '../services/api';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -17,14 +26,60 @@ const LoginPage = () => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user)); // Store user object
 
+      // Clear any existing local storage resume keys from previous accounts
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('resume_')) {
+          localStorage.removeItem(key);
+        }
+      }
+
+      // If student, fetch their existing resume data from DB and prepopulate localStorage
+      if (user && user.role === 'student') {
+        try {
+          const [heading, projects, skills, exp, edu, ach, cert] = await Promise.all([
+            getHeading().catch(() => ({})),
+            getProjects().catch(() => []),
+            getSkills().catch(() => []),
+            getExperience().catch(() => []),
+            getEducation().catch(() => []),
+            getAchievements().catch(() => []),
+            getCertifications().catch(() => [])
+          ]);
+
+          const hData = heading.data || heading || {};
+          if (Object.keys(hData).length > 0) localStorage.setItem('resume_heading', JSON.stringify(hData));
+
+          const pData = projects.data || projects || [];
+          if (pData.length > 0) localStorage.setItem('resume_projects', JSON.stringify(pData));
+
+          const sData = skills.data || skills || [];
+          if (sData.length > 0) localStorage.setItem('resume_skills', JSON.stringify(sData));
+
+          const expData = exp.data || exp || [];
+          if (expData.length > 0) localStorage.setItem('resume_experiences', JSON.stringify(expData));
+
+          const eduData = edu.data || edu || [];
+          if (eduData.length > 0) localStorage.setItem('resume_education', JSON.stringify(eduData));
+
+          const achData = ach.data || ach || [];
+          if (achData.length > 0) localStorage.setItem('resume_achievements', JSON.stringify(achData));
+
+          const certData = cert.data || cert || [];
+          if (certData.length > 0) localStorage.setItem('resume_certifications', JSON.stringify(certData));
+        } catch (fetchErr) {
+          console.warn('Could not fetch existing resume data on login:', fetchErr);
+        }
+      }
+
       if (user && user.role === 'administrator') {
-        navigate('/admin/dashboard');
+        window.location.href = '/admin/dashboard';
       } else if (user && user.role === 'mentor') {
-        navigate('/mentor-dashboard');
+        window.location.href = '/mentor-dashboard';
       } else if (user && user.role === 'student') {
-        navigate('/');
+        window.location.href = '/';
       } else {
-        navigate('/');
+        window.location.href = '/';
       }
     } catch (error) {
       console.error('Login failed:', error);

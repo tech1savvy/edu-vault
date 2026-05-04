@@ -29,6 +29,18 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.ENUM('pending', 'completed'),
       defaultValue: 'pending'
+    },
+    priority: {
+      type: DataTypes.ENUM('LOW', 'MEDIUM', 'HIGH'),
+      defaultValue: 'MEDIUM'
+    },
+    studentNote: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    mentorFeedback: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,
