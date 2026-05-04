@@ -1,11 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import SkillsForm from "./Forms/SkillsForm";
 import { ResumeContext } from "../../context/resumeContext";
 
 const Skills = ({ isInput = false }) => {
   const { skills, setSkills } = useContext(ResumeContext);
+  const [editIndex, setEditIndex] = useState(null);
 
-  const addSkill = (skill) => setSkills([...skills, skill]);
+  const addSkill = (skill) => {
+    if (editIndex !== null) {
+      const updatedSkills = [...skills];
+      updatedSkills[editIndex] = skill;
+      setSkills(updatedSkills);
+      setEditIndex(null);
+    } else {
+      setSkills([...skills, skill]);
+    }
+  };
+  
   const removeSkill = (index) => setSkills(skills.filter((_, i) => i !== index));
 
   return (
@@ -19,7 +30,12 @@ const Skills = ({ isInput = false }) => {
           </p>
 
           {/* Input Form */}
-          <SkillsForm onAddSkill={addSkill} />
+          <SkillsForm 
+            onAddSkill={addSkill} 
+            initialValue={editIndex !== null ? skills[editIndex] : ""} 
+            isEditing={editIndex !== null}
+            onCancel={() => setEditIndex(null)}
+          />
         </>
       )}
 
@@ -33,12 +49,23 @@ const Skills = ({ isInput = false }) => {
             >
               {skill}
               {isInput && (
-                <button
-                  onClick={() => removeSkill(index)}
-                  className="btn btn-danger btn-sm"
-                >
-                  Remove
-                </button>
+                <div className="d-flex gap-2">
+                  <button
+                    onClick={() => {
+                      setEditIndex(index);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="btn btn-outline-primary btn-sm"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => removeSkill(index)}
+                    className="btn btn-outline-danger btn-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
               )}
             </li>
           ))}

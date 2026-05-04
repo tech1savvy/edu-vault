@@ -12,9 +12,9 @@ export default function Header({ data = {} }) {
   const name = data.name || data.fullName || "Your Name";
   const title = data.role || data.title || data.profession || "Professional Title";
 
-  // Using a placeholder avatar since the API doesn't seem to pass an avatar
+  // Using a professional initials avatar
   // In a real app, this would be data.avatar || defaultAvatar
-  const avatarUrl = data.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + encodeURIComponent(name);
+  const avatarUrl = data.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=150&font-size=0.4`;
 
   return (
     <div className="ls-sidebar" style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderBottom: 'none', flex: 'none' }}>

@@ -65,14 +65,14 @@ const LayoutK = () => {
     fetchData();
   }, []);
 
-  // Prefer fetched data, fallback to context
-  const finalHeading = heading ?? (Object.keys(ctxHeading || {}).length ? ctxHeading : null);
-  const finalEducation = (education && education.length) ? education : ctxEducation || [];
-  const finalExperience = (experience && experience.length) ? experience : ctxExperiences || [];
-  const finalProjects = (projects && projects.length) ? projects : ctxProjects || [];
-  const finalSkills = (skills && skills.length) ? skills : ctxSkills || [];
-  const finalAchievements = (achievements && achievements.length) ? achievements : ctxAchievements || [];
-  const finalCertifications = (certifications && certifications.length) ? certifications : ctxCertifications || [];
+  // Exclusively use live context data to ensure sync with input forms
+  const finalHeading = ctxHeading || {};
+  const finalEducation = ctxEducation || [];
+  const finalExperience = ctxExperiences || [];
+  const finalProjects = ctxProjects || [];
+  const finalSkills = ctxSkills || [];
+  const finalAchievements = ctxAchievements || [];
+  const finalCertifications = ctxCertifications || [];
 
   return (
     <div className="portfolio-layout-k" data-theme={theme}>

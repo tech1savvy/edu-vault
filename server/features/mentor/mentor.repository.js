@@ -53,6 +53,17 @@ const createMentorAction = async (data) => {
   return await MentorAction.create(data);
 };
 
+const getMentorActionById = async (id) => {
+  return await MentorAction.findByPk(id);
+};
+
+const updateMentorAction = async (id, data) => {
+  return await MentorAction.update(data, {
+    where: { id },
+    returning: true
+  });
+};
+
 module.exports = {
   getAllStudents,
   getStudentById,
@@ -62,5 +73,7 @@ module.exports = {
   getStudentCertifications,
   getJobDescriptions,
   getMentorActions,
-  createMentorAction
+  createMentorAction,
+  getMentorActionById,
+  updateMentorAction
 };

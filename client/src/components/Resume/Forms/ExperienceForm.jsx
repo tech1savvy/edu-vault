@@ -4,6 +4,8 @@ import { ResumeContext } from "../../../context/resumeContext";
 function ExperienceForm() {
   const { experiences, setExperiences } = useContext(ResumeContext);
 
+  const [editIndex, setEditIndex] = useState(null);
+
   const [form, setForm] = useState({
     type: "Job",
     company: "",
@@ -17,7 +19,14 @@ function ExperienceForm() {
   };
 
   const handleAdd = () => {
-    setExperiences([...experiences, form]);
+    if (editIndex !== null) {
+      const updatedExperiences = [...experiences];
+      updatedExperiences[editIndex] = form;
+      setExperiences(updatedExperiences);
+      setEditIndex(null);
+    } else {
+      setExperiences([...experiences, form]);
+    }
     setForm({
       type: "Job",
       company: "",
@@ -91,9 +100,19 @@ function ExperienceForm() {
         />
       </div>
 
-      <button className="btn btn-primary" onClick={handleAdd}>
-        Add Experience
-      </button>
+      <div className="d-flex gap-2">
+        <button className={editIndex !== null ? "btn btn-success" : "btn btn-primary"} onClick={handleAdd}>
+          {editIndex !== null ? "Update Experience" : "Add Experience"}
+        </button>
+        {editIndex !== null && (
+          <button className="btn btn-secondary" onClick={() => {
+            setEditIndex(null);
+            setForm({ type: "Job", company: "", role: "", duration: "", details: "" });
+          }}>
+            Cancel
+          </button>
+        )}
+      </div>
 
       <hr />
 
@@ -107,12 +126,24 @@ function ExperienceForm() {
               <small>{exp.duration}</small>
               <p className="mb-0">{exp.details}</p>
             </div>
-            <button 
-              className="btn btn-outline-danger btn-sm" 
-              onClick={() => setExperiences(experiences.filter((_, i) => i !== idx))}
-            >
-              Remove
-            </button>
+            <div className="d-flex flex-column gap-2">
+              <button 
+                className="btn btn-outline-primary btn-sm" 
+                onClick={() => {
+                  setForm(exp);
+                  setEditIndex(idx);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                Edit
+              </button>
+              <button 
+                className="btn btn-outline-danger btn-sm" 
+                onClick={() => setExperiences(experiences.filter((_, i) => i !== idx))}
+              >
+                Remove
+              </button>
+            </div>
           </li>
         ))}
       </ul>

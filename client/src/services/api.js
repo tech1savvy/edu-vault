@@ -166,11 +166,25 @@ export const getStudentDashboardData = async (studentId, targetRole = '') => {
   }
 };
 
-export const addMentoringAction = async (studentId, taskName, deadline) => {
+export const addMentoringAction = async (studentId, taskName, deadline, priority) => {
   const response = await fetch(`${API_URL}/mentor/actions`, {
     method: 'POST',
     headers: getAuthHeaders(),
-    body: JSON.stringify({ studentId, taskName, deadline }),
+    body: JSON.stringify({ studentId, taskName, deadline, priority }),
+  });
+  const data = await response.json();
+  if (response.ok) {
+    return data;
+  } else {
+    throw new Error(data.error || data.message || 'Something went wrong');
+  }
+};
+
+export const updateMentoringAction = async (actionId, updateData) => {
+  const response = await fetch(`${API_URL}/mentor/actions/${actionId}`, {
+    method: 'PUT',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(updateData),
   });
   const data = await response.json();
   if (response.ok) {

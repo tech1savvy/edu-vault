@@ -35,8 +35,7 @@ const getStudentDashboard = async (studentId, targetRole = null) => {
     if (targetRole) {
         // Force the target role visually
         roleMatch = targetRole;
-        // Mock a readiness score based on target role difficulty just for demonstration if we bypass ML
-        readinessScore = 50 + Math.floor(Math.random() * 25);
+        // readinessScore will be calculated below based on gap analysis
     } else {
         try {
             const mlResponse = await fetch(`${ML_SERVICE_URL}/match/student`, {
@@ -74,25 +73,59 @@ const getStudentDashboard = async (studentId, targetRole = null) => {
     const missingSkills = [];
     const recommendations = [];
 
-    const commonTechSkills = ['react', 'node.js', 'python', 'java', 'sql', 'aws', 'docker', 'machine learning', 'javascript', 'c++', 'linux', 'system design', 'dsa'];
+    const commonTechSkills = [
+        'react', 'node.js', 'python', 'java', 'sql', 'aws', 'docker', 'machine learning', 
+        'javascript', 'c++', 'linux', 'system design', 'dsa', 'kubernetes', 'typescript', 
+        'css', 'html', 'express', 'mongodb', 'spring', 'go', 'ruby', 'php', 'c#', 'azure', 
+        'gcp', 'jenkins', 'terraform', 'angular', 'vue'
+    ];
     const studentSkillsLower = skills.map(s => (s.name || s.skill || "").toLowerCase());
     
-    const determinePriority = (skill) => {
-        const high = ['dsa', 'system design', 'machine learning', 'java', 'python'];
-        const medium = ['react', 'node.js', 'sql', 'javascript'];
+    const determinePriority = (skill, role) => {
+        const roleLower = role.toLowerCase();
+        
+        let high = ['dsa', 'system design'];
+        let medium = ['sql', 'javascript', 'linux'];
+
+        if (roleLower.includes('frontend')) {
+            high.push('react', 'javascript');
+            medium.push('node.js');
+        } else if (roleLower.includes('backend') || roleLower.includes('full stack')) {
+            high.push('node.js', 'java', 'sql', 'python');
+            medium.push('react');
+        } else if (roleLower.includes('data')) {
+            high.push('python', 'sql', 'machine learning');
+        } else if (roleLower.includes('devops') || roleLower.includes('cloud')) {
+            high.push('aws', 'docker', 'kubernetes', 'linux');
+            medium.push('python', 'bash');
+        } else {
+            high.push('java', 'python', 'react', 'node.js'); // generic SDE
+        }
+
         if (high.includes(skill)) return 'HIGH';
         if (medium.includes(skill)) return 'MEDIUM';
         return 'LOW';
     };
 
     if (matchedJobId || targetRole) {
-        // If we have a targetRole manually provided, we simulate the required skills NLP extraction.
         let jobRequiredSkills = [];
         if (targetRole) {
              const targetLower = targetRole.toLowerCase();
-             if (targetLower.includes('data')) jobRequiredSkills = ['python', 'sql', 'machine learning', 'dsa'];
-             else if (targetLower.includes('devops')) jobRequiredSkills = ['aws', 'docker', 'linux', 'python'];
-             else jobRequiredSkills = ['react', 'node.js', 'java', 'dsa', 'system design'];
+             if (targetLower.includes('data')) {
+                 jobRequiredSkills = ['python', 'sql', 'machine learning'];
+             } else if (targetLower.includes('devops') || targetLower.includes('cloud')) {
+                 jobRequiredSkills = ['aws', 'docker', 'linux', 'kubernetes'];
+             } else if (targetLower.includes('frontend')) {
+                 jobRequiredSkills = ['javascript', 'react', 'css'];
+             } else if (targetLower.includes('backend')) {
+                 jobRequiredSkills = ['node.js', 'sql', 'dsa', 'system design'];
+             } else if (targetLower.includes('product')) {
+                 jobRequiredSkills = ['system design', 'sql'];
+             } else if (targetLower.includes('full stack')) {
+                 jobRequiredSkills = ['javascript', 'react', 'node.js', 'sql'];
+             } else {
+                 jobRequiredSkills = ['java', 'python', 'dsa', 'system design'];
+             }
         } else {
             const jobs = await repository.getJobDescriptions();
             const targetJob = jobs.find(j => j.id === parseInt(matchedJobId));
@@ -103,16 +136,49 @@ const getStudentDashboard = async (studentId, targetRole = null) => {
             }
         }
         
+        const skillAliases = {
+            'javascript': ['js', 'typescript', 'ts', 'react', 'node', 'express', 'angular', 'vue'],
+            'react': ['react.js', 'reactjs', 'next.js', 'nextjs'],
+            'node.js': ['node', 'nodejs', 'express'],
+            'css': ['css3', 'tailwind', 'bootstrap', 'sass', 'less'],
+            'html': ['html5', 'web'],
+            'python': ['django', 'flask', 'fastapi', 'pandas', 'numpy'],
+            'java': ['spring', 'springboot', 'j2ee'],
+            'aws': ['amazon web services', 'ec2', 's3', 'lambda'],
+            'sql': ['mysql', 'postgresql', 'postgres', 'mongodb', 'mongo', 'nosql', 'redis'],
+            'machine learning': ['ml', 'ai', 'tensorflow', 'pytorch', 'scikit', 'nlp'],
+            'docker': ['container', 'docker-compose'],
+            'kubernetes': ['k8s', 'eks', 'aks', 'gke'],
+            'linux': ['ubuntu', 'centos', 'debian', 'unix', 'bash'],
+            'system design': ['architecture', 'microservices', 'scalability']
+        };
+
         jobRequiredSkills.forEach(reqSkill => {
-            const hasSkill = studentSkillsLower.some(s => s.includes(reqSkill) || reqSkill.includes(s));
+            const aliases = skillAliases[reqSkill] || [];
+            const hasSkill = studentSkillsLower.some(s => 
+                s.includes(reqSkill) || 
+                reqSkill.includes(s) || 
+                aliases.some(alias => s.includes(alias))
+            );
             if (!hasSkill) {
                 missingSkills.push({
                     skill: reqSkill.toUpperCase(),
-                    priority: determinePriority(reqSkill)
+                    priority: determinePriority(reqSkill, roleMatch)
                 });
                 recommendations.push(`Complete a certification or project involving ${reqSkill.toUpperCase()}`);
             }
         });
+        
+        // Dynamically calculate readinessScore based on gap analysis universally
+        const totalReqs = jobRequiredSkills.length;
+        const missing = missingSkills.length;
+        if (totalReqs > 0) {
+            readinessScore = Math.round(((totalReqs - missing) / totalReqs) * 100);
+            if (readinessScore < 15) readinessScore = 15; // Set a floor so it doesn't look like a bug
+        } else {
+            // If no skills could be extracted, retain the ML score or default to 50
+            if (!readinessScore) readinessScore = 50;
+        }
     }
 
     // Default gap logic
@@ -153,6 +219,10 @@ const addMentoringAction = async (data) => {
     return await repository.createMentorAction(data);
 };
 
+const updateMentoringAction = async (id, data) => {
+    return await repository.updateMentorAction(id, data);
+};
+
 const getTimeline = async (studentId) => {
     return await repository.getMentorActions(studentId);
 };
@@ -161,5 +231,6 @@ module.exports = {
     getDashboardList,
     getStudentDashboard,
     addMentoringAction,
+    updateMentoringAction,
     getTimeline
 };

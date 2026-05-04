@@ -39,7 +39,7 @@ const LayoutT = () => {
     achievements: [],
     certifications: [],
   });
-  
+
   // Context fallback values
   const {
     heading: ctxHeading = {},
@@ -88,14 +88,14 @@ const LayoutT = () => {
     fetchData();
   }, []);
 
-  // Prefer fetched data, fallback to context
-  const finalHeading = data.heading ?? (Object.keys(ctxHeading || {}).length ? ctxHeading : null);
-  const finalEducation = (data.education && data.education.length) ? data.education : ctxEducation || [];
-  const finalExperience = (data.experience && data.experience.length) ? data.experience : ctxExperiences || [];
-  const finalProjects = (data.projects && data.projects.length) ? data.projects : ctxProjects || [];
-  const finalSkills = (data.skills && data.skills.length) ? data.skills : ctxSkills || [];
-  const finalAchievements = (data.achievements && data.achievements.length) ? data.achievements : ctxAchievements || [];
-  const finalCertifications = (data.certifications && data.certifications.length) ? data.certifications : ctxCertifications || [];
+  // Exclusively use live context data to ensure sync with input forms
+  const finalHeading = ctxHeading || {};
+  const finalEducation = ctxEducation || [];
+  const finalExperience = ctxExperiences || [];
+  const finalProjects = ctxProjects || [];
+  const finalSkills = ctxSkills || [];
+  const finalAchievements = ctxAchievements || [];
+  const finalCertifications = ctxCertifications || [];
 
   return (
     <div className="portfolio-layout-t" data-theme={theme}>
@@ -150,8 +150,8 @@ const LayoutT = () => {
       {/* ------------ PRINTABLE AREA END ------------ */}
 
       {/* Hidden standard CV template for PDF export */}
-      <CVTemplate 
-        visible={false} 
+      <CVTemplate
+        visible={false}
         dataProp={{
           heading: finalHeading,
           experiences: finalExperience,
@@ -160,7 +160,7 @@ const LayoutT = () => {
           skills: finalSkills,
           achievements: finalAchievements,
           certifications: finalCertifications
-        }} 
+        }}
       />
 
       {/* ------------ DOWNLOAD BUTTON ------------ */}
