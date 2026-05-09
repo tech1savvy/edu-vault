@@ -177,6 +177,13 @@ function Navbar() {
                 </li>
               </ul>
             </li>
+            {user && (
+              <li className="nav-item">
+                <Link className="nav-link text-info fw-semibold" to="/interview/domain">
+                  Mock Interview
+                </Link>
+              </li>
+            )}
           </ul>
           <ul className="navbar-nav">
             {isAdmin && (

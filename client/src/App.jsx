@@ -41,6 +41,10 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
 import LayoutT from "./components/Portfolio/Layouts/LayoutT/LayoutT";
+import StudentRoute from "./components/StudentRoute";
+import DomainSelection from "./pages/interview/DomainSelection";
+import MockInterview from "./pages/interview/MockInterview";
+import InterviewResult from "./pages/interview/InterviewResult";
 
 function App() {
   // Removed useAuth and useEffect for setupAxiosInterceptors
@@ -144,6 +148,31 @@ function App() {
           {/* Portfolio Route */}
           <Route path="/portfolio/layout-k" element={<LayoutK />} />
           <Route path="/portfolio/layout-t" element={<LayoutT />} />
+
+          <Route
+            path="/interview/domain"
+            element={
+              <StudentRoute>
+                <DomainSelection />
+              </StudentRoute>
+            }
+          />
+          <Route
+            path="/interview/session/:domainSlug"
+            element={
+              <StudentRoute>
+                <MockInterview />
+              </StudentRoute>
+            }
+          />
+          <Route
+            path="/interview/result/:id"
+            element={
+              <StudentRoute>
+                <InterviewResult />
+              </StudentRoute>
+            }
+          />
 
           {/* Default Route */}
           <Route
