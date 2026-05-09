@@ -1,0 +1,1117 @@
+{
+  "Full Stack Development": [
+    {
+      "id": "fs-01",
+      "question": "In a typical MERN stack, which component is primarily responsible for persisting structured data with relationships?",
+      "options": [
+        "React",
+        "MongoDB",
+        "Express middleware",
+        "Vite"
+      ],
+      "correctAnswer": 1,
+      "topic": "Data layer",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fs-02",
+      "question": "Which practice best reduces duplicate API calls when multiple child components need the same user session data?",
+      "options": [
+        "Store everything only in localStorage",
+        "Call fetch in every useEffect without dependencies",
+        "Lift shared fetch into a parent or context provider",
+        "Disable React strict mode"
+      ],
+      "correctAnswer": 2,
+      "topic": "React architecture",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fs-03",
+      "question": "What does REST emphasize for resource identification?",
+      "options": [
+        "Binary RPC by default",
+        "Only WebSocket channels",
+        "Storing sessions exclusively in cookies",
+        "Stable URIs and HTTP verbs"
+      ],
+      "correctAnswer": 3,
+      "topic": "APIs",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fs-04",
+      "question": "Why is separating validation on both client and server important?",
+      "options": [
+        "Client checks UX; server enforces security and data integrity",
+        "Server validation is never needed if TypeScript is used",
+        "Client validation replaces database constraints",
+        "Only mobile apps need server validation"
+      ],
+      "correctAnswer": 0,
+      "topic": "Security",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fs-05",
+      "question": "Which pair best describes a common full-stack deployment unit?",
+      "options": [
+        "Only a desktop .exe",
+        "API service + static SPA assets behind a reverse proxy",
+        "CSV files on USB",
+        "Cron tab without HTTP"
+      ],
+      "correctAnswer": 1,
+      "topic": "Deployment",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fs-06",
+      "question": "In Express, what is the primary role of middleware?",
+      "options": [
+        "Compile React components",
+        "Replace the database",
+        "Run functions in the request-response pipeline (auth, parsing, logging)",
+        "Host static DNS records"
+      ],
+      "correctAnswer": 2,
+      "topic": "Node/Express",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fs-07",
+      "question": "What is a pragmatic reason to version REST APIs (e.g., /v1)?",
+      "options": [
+        "Remove error handling",
+        "Avoid HTTPS",
+        "Disable caching",
+        "Ship breaking changes without silently breaking existing clients"
+      ],
+      "correctAnswer": 3,
+      "topic": "APIs",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fs-08",
+      "question": "Which database concern is most associated with ACID transactions?",
+      "options": [
+        "Relational engines like PostgreSQL for critical writes",
+        "PNG image compression",
+        "CSS grid layout",
+        "Browser localStorage quotas"
+      ],
+      "correctAnswer": 0,
+      "topic": "Databases",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fs-09",
+      "question": "What does JWT statelessness imply for typical API design?",
+      "options": [
+        "No encryption is ever used",
+        "Server verifies signature/expiry; session state is mostly in the token claims",
+        "Tokens cannot expire",
+        "Passwords are stored in the token payload in plain text"
+      ],
+      "correctAnswer": 1,
+      "topic": "Auth",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fs-10",
+      "question": "Which approach helps avoid N+1 query problems in ORMs?",
+      "options": [
+        "Removing foreign keys",
+        "Fetching one row at a time in a loop without includes",
+        "Disabling indexes",
+        "Eager loading / joins when fetching related rows"
+      ],
+      "correctAnswer": 3,
+      "topic": "Databases",
+      "difficulty": "hard"
+    },
+    {
+      "id": "fs-11",
+      "question": "What is a key benefit of environment-based configuration (e.g., DATABASE_URL)?",
+      "options": [
+        "Deploy the same build to dev/stage/prod with different secrets",
+        "Hardcode secrets in the repo for speed",
+        "Disable logging",
+        "Skip migrations"
+      ],
+      "correctAnswer": 0,
+      "topic": "DevOps basics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fs-12",
+      "question": "In React, what problem do keys in lists mainly address?",
+      "options": [
+        "Encrypt component props",
+        "Help reconcile which items changed for efficient updates",
+        "Set CSS z-index globally",
+        "Replace the need for state"
+      ],
+      "correctAnswer": 1,
+      "topic": "React architecture",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fs-13",
+      "question": "Which layering choice commonly separates routing/controllers from persistence logic?",
+      "options": [
+        "Storing JSX in PostgreSQL blobs only",
+        "Putting SQL strings inside JSX",
+        "Controller/service/repository layers",
+        "Using only CDN for APIs"
+      ],
+      "correctAnswer": 2,
+      "topic": "Architecture",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fs-14",
+      "question": "CORS protects primarily which scenario?",
+      "options": [
+        "Markdown rendering",
+        "Database replication lag",
+        "CPU thermal throttling",
+        "Browser-enforced cross-origin policy for fetched resources"
+      ],
+      "correctAnswer": 3,
+      "topic": "Security",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fs-15",
+      "question": "What is GraphQL introspection commonly used for during development?",
+      "options": [
+        "Discover schema types from a running endpoint",
+        "Compile C++",
+        "Minify JPEGs",
+        "Provision SSL automatically"
+      ],
+      "correctAnswer": 0,
+      "topic": "APIs",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fs-16",
+      "question": "Which testing layer best targets rendering and user-visible behavior for a SPA?",
+      "options": [
+        "Only manual print debugging",
+        "Component/integration tests alongside unit tests",
+        "Only load testing DNS",
+        "Only screenshot diffs without assertions"
+      ],
+      "correctAnswer": 1,
+      "topic": "Quality",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fs-17",
+      "question": "Why hydrate a SSR React app on the client?",
+      "options": [
+        "Disable SEO",
+        "Remove accessibility attributes",
+        "Attach event listeners after server HTML arrives for interactivity",
+        "Skip routing"
+      ],
+      "correctAnswer": 2,
+      "topic": "React architecture",
+      "difficulty": "hard"
+    }
+  ],
+  "Frontend Development": [
+    {
+      "id": "fe-01",
+      "question": "What does the cascade refer to in CSS?",
+      "options": [
+        "React concurrent rendering internals",
+        "JSON parsing rules",
+        "TCP slow start only",
+        "How conflicting declarations resolve by origin, specificity, and order"
+      ],
+      "correctAnswer": 3,
+      "topic": "CSS fundamentals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fe-02",
+      "question": "Which DOM API is preferable for querying a single element when you manage an explicit id?",
+      "options": [
+        "document.getElementById",
+        "document.writeln only",
+        "window.alert",
+        "navigator.geolocation"
+      ],
+      "correctAnswer": 0,
+      "topic": "JavaScript DOM",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fe-03",
+      "question": "Why memoize expensive derived values in React with useMemo?",
+      "options": [
+        "Replace Redux entirely",
+        "Avoid redoing costly computation on unrelated renders",
+        "Guarantee immutability of props",
+        "Disable hooks rules"
+      ],
+      "correctAnswer": 1,
+      "topic": "React performance",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fe-04",
+      "question": "What problem does semantic HTML primarily help solve?",
+      "options": [
+        "GPU shader compilation",
+        "Database normalization",
+        "Meaningful structure for accessibility and parsers",
+        "PDF signing"
+      ],
+      "correctAnswer": 2,
+      "topic": "Accessibility & HTML",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fe-05",
+      "question": "Which Flexbox alignment places items along the cross-axis of a container?",
+      "options": [
+        "z-index baseline",
+        "justify-self on grid containers only",
+        "float",
+        "align-items"
+      ],
+      "correctAnswer": 3,
+      "topic": "Layout",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fe-06",
+      "question": "What is virtualization in long lists?",
+      "options": [
+        "Render only visible viewport rows for efficiency",
+        "Encrypt list items",
+        "Use PNG transparency",
+        "Disable scrolling"
+      ],
+      "correctAnswer": 0,
+      "topic": "Performance",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fe-07",
+      "question": "What is the closure created by function components captures from outer scope?",
+      "options": [
+        "Nothing—hooks have no lexical scope",
+        "Values from renders unless dependencies are managed (useEffect/useCallback refs)",
+        "Only JSX tags",
+        "Only CSS modules"
+      ],
+      "correctAnswer": 1,
+      "topic": "React hooks",
+      "difficulty": "hard"
+    },
+    {
+      "id": "fe-08",
+      "question": "Which fetch mode is restricted by browsers for opaque cross-origin responses unless CORS permits?",
+      "options": [
+        "gopher",
+        "only FTP",
+        "no-cors limitations vs reading body",
+        "telnet"
+      ],
+      "correctAnswer": 2,
+      "topic": "Networking",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fe-09",
+      "question": "What does WCAG emphasize for interactive controls?",
+      "options": [
+        "Removing labels to save space",
+        "Only bright colors",
+        "Disabling zoom on mobile",
+        "Keyboard operability and perceivable states"
+      ],
+      "correctAnswer": 3,
+      "topic": "Accessibility & HTML",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fe-10",
+      "question": "Why bundle split a large SPA?",
+      "options": [
+        "Increase hydration cost always",
+        "Reduce initial payload and improve time-to-interactive",
+        "Remove TypeScript checks",
+        "Disable tree shaking"
+      ],
+      "correctAnswer": 1,
+      "topic": "Performance",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fe-11",
+      "question": "What is JSX under the hood in React?",
+      "options": [
+        "SQL templating",
+        "A separate browser language interpreted natively",
+        "Syntactic sugar over React.createElement calls",
+        "Sass compiler output only"
+      ],
+      "correctAnswer": 2,
+      "topic": "React fundamentals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fe-12",
+      "question": "Which debugging practice helps pinpoint unnecessary re-renders?",
+      "options": [
+        "Turning off HTTPS",
+        "Deleting node_modules randomly",
+        "Disabling ESLint parser",
+        "React DevTools Profiler and memo boundaries"
+      ],
+      "correctAnswer": 3,
+      "topic": "Debugging",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fe-13",
+      "question": "What is defer on a classic script tag meant to do?",
+      "options": [
+        "Download in parallel but execute after HTML parsing in order",
+        "Block parsing entirely",
+        "Run before HTML exists",
+        "Disable caching"
+      ],
+      "correctAnswer": 0,
+      "topic": "Networking",
+      "difficulty": "medium"
+    },
+    {
+      "id": "fe-14",
+      "question": "Why prefer controlled inputs for forms in React?",
+      "options": [
+        "They always avoid re-renders",
+        "Single source of truth in component state simplifies validation UX",
+        "They remove need for accessibility",
+        "They cannot use placeholders"
+      ],
+      "correctAnswer": 1,
+      "topic": "React fundamentals",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fe-15",
+      "question": "What does responsive design prioritize across breakpoints?",
+      "options": [
+        "Disabling tablets",
+        "Fixed px only everywhere",
+        "Layouts and assets that adapt to viewport sizes",
+        "Server-side pixel ratios"
+      ],
+      "correctAnswer": 2,
+      "topic": "Layout",
+      "difficulty": "easy"
+    },
+    {
+      "id": "fe-16",
+      "question": "Which caching header pair is commonly used for fingerprinted immutable assets?",
+      "options": [
+        "Expires set to Unix epoch always",
+        "Cache-Control: no-store for every SVG",
+        "Pragma-only without Cache-Control",
+        "Cache-Control: max-age=<large>, immutable (with hashed filenames)"
+      ],
+      "correctAnswer": 3,
+      "topic": "Networking",
+      "difficulty": "hard"
+    },
+    {
+      "id": "fe-17",
+      "question": "What is portals in React used for?",
+      "options": [
+        "Render children into a DOM node outside parent hierarchy",
+        "Replace Redux middleware",
+        "Compile SCSS variables",
+        "Polyfill IndexedDB automatically"
+      ],
+      "correctAnswer": 0,
+      "topic": "React architecture",
+      "difficulty": "medium"
+    }
+  ],
+  "Backend Development": [
+    {
+      "id": "be-01",
+      "question": "What is idempotency in HTTP APIs?",
+      "options": [
+        "PUT always creates duplicates",
+        "Every POST must change random IDs",
+        "DELETE cannot be repeated",
+        "Repeating safe requests yields the same observable effect"
+      ],
+      "correctAnswer": 3,
+      "topic": "HTTP & APIs",
+      "difficulty": "medium"
+    },
+    {
+      "id": "be-02",
+      "question": "Which index trade-off is most accurate?",
+      "options": [
+        "Faster lookups at cost of slower writes and storage",
+        "Indexes eliminate need for normalization",
+        "Indexes always reduce read latency infinitely",
+        "Indexes are only for full table scans"
+      ],
+      "correctAnswer": 0,
+      "topic": "Databases",
+      "difficulty": "easy"
+    },
+    {
+      "id": "be-03",
+      "question": "Why use prepared statements / parameter binding?",
+      "options": [
+        "Increase injection risk",
+        "Mitigate SQL injection while allowing query plan caching",
+        "Disable transactions",
+        "Remove UTF-8 support"
+      ],
+      "correctAnswer": 1,
+      "topic": "Security",
+      "difficulty": "easy"
+    },
+    {
+      "id": "be-04",
+      "question": "What role does Redis frequently play beside PostgreSQL?",
+      "options": [
+        "Static asset hosting replacing CDN",
+        "Primary transactional ledger with ACID by default everywhere",
+        "Caching, rate limiting, pub/sub ephemeral workloads",
+        "CSS preprocessing"
+      ],
+      "correctAnswer": 2,
+      "topic": "Caching",
+      "difficulty": "medium"
+    },
+    {
+      "id": "be-05",
+      "question": "Race conditions during inventory decrement are commonly handled by:",
+      "options": [
+        "Disabling unique constraints",
+        "Ignoring failures",
+        "Using only floats for money",
+        "Transactions with row locking or optimistic concurrency tokens"
+      ],
+      "correctAnswer": 3,
+      "topic": "Concurrency",
+      "difficulty": "hard"
+    },
+    {
+      "id": "be-06",
+      "question": "What describes a brittle synchronous chain across many microservices?",
+      "options": [
+        "Higher tail latency cascading failures versus async messaging",
+        "Always faster than messaging",
+        "Eliminates timeouts",
+        "Removes retries"
+      ],
+      "correctAnswer": 0,
+      "topic": "Distributed systems",
+      "difficulty": "medium"
+    },
+    {
+      "id": "be-07",
+      "question": "Which status code suits validation errors caused by malformed client input?",
+      "options": [
+        "500 always",
+        "400 Bad Request",
+        "301 Moved",
+        "418 only"
+      ],
+      "correctAnswer": 1,
+      "topic": "HTTP & APIs",
+      "difficulty": "easy"
+    },
+    {
+      "id": "be-08",
+      "question": "What is connection pooling?",
+      "options": [
+        "Merge git branches randomly",
+        "Pool React components",
+        "Reuse DB connections instead of reopening each request",
+        "Disable SSL handshakes"
+      ],
+      "correctAnswer": 2,
+      "topic": "Databases",
+      "difficulty": "easy"
+    },
+    {
+      "id": "be-09",
+      "question": "Why propagate correlation IDs?",
+      "options": [
+        "Speed up hashing passwords",
+        "Encrypt JWTs symmetrically always",
+        "Replace HTTPS",
+        "Trace requests through services in logs/traces"
+      ],
+      "correctAnswer": 3,
+      "topic": "Observability",
+      "difficulty": "medium"
+    },
+    {
+      "id": "be-10",
+      "question": "What distinguishes symmetric vs asymmetric crypto for securing transport?",
+      "options": [
+        "They are identical terms",
+        "TLS handshakes use asymmetric to agree symmetric session keys broadly",
+        "Only asymmetric for bulk data encryption at wire speed unchanged",
+        "Symmetric means no keys"
+      ],
+      "correctAnswer": 1,
+      "topic": "Security",
+      "difficulty": "hard"
+    },
+    {
+      "id": "be-11",
+      "question": "Rate limiting protects primarily against:",
+      "options": [
+        "CSS conflicts",
+        "SQL normalization",
+        "Abuse/brute force/overload bursts",
+        "Image EXIF stripping"
+      ],
+      "correctAnswer": 2,
+      "topic": "Security",
+      "difficulty": "easy"
+    },
+    {
+      "id": "be-12",
+      "question": "What pattern isolates integrations with flaky third-parties?",
+      "options": [
+        "Disabling TLS verification",
+        "Infinite retries instantly",
+        "Blocking event loop purposely",
+        "Circuit breaker with timeouts and backoff"
+      ],
+      "correctAnswer": 3,
+      "topic": "Resilience",
+      "difficulty": "medium"
+    },
+    {
+      "id": "be-13",
+      "question": "Why pagination for large datasets?",
+      "options": [
+        "Bound latency and memory for clients and databases",
+        "Guarantee O(1) for every analytic query automatically",
+        "Remove indexes",
+        "Disable constraints"
+      ],
+      "correctAnswer": 0,
+      "topic": "API design",
+      "difficulty": "easy"
+    },
+    {
+      "id": "be-14",
+      "question": "What is eventual consistency?",
+      "options": [
+        "Always transactional single-node only",
+        "Replicas converge over time rather than instantaneous strong consistency everywhere",
+        "Errors are ignored silently",
+        "HTTP is removed"
+      ],
+      "correctAnswer": 1,
+      "topic": "Distributed systems",
+      "difficulty": "medium"
+    },
+    {
+      "id": "be-15",
+      "question": "Which hashing approach is suited for passwords?",
+      "options": [
+        "Base64 encode",
+        "SHA-256 single pass alone",
+        "Adaptive bcrypt/argon2 with salt",
+        "MD5 duplicated"
+      ],
+      "correctAnswer": 2,
+      "topic": "Security",
+      "difficulty": "medium"
+    },
+    {
+      "id": "be-16",
+      "question": "What motivates using message queues?",
+      "options": [
+        "Remove need for schemas",
+        "Replace databases entirely",
+        "Guarantee instant consistency always",
+        "Decouple producers/consumers, smooth spikes, improve reliability patterns"
+      ],
+      "correctAnswer": 3,
+      "topic": "Messaging",
+      "difficulty": "easy"
+    },
+    {
+      "id": "be-17",
+      "question": "Schema migrations primarily help:",
+      "options": [
+        "Evolve relational structure with versioned repeatable steps",
+        "Delete backups",
+        "Disable foreign keys permanently",
+        "Ignore environments"
+      ],
+      "correctAnswer": 0,
+      "topic": "Databases",
+      "difficulty": "easy"
+    }
+  ],
+  "Data Science & Analytics": [
+    {
+      "id": "ds-01",
+      "question": "Missing values are often addressed by imputation vs dropping when:",
+      "options": [
+        "They always invalidate SSL",
+        "There are infinite columns",
+        "They only appear in dashboards",
+        "Dropping removes too much data or biases samples"
+      ],
+      "correctAnswer": 3,
+      "topic": "Data preparation",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ds-02",
+      "question": "What does Pearson correlation measure?",
+      "options": [
+        "Linear association between two quantitative variables (−1 to 1)",
+        "Conditional independence causally guaranteed",
+        "Categorical chi-square exclusively",
+        "Neural depth"
+      ],
+      "correctAnswer": 0,
+      "topic": "Statistics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ds-03",
+      "question": "Overfitting manifests as:",
+      "options": [
+        "Poor training and great test simultaneously",
+        "Great training scores but worse generalization to unseen data",
+        "Missing labels only during deployment",
+        "Always larger batch sizes fixing everything"
+      ],
+      "correctAnswer": 1,
+      "topic": "Machine learning basics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ds-04",
+      "question": "Train/validation/test split primarily helps:",
+      "options": [
+        "Remove need for EDA",
+        "Guarantee i.i.d. always",
+        "Tune and estimate generalization honestly",
+        "Skip cross-validation permanently"
+      ],
+      "correctAnswer": 2,
+      "topic": "Experimentation",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ds-05",
+      "question": "Precision answers which question?",
+      "options": [
+        "Total row count nulls",
+        "Of actual positives, how many did we find? (Recall)",
+        "Median absolute error exclusively",
+        "Of predicted positives, how many are truly positive?"
+      ],
+      "correctAnswer": 3,
+      "topic": "Evaluation metrics",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ds-06",
+      "question": "Feature scaling affects many distance-based algos because:",
+      "options": [
+        "Large magnitude features would otherwise dominate gradients/distances",
+        "It deletes outliers automatically",
+        "It guarantees convexity always",
+        "It replaces train/test splits"
+      ],
+      "correctAnswer": 0,
+      "topic": "Preprocessing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ds-07",
+      "question": "Why stratify splits for classification?",
+      "options": [
+        "Guarantee every split has outliers removed",
+        "Preserve class proportions reduce sampling variance across folds/splits",
+        "Disable cross-validation overhead",
+        "Force unequal prevalences artificially"
+      ],
+      "correctAnswer": 1,
+      "topic": "Experimentation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ds-08",
+      "question": "What is regularization broadly trying to penalize?",
+      "options": [
+        "SQL joins",
+        "Computation time only",
+        "Unduly complex parameter settings that memorize noise",
+        "Gradient existence"
+      ],
+      "correctAnswer": 2,
+      "topic": "Machine learning basics",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ds-09",
+      "question": "A confusion matrix for binary classification summarizes:",
+      "options": [
+        "SQL explain plans",
+        "Only ROC AUC headline",
+        "Only cluster centroids",
+        "TP/TN/FP/FN counts"
+      ],
+      "correctAnswer": 3,
+      "topic": "Evaluation metrics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ds-10",
+      "question": "EDA before modelling helps mainly to:",
+      "options": [
+        "Guarantee p-values causal",
+        "Spot anomalies, distributions, leakage risks, informed transforms",
+        "Remove need for versioning data",
+        "Skip documentation"
+      ],
+      "correctAnswer": 1,
+      "topic": "EDA",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ds-11",
+      "question": "Leakage arises when:",
+      "options": [
+        "You install pandas twice",
+        "You visualize histograms slowly",
+        "Training uses information unavailable at prediction time unknowingly",
+        "You log transform skewed positives only"
+      ],
+      "correctAnswer": 2,
+      "topic": "Experimentation",
+      "difficulty": "hard"
+    },
+    {
+      "id": "ds-12",
+      "question": "Cross-validation contrasts with a single holdout by:",
+      "options": [
+        "Disabling parallelism",
+        "Always guaranteeing unbiased production metrics miraculously",
+        "Removing scalability requirements",
+        "Averaging performance across folds to reduce variance in estimates"
+      ],
+      "correctAnswer": 3,
+      "topic": "Experimentation",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ds-13",
+      "question": "Bagging ensembles reduce variance mainly by:",
+      "options": [
+        "Bootstrapped samples aggregated models decorrelating mistakes",
+        "Adding many linear layers sequentially only",
+        "Always boosting misclassified residuals only",
+        "Padding images"
+      ],
+      "correctAnswer": 0,
+      "topic": "Machine learning basics",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ds-14",
+      "question": "Why visualize residuals in regression?",
+      "options": [
+        "Guarantee normality magically",
+        "Reveal heteroskedasticity, non-linearity missed by linearity assumptions",
+        "Replace metrics entirely",
+        "Reduce sample size purposely"
+      ],
+      "correctAnswer": 1,
+      "topic": "EDA",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ds-15",
+      "question": "Normalization vs standardization:",
+      "options": [
+        "Only for categorical encodings interchangeably mistaken",
+        "Identical meanings",
+        "Min-max bounded range vs zero-mean unit-variance Gaussian scaling heuristic",
+        "Never used before PCA"
+      ],
+      "correctAnswer": 2,
+      "topic": "Preprocessing",
+      "difficulty": "medium"
+    },
+    {
+      "id": "ds-16",
+      "question": "One-hot encoding categorical variables:",
+      "options": [
+        "Removes sparse matrices",
+        "Always reduces dimensions",
+        "Guarantees tree models better without high cardinality safeguards",
+        "Eliminates bogus ordinal magnitude between unordered categories"
+      ],
+      "correctAnswer": 3,
+      "topic": "Preprocessing",
+      "difficulty": "easy"
+    },
+    {
+      "id": "ds-17",
+      "question": "Bayes theorem swaps conditioning to relate:",
+      "options": [
+        "Posterior likelihood with prior predictive evidence framing",
+        "Only joint independence",
+        "Only SQL joins",
+        "Only gradient norms"
+      ],
+      "correctAnswer": 0,
+      "topic": "Statistics",
+      "difficulty": "hard"
+    }
+  ],
+  "DevOps Engineering": [
+    {
+      "id": "do-01",
+      "question": "What describes infrastructure as code (IaC)?",
+      "options": [
+        "DNS round robin synonym",
+        "Manual clicking only reproducibly",
+        "Editing production live without SCM",
+        "Declaratively version infrastructure definitions applied by tooling"
+      ],
+      "correctAnswer": 3,
+      "topic": "IaC",
+      "difficulty": "easy"
+    },
+    {
+      "id": "do-02",
+      "question": "Kubernetes Deployments rolling updates aim for:",
+      "options": [
+        "Zero/low downtime progressive pod replacement",
+        "Single binary servers only",
+        "Disabling probes",
+        "Static VM images only legacy"
+      ],
+      "correctAnswer": 0,
+      "topic": "Kubernetes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "do-03",
+      "question": "Why multi-stage Dockerfile builds?",
+      "options": [
+        "Always slow builds purposely",
+        "Separate compile vs runtime artifacts to shrink secure images",
+        "Disable layer caching permanently",
+        "Bundle dev dependencies into prod always"
+      ],
+      "correctAnswer": 1,
+      "topic": "Containers",
+      "difficulty": "easy"
+    },
+    {
+      "id": "do-04",
+      "question": "CI pipelines primarily enforce:",
+      "options": [
+        "Disabling branching",
+        "Manual merges only nightly",
+        "Automated test/build artifact validation on SCM events",
+        "Local-only Docker"
+      ],
+      "correctAnswer": 2,
+      "topic": "CI/CD",
+      "difficulty": "easy"
+    },
+    {
+      "id": "do-05",
+      "question": "Liveness vs readiness probes:",
+      "options": [
+        "Disable autoscaling semantics",
+        "Identical probes always",
+        "Only exist for VMs",
+        "Restart unhealthy vs temporarily remove routing until dependencies ready"
+      ],
+      "correctAnswer": 3,
+      "topic": "Kubernetes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "do-06",
+      "question": "Canary releases reduce risk by:",
+      "options": [
+        "Routing gradual traffic shifts with monitoring thresholds",
+        "All-at-once swaps only",
+        "Disabling rollback",
+        "Blue-only pattern always"
+      ],
+      "correctAnswer": 0,
+      "topic": "Deployment strategies",
+      "difficulty": "medium"
+    },
+    {
+      "id": "do-07",
+      "question": "Secrets in Git:",
+      "options": [
+        "Are safe if zipped",
+        "Should use secret managers injection not committed plaintext blobs",
+        "Should use base64 only as encryption",
+        "Cannot rotate"
+      ],
+      "correctAnswer": 1,
+      "topic": "Secrets",
+      "difficulty": "easy"
+    },
+    {
+      "id": "do-08",
+      "question": "Horizontal pod autoscaling reacts to:",
+      "options": [
+        "Disk inode counts exclusively",
+        "Only manual kubectl scale forever only",
+        "Metrics like CPU/custom signals crossing thresholds schedules more replicas when policies allow state rules",
+        "CSS bundle size thresholds"
+      ],
+      "correctAnswer": 2,
+      "topic": "Kubernetes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "do-09",
+      "question": "Blue/green strategy highlights:",
+      "options": [
+        "Only DNS poisoning",
+        "One pod only always",
+        "No testing stage",
+        "Two identical environments swapping traffic pointers quickly"
+      ],
+      "correctAnswer": 3,
+      "topic": "Deployment strategies",
+      "difficulty": "easy"
+    },
+    {
+      "id": "do-10",
+      "question": "SLI drives SLO/SLA by measuring:",
+      "options": [
+        "Only marketing KPIs",
+        "Specific quantifiable indicators of service quality",
+        "Lint counts unrelated",
+        "Only ticket counts"
+      ],
+      "correctAnswer": 1,
+      "topic": "Reliability/SRE",
+      "difficulty": "medium"
+    },
+    {
+      "id": "do-11",
+      "question": "Why structured JSON logging?",
+      "options": [
+        "Eliminate timestamps",
+        "Obfuscate outages",
+        "Parse/filter at scale correlating fields",
+        "Remove correlation IDs usefulness"
+      ],
+      "correctAnswer": 2,
+      "topic": "Observability",
+      "difficulty": "easy"
+    },
+    {
+      "id": "do-12",
+      "question": "Networking policy in Kubernetes restricts:",
+      "options": [
+        "Container image layers hashing",
+        "Only external AWS pricing",
+        "Helm templating indentation",
+        "Pod-to-pod allowed traffic namespaces labels"
+      ],
+      "correctAnswer": 3,
+      "topic": "Security & networking",
+      "difficulty": "hard"
+    },
+    {
+      "id": "do-13",
+      "question": "Immutable infra mindset prefers:",
+      "options": [
+        "Replace instances/containers versus mutating drifting state SSH hotfixes blindly",
+        "Only apt upgrade live prod ad hoc undocumented",
+        "Disabling versioning",
+        "No automation"
+      ],
+      "correctAnswer": 0,
+      "topic": "IaC",
+      "difficulty": "medium"
+    },
+    {
+      "id": "do-14",
+      "question": "What is systemd unit commonly used for on Linux VMs?",
+      "options": [
+        "Render React",
+        "Manage daemon lifecycle restart policies dependencies",
+        "Serve GraphQL caches",
+        "Minify WASM"
+      ],
+      "correctAnswer": 1,
+      "topic": "Linux ops",
+      "difficulty": "easy"
+    },
+    {
+      "id": "do-15",
+      "question": "Why backoff with jitter retries?",
+      "options": [
+        "Remove observability spikes",
+        "Guarantee fixed intervals always",
+        "Avoid thundering herd synchronized retries harming recovering systems",
+        "Force immediate infinite loops"
+      ],
+      "correctAnswer": 2,
+      "topic": "Resilience",
+      "difficulty": "medium"
+    },
+    {
+      "id": "do-16",
+      "question": "Container image tagging best practice:",
+      "options": [
+        "Share host /etc/passwd mounts always",
+        "Always only latest unchecked",
+        "Timestamp local only unrepeatable intentionally",
+        "Immutable digest or semantic version tags pinned in manifests not drifting latest alone without controls"
+      ],
+      "correctAnswer": 3,
+      "topic": "Containers",
+      "difficulty": "medium"
+    },
+    {
+      "id": "do-17",
+      "question": "Feature flags progressively enable code by:",
+      "options": [
+        "Runtime toggling decoupling deploy from activation risk limits",
+        "Git rebases only metaphors wrongly",
+        "DNS records only versioning",
+        "Database schema synonyms"
+      ],
+      "correctAnswer": 0,
+      "topic": "Progressive delivery",
+      "difficulty": "easy"
+    }
+  ]
+}

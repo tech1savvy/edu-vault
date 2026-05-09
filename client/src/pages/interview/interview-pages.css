@@ -1,0 +1,50 @@
+/* Dark, card-heavy styling aligned with Bootstrap navbar-dark / bg-dark */
+
+.interview-shell {
+  background: linear-gradient(165deg, #0b1224 0%, #111827 40%, #0f172a 100%);
+  color: #e2e8f0;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.interview-card {
+  background: rgba(17, 24, 39, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0.75rem;
+}
+
+.interview-card-muted {
+  background: rgba(15, 23, 42, 0.85);
+}
+
+.interview-text-muted {
+  color: rgba(226, 232, 240, 0.7) !important;
+}
+
+.interview-accent-border {
+  border-color: rgba(99, 102, 241, 0.45);
+}
+
+.interview-gradient-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+  border: none;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.interview-gradient-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  color: #0f172a;
+}
+
+.interview-gradient-btn-outline {
+  background: transparent;
+  border: 1px solid rgba(99, 102, 241, 0.55);
+  color: #c7d2fe;
+}
+
+.interview-topic-pill {
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
