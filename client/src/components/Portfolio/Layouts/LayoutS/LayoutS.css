@@ -1,0 +1,467 @@
+/* LayoutS.css - Modern Split-Screen Glassmorphism
+   Themes: sunset, mint, coral
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 8px;
+  
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-hover: rgba(255, 255, 255, 0.06);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  
+  /* default: sunset */
+  --bg-dark: #0f0c1b;
+  --color-primary: #ff7eb3;
+  --color-secondary: #ff758c;
+  --color-accent: #8e2de2;
+  --text-main: #f8f9fa;
+  --text-muted: #adb5bd;
+}
+
+[data-theme="sunset"] {
+  --bg-dark: #0f0c1b;
+  --color-primary: #ff7eb3;
+  --color-secondary: #ff758c;
+  --color-accent: #8e2de2;
+}
+
+[data-theme="mint"] {
+  --bg-dark: #06141b;
+  --color-primary: #00f2fe;
+  --color-secondary: #4facfe;
+  --color-accent: #3ee3b6;
+}
+
+[data-theme="coral"] {
+  --bg-dark: #1a0f14;
+  --color-primary: #ff9a44;
+  --color-secondary: #fc6076;
+  --color-accent: #ffb77a;
+}
+
+/* =======================================
+   ANIMATIONS & BACKGROUNDS
+======================================= */
+@keyframes gradientSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =======================================
+   MAIN LAYOUT
+======================================= */
+.ls-root {
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-main);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Dynamic Ambient Background Elements */
+.ls-ambient-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.ls-orb-1, .ls-orb-2, .ls-orb-3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  animation: gradientSpin 20s linear infinite;
+}
+.ls-orb-1 {
+  top: -10%; left: -10%; width: 50vw; height: 50vw;
+  background: radial-gradient(circle, var(--color-primary), transparent 60%);
+  animation-duration: 25s;
+}
+.ls-orb-2 {
+  bottom: -20%; right: -10%; width: 60vw; height: 60vw;
+  background: radial-gradient(circle, var(--color-accent), transparent 60%);
+  animation-direction: reverse;
+}
+.ls-orb-3 {
+  top: 30%; left: 40%; width: 40vw; height: 40vw;
+  background: radial-gradient(circle, var(--color-secondary), transparent 50%);
+  animation-duration: 30s;
+  opacity: 0.2;
+}
+
+/* Grid Layout */
+.ls-container {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+/* =======================================
+   LEFT SIDEBAR (STICKY)
+======================================= */
+.ls-sidebar-wrapper {
+  position: sticky;
+  top: 40px;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+}
+
+.ls-sidebar {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 40px 30px;
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  /* hide scrollbar for sidebar */
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+.ls-sidebar::-webkit-scrollbar { display: none; }
+
+.ls-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  border: 3px solid transparent;
+  background: linear-gradient(var(--bg-dark), var(--bg-dark)) padding-box,
+              linear-gradient(135deg, var(--color-primary), var(--color-secondary)) border-box;
+  object-fit: cover;
+  padding: 4px;
+}
+
+.ls-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+.ls-role {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin: 0 0 30px 0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.ls-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: auto; /* push to bottom */
+}
+
+.ls-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(0,0,0,0.2);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.ls-contact-item:hover {
+  background: var(--glass-hover);
+  border-color: var(--glass-border);
+  color: var(--text-main);
+  transform: translateY(-2px);
+}
+.ls-contact-icon {
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =======================================
+   RIGHT CONTENT AREA
+======================================= */
+.ls-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-bottom: 40px;
+}
+
+.ls-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--glass-shadow);
+  animation: fadeIn 0.8s ease backwards;
+}
+/* Stagger section animations */
+.ls-section:nth-child(1) { animation-delay: 0.1s; }
+.ls-section:nth-child(2) { animation-delay: 0.2s; }
+.ls-section:nth-child(3) { animation-delay: 0.3s; }
+.ls-section:nth-child(4) { animation-delay: 0.4s; }
+.ls-section:nth-child(5) { animation-delay: 0.5s; }
+
+.ls-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.ls-section-title::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+/* =======================================
+   BENTO ITEMS (Projects, Experience)
+======================================= */
+.ls-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.ls-bento-card {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.03);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+.ls-bento-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.05), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.ls-bento-card:hover {
+  transform: translateY(-5px);
+  background: var(--glass-hover);
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.ls-bento-card:hover::before { opacity: 1; }
+
+.ls-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px 0;
+}
+.ls-card-subtitle {
+  font-size: 14px;
+  color: var(--color-primary);
+  margin: 0 0 12px 0;
+  font-weight: 500;
+}
+.ls-card-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.ls-card-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* =======================================
+   SKILLS PILLS
+======================================= */
+.ls-skills-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ls-skill-pill {
+  padding: 8px 16px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ls-skill-pill:hover {
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.ls-skill-pill .level {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-muted);
+}
+
+/* =======================================
+   TIMELINE (Experience / Education)
+======================================= */
+.ls-timeline {
+  position: relative;
+  padding-left: 30px;
+}
+.ls-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary), transparent);
+  border-radius: 2px;
+}
+.ls-timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+}
+.ls-timeline-item:last-child { margin-bottom: 0; }
+.ls-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -34.5px; top: 5px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+/* =======================================
+   THEME SWITCHER
+======================================= */
+.ls-theme-ui {
+  position: fixed;
+  top: 20px; right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+.ls-theme-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+.ls-theme-btn:hover {
+  transform: scale(1.1);
+  background: var(--glass-hover);
+}
+.ls-theme-btn.active {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
+  transform: scale(1.1);
+}
+
+/* =======================================
+   PRINT STYLES
+======================================= */
+@media print {
+  .ls-root { background: white !important; color: black !important; }
+  .ls-ambient-bg, .ls-theme-ui, .no-print { display: none !important; }
+  .ls-container { grid-template-columns: 1fr; gap: 20px; padding: 0; }
+  .ls-sidebar-wrapper { position: static; height: auto; }
+  .ls-sidebar, .ls-section {
+    box-shadow: none !important; border: none !important;
+    background: transparent !important; padding: 0 0 20px 0 !important;
+  }
+  .ls-name { background: none; color: black; -webkit-text-fill-color: black; }
+  .ls-role { color: #333; }
+  .ls-card-subtitle { color: #555; }
+  .ls-bento-card { border: none; padding: 0; margin-bottom: 15px; }
+  .ls-bento-grid { display: block; }
+}
+
+/* =======================================
+   RESPONSIVE
+======================================= */
+@media (max-width: 1024px) {
+  .ls-container {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .ls-sidebar-wrapper {
+    position: relative;
+    top: 0;
+    height: auto;
+  }
+  .ls-sidebar {
+    flex-direction: column;
+    padding: 30px 20px;
+  }
+  .ls-contact-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ls-section { padding: 24px; }
+  .ls-avatar { width: 90px; height: 90px; }
+  .ls-name { font-size: 26px; }
+  .ls-theme-ui { bottom: 20px; top: auto; left: 50%; transform: translateX(-50%); right: auto; }
+}

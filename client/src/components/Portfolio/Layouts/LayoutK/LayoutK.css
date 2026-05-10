@@ -308,3 +308,22 @@
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+@media print {
+  .navbar,
+  .theme-buttons,
+  .download-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  #resume-root {
+    box-shadow: none !important;
+    background: white !important;
+  }
+}
