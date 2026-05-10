@@ -198,6 +198,14 @@ function Navbar() {
               </>
             )}
             
+            {user && (
+              <li className="nav-item">
+                <Link className="nav-link text-info fw-semibold" to="/interview/domain">
+                  Mock Interview
+                </Link>
+              </li>
+            )}
+            
             {isMentor && (
               <li className="nav-item">
                 <Link className="nav-link text-warning fw-bold" to="/mentor-dashboard">Mentor Dashboard</Link>

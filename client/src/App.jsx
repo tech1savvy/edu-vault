@@ -42,6 +42,10 @@ import SignupPage from "./pages/SignupPage";
 import LayoutS from "./components/Portfolio/Layouts/LayoutS/LayoutS";
 import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
 import LayoutT from "./components/Portfolio/Layouts/LayoutT/LayoutT";
+import StudentRoute from "./components/StudentRoute";
+import DomainSelection from "./pages/interview/DomainSelection";
+import MockInterview from "./pages/interview/MockInterview";
+import InterviewResult from "./pages/interview/InterviewResult";
 
 import CVTemplate from "./components/Resume/CVTemplate";
 import FacultyMentoringDashboard from "./components/FacultyMentoringDashboard";
@@ -168,6 +172,31 @@ function App() {
           <Route path="/portfolio/layout-s" element={<RoleRoute allowedRoles={['student']}><LayoutS /></RoleRoute>} />
           <Route path="/portfolio/layout-k" element={<RoleRoute allowedRoles={['student']}><LayoutK /></RoleRoute>} />
           <Route path="/portfolio/layout-t" element={<RoleRoute allowedRoles={['student']}><LayoutT /></RoleRoute>} />
+
+          <Route
+            path="/interview/domain"
+            element={
+              <StudentRoute>
+                <DomainSelection />
+              </StudentRoute>
+            }
+          />
+          <Route
+            path="/interview/session/:domainSlug"
+            element={
+              <StudentRoute>
+                <MockInterview />
+              </StudentRoute>
+            }
+          />
+          <Route
+            path="/interview/result/:id"
+            element={
+              <StudentRoute>
+                <InterviewResult />
+              </StudentRoute>
+            }
+          />
 
           {/* Default Route */}
           <Route
