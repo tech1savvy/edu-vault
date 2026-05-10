@@ -4,6 +4,8 @@ import { ResumeContext } from "../../../context/resumeContext";
 function AchievementsForm() {
   const { achievements, setAchievements } = useContext(ResumeContext);
 
+  const [editIndex, setEditIndex] = useState(null);
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -16,7 +18,14 @@ function AchievementsForm() {
 
   const handleAdd = () => {
     if (form.title.trim()) {
-      setAchievements([...achievements, form]);
+      if (editIndex !== null) {
+        const updatedAchievements = [...achievements];
+        updatedAchievements[editIndex] = form;
+        setAchievements(updatedAchievements);
+        setEditIndex(null);
+      } else {
+        setAchievements([...achievements, form]);
+      }
       setForm({
         title: "",
         description: "",
@@ -71,9 +80,19 @@ function AchievementsForm() {
         />
       </div>
 
-      <button className="btn btn-primary" onClick={handleAdd}>
-        Add Achievement
-      </button>
+      <div className="d-flex gap-2">
+        <button className={editIndex !== null ? "btn btn-success" : "btn btn-primary"} onClick={handleAdd}>
+          {editIndex !== null ? "Update Achievement" : "Add Achievement"}
+        </button>
+        {editIndex !== null && (
+          <button className="btn btn-secondary" onClick={() => {
+            setEditIndex(null);
+            setForm({ title: "", description: "", date: "" });
+          }}>
+            Cancel
+          </button>
+        )}
+      </div>
 
       <hr />
 
@@ -92,12 +111,24 @@ function AchievementsForm() {
                   <small className="text-muted">{achievement.date}</small>
                 )}
               </div>
-              <button
-                className="btn btn-outline-danger btn-sm"
-                onClick={() => handleRemove(idx)}
-              >
-                Remove
-              </button>
+              <div className="d-flex flex-column gap-2">
+                <button 
+                  className="btn btn-outline-primary btn-sm" 
+                  onClick={() => {
+                    setForm(achievement);
+                    setEditIndex(idx);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={() => handleRemove(idx)}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           </li>
         ))}

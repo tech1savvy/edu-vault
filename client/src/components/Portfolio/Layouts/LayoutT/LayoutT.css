@@ -1622,3 +1622,22 @@
 .skill-pill:hover .skill-pill-bg {
     opacity: 1;
 }
+
+
+@media print {
+  .navbar,
+  .theme-buttons,
+  .download-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  #resume-root {
+    box-shadow: none !important;
+    background: white !important;
+  }
+}
