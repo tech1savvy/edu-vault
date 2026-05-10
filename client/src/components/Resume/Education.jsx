@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { ResumeContext } from "../../context/resumeContext";
 
 function Education() {
-  const { educationData } = useContext(ResumeContext);
+  const { education } = useContext(ResumeContext);
 
-  if (!educationData || educationData.length === 0) {
+  if (!education || education.length === 0) {
     return (
       <p className="m-3 text-danger">
         No Education Data Found. Please fill the form first.
@@ -15,7 +15,7 @@ function Education() {
   return (
     <div className="container mt-4 p-3 border rounded shadow">
       <h4 className="fw-bold">Education</h4>
-      {educationData.map((edu, index) => (
+      {education.map((edu, index) => (
         <div key={index} className="mb-3">
           <p className="fw-bold">{edu.degree}</p>
           <p>

@@ -1,8 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // Removed import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
-  const navigate = useNavigate();
 
   // Directly read user from localStorage
   const getUserFromLocalStorage = () => {
@@ -19,12 +18,24 @@ function Navbar() {
   };
 
   const user = getUserFromLocalStorage();
-  const isAdmin = user && user.role === 'administrator';
+  const role = user?.role;
+  const isAdmin = role === 'administrator';
+  const isMentor = role === 'mentor';
+  const isStudent = role === 'student';
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    navigate('/login');
+    
+    // Clear all resume-related localStorage keys so different users don't share state
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('resume_')) {
+        localStorage.removeItem(key);
+      }
+    }
+    
+    window.location.href = '/login';
   };
 
   return (
@@ -46,137 +57,152 @@ function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownInput"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Input Components
-              </a>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="navbarDropdownInput"
-              >
-                <li>
-                  <Link className="dropdown-item" to="/input/heading">
-                    Heading
-                  </Link>
+            {isStudent && (
+              <>
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownInput"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Input Components
+                  </a>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdownInput"
+                  >
+                    <li>
+                      <Link className="dropdown-item" to="/input/heading">
+                        Heading
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/input/experience">
+                        Experience
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/input/education">
+                        Education
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/input/skills">
+                        Skills
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/input/projects">
+                        Projects
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/input/certifications">
+                        Certifications
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/input/achievements">
+                        Achievements
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link className="dropdown-item" to="/input/experience">
-                    Experience
-                  </Link>
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownOutput"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Output Components
+                  </a>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdownOutput"
+                  >
+                    <li>
+                      <Link className="dropdown-item" to="/output/heading">
+                        Heading
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/output/experience">
+                        Experience
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/output/education">
+                        Education
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/output/skills">
+                        Skills
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/output/projects">
+                        Projects
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/output/certifications">
+                        Certifications
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/output/achievements">
+                        Achievements
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link className="dropdown-item" to="/input/education">
-                    Education
-                  </Link>
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownPortfolio"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Portfolio
+                  </a>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdownPortfolio"
+                  >
+                    <li>
+                      <Link className="dropdown-item" to="/portfolio/layout-s">
+                        Layout S
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/portfolio/layout-k">
+                        Layout K
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/portfolio/layout-t">
+                        Layout T
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link className="dropdown-item" to="/input/skills">
-                    Skills
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/input/projects">
-                    Projects
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/input/certifications">
-                    Certifications
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/input/achievements">
-                    Achievements
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownOutput"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Output Components
-              </a>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="navbarDropdownOutput"
-              >
-                <li>
-                  <Link className="dropdown-item" to="/output/heading">
-                    Heading
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/output/experience">
-                    Experience
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/output/education">
-                    Education
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/output/skills">
-                    Skills
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/output/projects">
-                    Projects
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/output/certifications">
-                    Certifications
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/output/achievements">
-                    Achievements
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownPortfolio"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Portfolio
-              </a>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="navbarDropdownPortfolio"
-              >
-                <li>
-                  <Link className="dropdown-item" to="/portfolio/layout-k">
-                    Layout K
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/portfolio/layout-t">
-                    Layout T
-                  </Link>
-                </li>
-              </ul>
-            </li>
+              </>
+            )}
+            
+            {isMentor && (
+              <li className="nav-item">
+                <Link className="nav-link text-warning fw-bold" to="/mentor-dashboard">Mentor Dashboard</Link>
+              </li>
+            )}
           </ul>
           <ul className="navbar-nav">
             {isAdmin && (
@@ -210,7 +236,9 @@ function Navbar() {
                 </ul>
               </li>
             )}
+            {/* Removed the extra Mentor link since it is now strictly inside the left block above */}
             {user ? (
+
               <li className="nav-item">
                 <button className="nav-link btn btn-link text-light" onClick={handleLogout}>Logout</button>
               </li>

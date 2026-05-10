@@ -20,23 +20,23 @@ export const login = async (email, password) => {
   if (response.ok) {
     return data;
   } else {
-    throw new Error(data.message || 'Something went wrong');
+    throw new Error(data.error || data.message || 'Something went wrong');
   }
 };
 
-export const signup = async (name, email, password) => {
+export const signup = async (name, email, password, confirmPassword, role = 'student') => {
   const response = await fetch(`${API_URL}/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ name, email, password }),
+    body: JSON.stringify({ name, email, password, confirmPassword, role }),
   });
   const data = await response.json();
   if (response.ok) {
     return data;
   } else {
-    throw new Error(data.message || 'Something went wrong');
+    throw new Error(data.error || data.message || 'Something went wrong');
   }
 };
 
@@ -122,4 +122,113 @@ export const getCertifications = async () => {
   } else {
     throw new Error(data.message || 'Something went wrong');
   }
+};
+
+export const syncResumeProfile = async (payload) => {
+  const response = await fetch(`${API_URL}/resume/sync`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || data.message || 'Failed to sync profile');
+  }
+  return data;
+};
+
+// Mentor API Endpoints
+export const getMentorStudents = async () => {
+  const response = await fetch(`${API_URL}/mentor/students`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) {
+    return data;
+  } else {
+    throw new Error(data.message || 'Something went wrong');
+  }
+};
+
+export const getStudentDashboardData = async (studentId, targetRole = '') => {
+  const url = targetRole 
+     ? `${API_URL}/mentor/students/${studentId}?targetRole=${encodeURIComponent(targetRole)}`
+     : `${API_URL}/mentor/students/${studentId}`;
+     
+  const response = await fetch(url, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) {
+    return data;
+  } else {
+    throw new Error(data.message || 'Something went wrong');
+  }
+};
+
+export const addMentoringAction = async (studentId, taskName, deadline, priority) => {
+  const response = await fetch(`${API_URL}/mentor/actions`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ studentId, taskName, deadline, priority }),
+  });
+  const data = await response.json();
+  if (response.ok) {
+    return data;
+  } else {
+    throw new Error(data.error || data.message || 'Something went wrong');
+  }
+};
+
+export const updateMentoringAction = async (actionId, updateData) => {
+  const response = await fetch(`${API_URL}/mentor/actions/${actionId}`, {
+    method: 'PUT',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(updateData),
+  });
+  const data = await response.json();
+  if (response.ok) {
+    return data;
+  } else {
+    throw new Error(data.error || data.message || 'Something went wrong');
+  }
+};
+
+export const getMentoringTimeline = async (studentId) => {
+  const response = await fetch(`${API_URL}/mentor/timeline/${studentId}`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) {
+    return data;
+  } else {
+    throw new Error(data.message || 'Something went wrong');
+  }
+};
+
+// Student Dashboard APIs
+export const getMyStudentDashboard = async () => {
+    const response = await fetch(`${API_URL}/student-dashboard/me`, {
+        headers: getAuthHeaders(),
+    });
+    const data = await response.json();
+    if (response.ok) {
+        return data;
+    } else {
+        throw new Error(data.message || 'Something went wrong');
+    }
+};
+
+export const updateMentorActionStatus = async (actionId, status) => {
+    const response = await fetch(`${API_URL}/student-dashboard/actions/${actionId}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ status })
+    });
+    const data = await response.json();
+    if (response.ok) {
+        return data;
+    } else {
+        throw new Error(data.error || data.message || 'Something went wrong');
+    }
 };
