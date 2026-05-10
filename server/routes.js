@@ -15,13 +15,9 @@ const syncRoutes = require("./features/ml/sync.routes");
 const userManagementRoutes = require("./features/user-management/userManagement.routes");
 const analyticsRoutes = require("./features/analytics/analytics.routes");
 const jobApplicationsRoutes = require("./features/job-applications/jobApplications.routes");
+const interviewRoutes = require("./routes/interviewRoutes");
 const mentorRoutes = require("./features/mentor").router;
-
-
-
-
 const { syncProfileData } = require("./features/resume/resume.sync.controller");
-
 router.use("/auth", authRoutes);
 
 router.use("/resume", authenticate);
@@ -44,7 +40,7 @@ router.use("/analytics", analyticsRoutes);
 
 router.use("/applications", jobApplicationsRoutes);
 
+router.use("/interview", interviewRoutes);
 router.use("/mentor", mentorRoutes);
-
 
 module.exports = router;
