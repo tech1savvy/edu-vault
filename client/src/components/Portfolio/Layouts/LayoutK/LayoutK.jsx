@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import './LayoutK.css';
-import Header from './Header';
-import About from './About';
-import Experience from './Experience';
-import Education from './Education';
-import Projects from './Projects';
-import Skills from './Skills';
-import Achievements from './Achievements';
-import Certifications from './Certifications';
-import Contact from './Contact';
+import React, { useState, useEffect, useContext } from "react";
+import "./LayoutK.css";
+import Header from "./Header";
+import About from "./About";
+import Experience from "./Experience";
+import Education from "./Education";
+import Projects from "./Projects";
+import Skills from "./Skills";
+import Achievements from "./Achievements";
+import Certifications from "./Certifications";
+import Contact from "./Contact";
+
+import { ResumeContext } from "../../../../context/resumeContext";
+
 import {
   getHeading,
   getProjects,
@@ -17,17 +20,33 @@ import {
   getEducation,
   getAchievements,
   getCertifications,
-} from '../../../../services/api';
+} from "../../../../services/api";
+
+// 👉 PDF Button
+import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
+import SyncProfileButton from "../../../Resume/SyncProfileButton";
+import CVTemplate from "../../../Resume/CVTemplate";
 
 const LayoutK = () => {
-  const [theme, setTheme] = useState('dark');
-  const [heading, setHeading] = useState(null);
-  const [projects, setProjects] = useState([]);
-  const [skills, setSkills] = useState([]);
-  const [experience, setExperience] = useState([]);
-  const [education, setEducation] = useState([]);
-  const [achievements, setAchievements] = useState([]);
-  const [certifications, setCertifications] = useState([]);
+  const [theme, setTheme] = useState("dark");
+  const [, setHeading] = useState(null);
+  const [, setProjects] = useState([]);
+  const [, setSkills] = useState([]);
+  const [, setExperience] = useState([]);
+  const [, setEducation] = useState([]);
+  const [, setAchievements] = useState([]);
+  const [, setCertifications] = useState([]);
+
+  // Context fallback values
+  const {
+    heading: ctxHeading = {},
+    education: ctxEducation = [],
+    experiences: ctxExperiences = [],
+    projects: ctxProjects = [],
+    skills: ctxSkills = [],
+    achievements: ctxAchievements = [],
+    certifications: ctxCertifications = [],
+  } = useContext(ResumeContext) || {};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,31 +59,67 @@ const LayoutK = () => {
         setAchievements(await getAchievements());
         setCertifications(await getCertifications());
       } catch (error) {
-        console.error('Failed to fetch data:', error);
+        console.error("Failed to fetch data:", error);
       }
     };
     fetchData();
   }, []);
 
+  // Exclusively use live context data to ensure sync with input forms
+  const finalHeading = ctxHeading || {};
+  const finalEducation = ctxEducation || [];
+  const finalExperience = ctxExperiences || [];
+  const finalProjects = ctxProjects || [];
+  const finalSkills = ctxSkills || [];
+  const finalAchievements = ctxAchievements || [];
+  const finalCertifications = ctxCertifications || [];
+
   return (
     <div className="portfolio-layout-k" data-theme={theme}>
+      {/* Theme Switcher */}
       <div className="theme-switcher">
-        <button onClick={() => setTheme('dark')}>🌙</button>
-        <button onClick={() => setTheme('light')}>☀️</button>
-        <button onClick={() => setTheme('blue')}>💧</button>
+        <button onClick={() => setTheme("dark")}>🌙</button>
+        <button onClick={() => setTheme("light")}>☀️</button>
+        <button onClick={() => setTheme("blue")}>💧</button>
       </div>
-      <div className="portfolio-container">
-        <Header data={heading} />
-        <main className="portfolio-content">
-          <About data={heading} />
-          <Experience data={experience} />
-          <Education data={education} />
-          <Projects data={projects} />
-          <Skills data={skills} />
-          <Achievements data={achievements} />
-          <Certifications data={certifications} />
-          <Contact data={heading} />
-        </main>
+
+      {/* ------------ PRINTABLE AREA ------------ */}
+      <div id="resume-root">
+        <div className="portfolio-container">
+          <Header data={finalHeading} />
+
+          <main className="portfolio-content">
+            <About data={finalHeading} />
+            <Experience data={finalExperience} />
+            <Education data={finalEducation} />
+            <Projects data={finalProjects} />
+            <Skills data={finalSkills} />
+            <Achievements data={finalAchievements} />
+            <Certifications data={finalCertifications} />
+            <Contact data={finalHeading} />
+          </main>
+        </div>
+      </div>
+      {/* ------------ PRINTABLE AREA END ------------ */}
+
+      {/* Hidden standard CV template for PDF export */}
+      <CVTemplate 
+        visible={false} 
+        dataProp={{
+          heading: finalHeading,
+          experiences: finalExperience,
+          education: finalEducation,
+          projects: finalProjects,
+          skills: finalSkills,
+          achievements: finalAchievements,
+          certifications: finalCertifications
+        }} 
+      />
+
+      {/* ------------ DOWNLOAD BUTTON ------------ */}
+      <div style={{ textAlign: "center", margin: "40px 0", display: "flex", justifyContent: "center", gap: "15px" }}>
+        <SyncProfileButton />
+        <DownloadPdfButton filename={`${finalHeading?.name ? finalHeading.name.replace(/\s+/g, '-') : 'My'}-Resume.pdf`} />
       </div>
     </div>
   );
