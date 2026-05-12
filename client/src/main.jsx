@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ResumeProvider } from "./context/ResumeProvider";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import "./index.css";
 import App from "./App.jsx";
