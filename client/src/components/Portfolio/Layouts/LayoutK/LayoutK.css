@@ -1,6 +1,6 @@
 [data-theme='dark'] {
   --background-color: #121212;
-  --text-color: #f1f5f9;
+  --text-color: #e0e0e0;
   --primary-color: #bb86fc;
   --secondary-color: #03dac6;
   --card-bg-color: rgba(30, 30, 30, 0.7); /* Glassmorphism background */
@@ -307,4 +307,23 @@
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+
+@media print {
+  .navbar,
+  .theme-buttons,
+  .download-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  #resume-root {
+    box-shadow: none !important;
+    background: white !important;
+  }
 }

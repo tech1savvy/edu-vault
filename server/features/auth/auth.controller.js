@@ -4,18 +4,12 @@ const logger = require("../../config/logger");
 const handleSignup = async (req, res) => {
   try {
     const { user, token } = await signup(req.body);
-    const userWithoutPassword = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    };
-    res.status(201).json({ user: userWithoutPassword, token });
+    res.status(201).json({ user, token });
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {
       return res.status(409).json({ error: 'Email already in use' });
     }
-    logger.error(error);
+    logger.error('Signup error', { message: error.message, stack: error.stack });
     res.status(500).json({ error: error.message });
   }
 };
@@ -32,7 +26,7 @@ const handleLogin = async (req, res) => {
     };
     res.status(200).json({ user: userWithoutPassword, token });
   } catch (error) {
-    logger.error(error);
+    logger.error('Login error', { message: error.message, stack: error.stack });
     res.status(401).json({ error: error.message });
   }
 };

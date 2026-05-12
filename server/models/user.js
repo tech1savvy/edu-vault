@@ -17,29 +17,18 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    securityQuestion: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-      field: 'security_question',
+    role: {
+      type: DataTypes.ENUM('student', 'mentor', 'administrator'),
+      defaultValue: 'student'
     },
-    securityAnswer: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-      field: 'security_answer',
+    status: {
+      type: DataTypes.ENUM('active', 'inactive', 'suspended'),
+      defaultValue: 'active'
     },
-    resetToken: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-      field: 'reset_token',
-    },
-    resetTokenExpiry: {
+    lastLogin: {
       type: DataTypes.DATE,
       allowNull: true,
-      field: 'reset_token_expiry',
-    },
-    role: {
-      type: DataTypes.ENUM('student', 'administrator'),
-      defaultValue: 'student'
+      field: 'last_login'
     }
   }, {
     sequelize,

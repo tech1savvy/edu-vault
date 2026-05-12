@@ -5,6 +5,7 @@ const jobDescriptionRepository = require('../job-description/jobDescription.repo
 const { getAggregatedResumeText, getAllResumesForSync } = require('../resume/resume.aggregator');
 const authenticateToken = require('../../middleware/auth');
 const authorizeRoles = require('../../middleware/roles');
+const logger = require('../../config/logger');
 
 const syncResume = async (req, res) => {
   try {
@@ -12,16 +13,16 @@ const syncResume = async (req, res) => {
     if (!userId) {
       return res.status(400).json({ error: 'User ID is required' });
     }
-    
+
     const resumeText = await getAggregatedResumeText(parseInt(userId));
     if (!resumeText) {
       return res.status(404).json({ error: 'Resume not found for user' });
     }
-    
+
     const result = await mlClient.syncResume(parseInt(userId), resumeText);
     res.json(result);
   } catch (error) {
-    console.error('Error syncing resume:', error);
+    logger.error('Error syncing resume:', error);
     res.status(500).json({ error: 'Failed to sync resume' });
   }
 };
@@ -32,17 +33,17 @@ const syncJobDescription = async (req, res) => {
     if (!jobId) {
       return res.status(400).json({ error: 'Job ID is required' });
     }
-    
+
     const job = await jobDescriptionRepository.findById(parseInt(jobId));
     if (!job) {
       return res.status(404).json({ error: 'Job description not found' });
     }
-    
+
     const jobText = `${job.title}\n${job.description}\n${job.requirements}`;
     const result = await mlClient.syncJob(parseInt(jobId), jobText);
     res.json(result);
   } catch (error) {
-    console.error('Error syncing job description:', error);
+    logger.error('Error syncing job description:', error);
     res.status(500).json({ error: 'Failed to sync job description' });
   }
 };
@@ -82,7 +83,7 @@ const syncAll = async (req, res) => {
       failed_jobs: failedJobs,
     });
   } catch (error) {
-    console.error('Error triggering full sync:', error);
+    logger.error('Error triggering full sync:', error);
     res.status(500).json({ error: 'Failed to trigger full sync' });
   }
 };
