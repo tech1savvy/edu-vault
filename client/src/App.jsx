@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "./App.css";
 
@@ -7,7 +6,6 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Navbar from "./components/Navbar";
-import { AuthContext } from "./context/AuthContext";
 
 // Admin
 import AdminDashboardPage from "./pages/AdminDashboardPage";
@@ -83,12 +81,7 @@ const RoleRoute = ({ allowedRoles, children }) => {
 };
 
 function App() {
-  const { user: authUser } = useContext(AuthContext);
   const location = useLocation();
-
-  const storedUser = localStorage.getItem('user');
-  const user = storedUser ? JSON.parse(storedUser) : null;
-  const activeUser = authUser || user;
 
   const isPublicPortfolio = location.pathname.startsWith("/share/portfolio/");
 

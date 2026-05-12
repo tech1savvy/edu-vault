@@ -21,8 +21,8 @@ export function ResumeProvider({ children }) {
   const [skills, setSkills] = useStickyState([], "resume_skills");
   const [achievements, setAchievements] = useStickyState([], "resume_achievements");
   const [certifications, setCertifications] = useStickyState([], "resume_certifications");
-  const [resumeLoading, setResumeLoading] = useState(false);
-  const [resumeLoadedOnce, setResumeLoadedOnce] = useState(false);
+  const resumeLoading = false;
+  const resumeLoadedOnce = false;
   const refreshResume = useCallback(() => {}, []);
   const clearResume = useCallback(() => {}, []);
 

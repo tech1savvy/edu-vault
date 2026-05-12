@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useCallback } from 'react';
 
 export const AuthContext = createContext();
 
+/* eslint-disable react-refresh/only-export-components */
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || 'null'));
