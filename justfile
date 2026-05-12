@@ -28,9 +28,8 @@ logs service="":
 restart service="server":
     docker compose restart "{{service}}"
 
-build:
-    docker compose build
-    docker compose up -d
+rebuild:
+    docker compose up -d --build
 
 # ─── Database ──────────────────────────────────────────────────────────────────
 # just db migrate → run migrations

@@ -1,75 +1,96 @@
 import React, { useContext, useState } from "react";
-import SkillsForm from "./Forms/SkillsForm";
 import { ResumeContext } from "../../context/resumeContext";
+import { addSkill, deleteSkill } from "../../services/api";
 
-const Skills = ({ isInput = false }) => {
+const Skills = ({ isInput = false, embedded = false }) => {
   const { skills, setSkills } = useContext(ResumeContext);
-  const [editIndex, setEditIndex] = useState(null);
+  const [newSkill, setNewSkill] = useState("");
+  const [level, setLevel] = useState("Intermediate");
 
-  const addSkill = (skill) => {
-    if (editIndex !== null) {
-      const updatedSkills = [...skills];
-      updatedSkills[editIndex] = skill;
-      setSkills(updatedSkills);
-      setEditIndex(null);
-    } else {
-      setSkills([...skills, skill]);
+  const handleAddSkill = async () => {
+    if (!newSkill.trim()) return;
+    try {
+      const created = await addSkill({ name: newSkill.trim(), level });
+      setSkills([...skills, created]);
+      setNewSkill("");
+    } catch (error) {
+      console.error("Failed to add skill:", error);
     }
   };
-  
-  const removeSkill = (index) => setSkills(skills.filter((_, i) => i !== index));
+
+  const handleDeleteSkill = async (id) => {
+    try {
+      await deleteSkill(id);
+      setSkills(skills.filter((skill) => skill.id !== id));
+    } catch (error) {
+      console.error("Failed to delete skill:", error);
+    }
+  };
 
   return (
-    <div className="container mt-4">
+    <div className={embedded ? "" : "container mt-4"}>
       {isInput && (
-        <>
-          {/* Title and Instructions */}
-          <h2>Skills Section</h2>
-          <p className="text-muted">
-            Add your skills, programming languages, and tools expertise below.
-          </p>
+        <div className="card p-3 mb-4">
+          {!embedded && (
+            <>
+              <h2>Skills Section</h2>
+              <p className="text-muted">
+                Add your skills, programming languages, and tools expertise below.
+              </p>
+            </>
+          )}
 
-          {/* Input Form */}
-          <SkillsForm 
-            onAddSkill={addSkill} 
-            initialValue={editIndex !== null ? skills[editIndex] : ""} 
-            isEditing={editIndex !== null}
-            onCancel={() => setEditIndex(null)}
-          />
-        </>
+          <div className="d-flex flex-wrap gap-2">
+            <input
+              type="text"
+              value={newSkill}
+              onChange={(e) => setNewSkill(e.target.value)}
+              placeholder="Enter a skill"
+              className="form-control"
+            />
+            <select
+              className={`form-select ${embedded ? "w-auto min-w-[8rem]" : "w-25"}`}
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+            >
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Expert">Expert</option>
+            </select>
+            <button onClick={handleAddSkill} className="btn btn-primary">
+              Add
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Preview / Output */}
       {skills.length > 0 ? (
-        <ul className="list-group mt-3">
-          {skills.map((skill, index) => (
-            <li
-              key={index}
-              className="list-group-item d-flex justify-content-between align-items-center"
-            >
-              {skill}
-              {isInput && (
-                <div className="d-flex gap-2">
+        <div className="mt-3">
+          <h4>{embedded ? "Your skills" : "Your Skills"}</h4>
+          <div className="d-flex flex-wrap gap-2">
+            {skills.map((skill) => (
+              <div
+                key={skill.id}
+                className="badge bg-secondary p-2 d-flex align-items-center gap-2"
+                style={{ fontSize: "1rem" }}
+              >
+                <span>
+                  {skill.name} <small>({skill.level})</small>
+                </span>
+                {isInput && (
                   <button
-                    onClick={() => {
-                      setEditIndex(index);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="btn btn-outline-primary btn-sm"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => removeSkill(index)}
-                    className="btn btn-outline-danger btn-sm"
-                  >
-                    Remove
-                  </button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+                    onClick={() => handleDeleteSkill(skill.id)}
+                    className="btn btn-close btn-close-white"
+                    style={{ fontSize: "0.6rem" }}
+                    aria-label="Remove"
+                  ></button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
         <p className="text-muted mt-3">
           {isInput ? "No skills added yet." : "No skills to display."}

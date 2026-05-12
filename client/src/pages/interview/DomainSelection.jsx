@@ -19,10 +19,10 @@ export default function DomainSelection() {
       setError(null);
       try {
         const payload = await fetchDomainDetection();
-        if (!cancel) {
-          setData(payload);
-          if (payload?.primaryDomain && !selected) setSelected(payload.primaryDomain);
-        }
+          if (!cancel) {
+            setData(payload);
+            setSelected(prev => payload?.primaryDomain || prev);
+          }
       } catch (e) {
         if (!cancel) setError(e?.response?.data?.error ?? e.message ?? "Failed to load domains");
       } finally {

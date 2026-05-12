@@ -101,7 +101,7 @@ function EducationForm() {
         />
 
         <div className="d-flex gap-2">
-          <button type="submit" className={editIndex !== null ? "btn btn-success" : "btn btn-primary"} onClick={handleAdd}>
+          <button type="submit" className={editIndex !== null ? "btn btn-success" : "btn btn-primary"}>
             {editIndex !== null ? "Update Education" : "Add Education"}
           </button>
           {editIndex !== null && (
