@@ -8,11 +8,15 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ error: "No token provided" });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
     if (err) {
       return res.status(403).json({ error: "Invalid token" });
     }
-    req.user = user;
+    const userId = payload.userId != null ? Number(payload.userId) : null;
+    req.user = {
+      ...payload,
+      userId: Number.isFinite(userId) ? userId : payload.userId,
+    };
     next();
   });
 };

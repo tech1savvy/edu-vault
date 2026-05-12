@@ -37,7 +37,7 @@ export default function DomainSelection() {
   const handleContinue = () => {
     const slug = slugForDomainLabel(selected);
     if (!slug) return;
-    navigate(`/interview/session/${slug}`);
+    navigate(`/dashboard/interview/mock/${slug}`);
   };
 
   return (

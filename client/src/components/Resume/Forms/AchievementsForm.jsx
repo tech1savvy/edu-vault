@@ -1,10 +1,9 @@
 import { useState, useContext } from "react";
 import { ResumeContext } from "../../../context/resumeContext";
+import { addAchievement, updateAchievement, deleteAchievement } from "../../../services/api";
 
-function AchievementsForm() {
+function AchievementsForm({ embedded = false }) {
   const { achievements, setAchievements } = useContext(ResumeContext);
-
-  const [editIndex, setEditIndex] = useState(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -12,127 +11,154 @@ function AchievementsForm() {
     date: ""
   });
 
+  const [editingId, setEditingId] = useState(null);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = () => {
-    if (form.title.trim()) {
-      if (editIndex !== null) {
-        const updatedAchievements = [...achievements];
-        updatedAchievements[editIndex] = form;
-        setAchievements(updatedAchievements);
-        setEditIndex(null);
+  const handleSave = async () => {
+    if (!form.title.trim()) return;
+    try {
+      if (editingId) {
+        const updated = await updateAchievement(editingId, form);
+        setAchievements(achievements.map((a) => (a.id === editingId ? updated : a)));
+        setEditingId(null);
       } else {
-        setAchievements([...achievements, form]);
+        const created = await addAchievement(form);
+        setAchievements([...achievements, created]);
       }
       setForm({
         title: "",
         description: "",
         date: ""
       });
+    } catch (error) {
+      console.error("Failed to save achievement:", error);
     }
   };
 
-  const handleRemove = (index) => {
-    const updatedAchievements = achievements.filter((_, i) => i !== index);
-    setAchievements(updatedAchievements);
+  const handleEdit = (achievement) => {
+    setForm({
+      title: achievement.title,
+      description: achievement.description || "",
+      date: achievement.date || ""
+    });
+    setEditingId(achievement.id);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteAchievement(id);
+      setAchievements(achievements.filter((a) => a.id !== id));
+    } catch (error) {
+      console.error("Failed to delete achievement:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+    setForm({
+      title: "",
+      description: "",
+      date: ""
+    });
   };
 
   return (
-    <div className="container">
-      <h2 className="mb-3">Achievements Section</h2>
-      <p className="text-muted">Add your achievements, awards, and recognitions</p>
+    <div className={embedded ? "" : "container mt-3"}>
+      {!embedded && (
+        <>
+          <h2 className="mb-3">Achievements Section</h2>
+          <p className="text-muted">Add your achievements, awards, and recognitions</p>
+        </>
+      )}
 
-      <div className="mb-3">
-        <label className="form-label">Achievement Title*</label>
-        <input
-          type="text"
-          className="form-control"
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="e.g., 5-Star C++ Programmer on HackerRank"
-        />
-      </div>
+      <div className="card p-3 mb-4">
+        <div className="mb-3">
+          <label className="form-label">Achievement Title*</label>
+          <input
+            type="text"
+            className="form-control"
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="e.g., 5-Star C++ Programmer on HackerRank"
+          />
+        </div>
 
-      <div className="mb-3">
-        <label className="form-label">Description</label>
-        <textarea
-          className="form-control"
-          name="description"
-          rows="3"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Brief description of the achievement..."
-        />
-      </div>
+        <div className="mb-3">
+          <label className="form-label">Description</label>
+          <textarea
+            className="form-control"
+            name="description"
+            rows="3"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Brief description of the achievement..."
+          />
+        </div>
 
-      <div className="mb-3">
-        <label className="form-label">Date/Awarded</label>
-        <input
-          type="text"
-          className="form-control"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          placeholder="e.g., 2024, Smart India Hackathon 2024"
-        />
-      </div>
+        <div className="mb-3">
+          <label className="form-label">Date/Awarded</label>
+          <input
+            type="text"
+            className="form-control"
+            name="date"
+            value={form.date}
+            onChange={handleChange}
+            placeholder="e.g., 2024, Smart India Hackathon 2024"
+          />
+        </div>
 
-      <div className="d-flex gap-2">
-        <button className={editIndex !== null ? "btn btn-success" : "btn btn-primary"} onClick={handleAdd}>
-          {editIndex !== null ? "Update Achievement" : "Add Achievement"}
-        </button>
-        {editIndex !== null && (
-          <button className="btn btn-secondary" onClick={() => {
-            setEditIndex(null);
-            setForm({ title: "", description: "", date: "" });
-          }}>
-            Cancel
+        <div className="mt-3">
+          <button className="btn btn-primary me-2" onClick={handleSave}>
+            {editingId ? "Update Achievement" : "Add Achievement"}
           </button>
-        )}
+          {editingId && (
+            <button className="btn btn-secondary" onClick={handleCancel}>
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
-      <hr />
+      {!embedded && <hr />}
 
-      <h4>Preview</h4>
-      {achievements.length === 0 && <p>No achievements added yet.</p>}
-      <ul className="list-group">
-        {achievements.map((achievement, idx) => (
-          <li key={idx} className="list-group-item">
-            <div className="d-flex justify-content-between align-items-start">
-              <div>
-                <strong>{achievement.title}</strong>
+      {!embedded && <h4>Saved Achievements</h4>}
+      {embedded && <h4 className="mb-3 mt-4">Saved achievements</h4>}
+      {achievements.length === 0 && <p className="text-muted">No achievements added yet.</p>}
+      <div className="list-group">
+        {achievements.map((achievement) => (
+          <div key={achievement.id} className="list-group-item list-group-item-action">
+            <div className="d-flex w-100 justify-content-between align-items-start">
+              <div className="w-75">
+                <h5 className="mb-1">{achievement.title}</h5>
                 {achievement.description && (
-                  <p className="mb-1 mt-1">{achievement.description}</p>
+                  <p className="mb-1 mt-1 text-muted">{achievement.description}</p>
                 )}
                 {achievement.date && (
-                  <small className="text-muted">{achievement.date}</small>
+                  <small className="text-secondary">{achievement.date}</small>
                 )}
               </div>
-              <div className="d-flex flex-column gap-2">
-                <button 
-                  className="btn btn-outline-primary btn-sm" 
-                  onClick={() => {
-                    setForm(achievement);
-                    setEditIndex(idx);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+              <div className="btn-group">
+                <button
+                  className="btn btn-sm btn-outline-primary"
+                  onClick={() => handleEdit(achievement)}
                 >
                   Edit
                 </button>
                 <button
-                  className="btn btn-outline-danger btn-sm"
-                  onClick={() => handleRemove(idx)}
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={() => handleDelete(achievement.id)}
                 >
-                  Remove
+                  Delete
                 </button>
               </div>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
