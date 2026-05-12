@@ -2,8 +2,8 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci --prefer-offline --no-audit
+COPY package.json ./
+RUN npm install
 
 COPY . .
 

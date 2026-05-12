@@ -182,3 +182,5 @@ Integration tests use Bruno CLI and live against running services:
 
 - All services run in Docker
 - Server uses **CommonJS** - do NOT convert to ES modules
+- Do not commit or stage lock files (package-lock.json, pnpm-lock.yaml)
+- Always make atomic conventional commits during development
