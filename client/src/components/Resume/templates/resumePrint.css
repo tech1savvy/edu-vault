@@ -1,0 +1,44 @@
+/* Print / Save as PDF — toggled via body.printing-resume */
+@media print {
+  @page {
+    margin: 12mm;
+    size: A4;
+  }
+
+  body.printing-resume nav,
+  body.printing-resume .resume-no-print {
+    display: none !important;
+  }
+
+  body.printing-resume .dashboard-resume-card > header {
+    display: none !important;
+  }
+
+  body.printing-resume main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    background: white !important;
+  }
+
+  body.printing-resume .resume-print-shell {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  body.printing-resume .resume-print-root,
+  body.printing-resume .resume-print-root * {
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html.dark body.printing-resume main,
+  html.dark body.printing-resume .resume-print-shell,
+  html.dark body.printing-resume .resume-print-root {
+    background: white !important;
+  }
+}
