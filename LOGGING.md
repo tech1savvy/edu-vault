@@ -2,66 +2,61 @@
 
 Quick reference for reading logs across all services during development.
 
-> **Note for AI agents**: `.log` files are gitignored and cannot be read with file-reading tools. Use the `run_command` shell commands below instead.
-
 ---
 
-## Log locations
+## Docker
 
-| Service | File | Level | Contents |
-|---|---|---|---|
-| `/server` | `server/combined.log` | DEBUG+ | All requests and app events |
-| `/server` | `server/error.log` | ERROR only | Errors only |
-| `/ml` | `ml/combined.log` | DEBUG+ | All ML service events |
-| `/ml` | `ml/error.log` | ERROR only | Errors only |
-| `/client` | — | — | Browser `console.error` only, no log files |
-
----
-
-## Reading logs (shell commands)
+All services run in Docker, so logs are accessed via `docker compose`:
 
 ```bash
-# Last 100 lines of a log
-tail -n 100 server/combined.log
-tail -n 100 ml/combined.log
+# View all logs (live stream)
+just logs
 
-# Errors only (live stream)
-tail -f server/error.log
-tail -f ml/error.log
+# View specific service logs
+just logs server
+just logs ml
+just logs client
 
-# Search for a specific term
-grep "userId" server/combined.log
-grep "ERROR" server/combined.log | tail -30
+# Last 100 lines of a service
+docker compose logs --tail 100 server
+docker compose logs --tail 100 ml
 
-# Search across all logs at once
-grep -r "ERROR" server/ ml/ --include="*.log"
+# Follow specific service
+docker compose logs -f server
+docker compose logs -f ml
 ```
 
-## Docker (if services are running as containers)
+### Container names
 
+| Service | Container            |
+| ------- | -------------------- |
+| server  | `eduvault-backend`   |
+| ml      | `eduvault-ml`        |
+| client  | `eduvault-client`    |
+| postgres| `eduvault-postgres`  |
+| qdrant  | `eduvault-qdrant`    |
+
+Direct docker logs:
 ```bash
-docker logs eduvault-server --tail 100
+docker logs eduvault-backend --tail 100
 docker logs eduvault-ml --tail 100
-
-# Live stream
-docker logs eduvault-server -f
 ```
 
 ---
 
 ## Log formats
 
-**Server** (Winston — `combined.log`)
+**Server** (Express logs via morgan)
 ```
-2026-04-27 08:00:00 info  GET /api/resume/heading 200 12ms
-2026-04-27 08:00:01 error Error syncing resume: { message: '...', stack: '...' }
+GET /api/resume/heading 200 12ms
+POST /api/auth/login 401 5ms
 ```
 
-**ML** (Python logging — `combined.log`)
+**ML** (Python logging)
 ```
-2026-04-27 08:00:00 INFO semantic-ranking: Syncing resume for user 42
-2026-04-27 08:00:01 DEBUG semantic-ranking: Upserted vector: user-42
-2026-04-27 08:00:02 ERROR semantic-ranking: Failed to sync user 7: connection refused
+INFO: Syncing resume for user 42
+DEBUG: Upserted vector: user-42
+ERROR: Failed to sync user 7: connection refused
 ```
 
 ---
@@ -69,7 +64,7 @@ docker logs eduvault-server -f
 ## Libraries
 
 | Service | Library |
-|---|---|
-| `/server` | [winston](https://github.com/winstonjs/winston) + [morgan](https://github.com/expressjs/morgan) |
-| `/ml` | Python stdlib `logging` with custom `ColorFormatter` (`ml/logger.py`) |
-| `/client` | None — `console.error` in catch blocks only |
+| ------- | ------- |
+| server  | [morgan](https://github.com/expressjs/morgan) |
+| ml      | Python stdlib `logging` |
+| client  | None — `console.error` in catch blocks only |
