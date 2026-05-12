@@ -12,20 +12,19 @@ const JobApplicationsPage = () => {
   const [updating, setUpdating] = useState(null);
 
   useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        setLoading(true);
+        const response = await adminApi.get(`/applications/job/${jobId}`);
+        setApplications(response.data);
+      } catch {
+        setError('Failed to fetch applications.');
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchApplications();
   }, [jobId]);
-
-  const fetchApplications = async () => {
-    try {
-      setLoading(true);
-      const response = await adminApi.get(`/applications/job/${jobId}`);
-      setApplications(response.data);
-    } catch {
-      setError('Failed to fetch applications.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleStatusChange = async (applicationId, newStatus) => {
     try {
