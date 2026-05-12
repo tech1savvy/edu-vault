@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const authenticate = require("./middleware/auth");
+const authenticateToken = require("./middleware/auth");
 
 const authRoutes = require("./features/auth");
-const resumeRoutes = require("./features/resume/resume.routes");
+const { getFullResume } = require("./features/resume/resume.controller");
 const headingRoutes = require("./features/resume/heading");
 const skillRoutes = require("./features/resume/skill");
 const projectRoutes = require("./features/resume/project");
@@ -20,7 +20,8 @@ router.use("/auth", authRoutes);
 
 router.use("/public", publicRoutes);
 
-router.use("/resume", resumeRoutes);
+// Registered here (not nested under router.use("/resume", …)) so Express 5 matches GET /resume/all after auth.
+router.get("/resume/all", authenticateToken, getFullResume);
 router.use("/resume/heading", headingRoutes);
 router.use("/resume/skills", skillRoutes);
 router.use("/resume/projects", projectRoutes);
