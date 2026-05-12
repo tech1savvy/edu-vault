@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:8000/api';
+const rawBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_URL = (rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase) + '/api';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
@@ -231,4 +232,52 @@ export const updateMentorActionStatus = async (actionId, status) => {
     } else {
         throw new Error(data.error || data.message || 'Something went wrong');
     }
+};
+
+export const createOrUpdateHeading = async (data) => {
+  const response = await fetch(`${API_URL}/resume/heading`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  const result = await response.json();
+  if (response.ok) return result;
+  throw new Error(result.message || 'Failed to save heading');
+};
+
+export const getResumeAll = async () => {
+  const response = await fetch(`${API_URL}/resume/all`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.message || 'Failed to fetch resume');
+};
+
+export const getPublicResume = async (userId) => {
+  const response = await fetch(`${API_URL}/public/students/${userId}/resume`);
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.message || 'Failed to fetch public resume');
+};
+
+export const addSkill = async (data) => {
+  const response = await fetch(`${API_URL}/resume/skills`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  const result = await response.json();
+  if (response.ok) return result;
+  throw new Error(result.message || 'Failed to add skill');
+};
+
+export const deleteSkill = async (id) => {
+  const response = await fetch(`${API_URL}/resume/skills/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+  if (response.ok) return;
+  const result = await response.json();
+  throw new Error(result.message || 'Failed to delete skill');
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ResumeContext } from "./resumeContext";
 
 // Helper to keep state synced with localStorage
@@ -21,6 +21,10 @@ export function ResumeProvider({ children }) {
   const [skills, setSkills] = useStickyState([], "resume_skills");
   const [achievements, setAchievements] = useStickyState([], "resume_achievements");
   const [certifications, setCertifications] = useStickyState([], "resume_certifications");
+  const [resumeLoading, setResumeLoading] = useState(false);
+  const [resumeLoadedOnce, setResumeLoadedOnce] = useState(false);
+  const refreshResume = useCallback(() => {}, []);
+  const clearResume = useCallback(() => {}, []);
 
   return (
     <ResumeContext.Provider
@@ -39,6 +43,10 @@ export function ResumeProvider({ children }) {
         setAchievements,
         certifications,
         setCertifications,
+        resumeLoading,
+        resumeLoadedOnce,
+        refreshResume,
+        clearResume,
       }}
     >
       {children}

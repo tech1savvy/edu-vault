@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import { 
   login,
   getHeading,
@@ -12,6 +13,7 @@ import {
 } from '../services/api';
 
 const LoginPage = () => {
+  const { login: authLogin } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,6 +26,7 @@ const LoginPage = () => {
       const { token, user } = await login(email, password); // Get user object from response
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user)); // Store user object
+      authLogin(token, user);
 
       // Clear any existing local storage resume keys from previous accounts
       for (let i = localStorage.length - 1; i >= 0; i--) {
@@ -76,7 +79,7 @@ const LoginPage = () => {
       } else if (user && user.role === 'mentor') {
         window.location.href = '/mentor-dashboard';
       } else if (user && user.role === 'student') {
-        window.location.href = '/';
+        window.location.href = '/dashboard/profile';
       } else {
         window.location.href = '/';
       }
