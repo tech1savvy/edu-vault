@@ -1,11 +1,73 @@
 import os
+import time
 from fastapi import FastAPI
 from pydantic import BaseModel
+from prometheus_client import make_asgi_app, Counter, Histogram
 from embedding_service import generate_embedding
 from qdrant_service import upsert_vector, query_similar, get_vector
 from logger import logger
 
 app = FastAPI(title="ML Service", description="Embedding and matching service")
+
+# ==============================================================================
+# Prometheus Metrics Setup
+# ==============================================================================
+
+# Create metrics for HTTP requests
+http_requests_total = Counter(
+    "http_requests_total", "Total HTTP requests", ["method", "status", "endpoint"]
+)
+
+http_request_duration = Histogram(
+    "http_request_duration_seconds",
+    "HTTP request duration",
+    ["method", "status", "endpoint"],
+    buckets=(0.01, 0.05, 0.1, 0.5, 1.0, 2.0, 5.0),
+)
+
+# Embedding generation metrics
+embedding_duration = Histogram(
+    "embedding_duration_seconds",
+    "Time to generate embeddings",
+    buckets=(0.1, 0.5, 1.0, 2.0, 5.0, 10.0),
+)
+
+# Expose /metrics endpoint for Prometheus scraping
+metrics_app = make_asgi_app()
+app.mount("/metrics", metrics_app)
+
+# ==============================================================================
+# Metrics Middleware
+# Track request counts and durations
+# ==============================================================================
+
+
+@app.middleware("http")
+async def track_metrics(request, call_next):
+    method = request.method
+    endpoint = request.url.path
+
+    if endpoint == "/metrics":
+        return await call_next(request)
+
+    start_time = time.perf_counter()
+
+    response = await call_next(request)
+
+    duration = time.perf_counter() - start_time
+
+    http_requests_total.labels(
+        method=method, status=str(response.status_code), endpoint=endpoint
+    ).inc()
+
+    http_request_duration.labels(
+        method=method, status=str(response.status_code), endpoint=endpoint
+    ).observe(duration)
+
+    logger.info(f"{method} {endpoint} {response.status_code} ({duration:.3f}s)")
+
+    return response
+
 
 PORT = int(os.getenv("ML_SERVICE_PORT", "8001"))
 
@@ -44,6 +106,11 @@ class MatchRequest(BaseModel):
     text: str
     limit: int = 10
 
+class MatchStudentRequest(BaseModel):
+    user_id: int
+    text: str
+    limit: int = 1
+
 
 @app.get("/health")
 def health_check():
@@ -52,7 +119,13 @@ def health_check():
 
 @app.post("/embed")
 def embed_text(request: EmbedRequest):
+    logger.info("Generating embedding")
+    start_time = time.perf_counter()
+
     embedding = generate_embedding(request.text)
+
+    embedding_duration.observe(time.perf_counter() - start_time)
+
     return {"embedding": embedding}
 
 
@@ -145,6 +218,26 @@ def match(request: MatchRequest):
 
     return {
         "job_id": request.job_id,
+        "matches": matches,
+    }
+
+
+@app.post("/match/student")
+def match_student(request: MatchStudentRequest):
+    logger.info(f"Finding job matches for student {request.user_id}")
+
+    student_vector = get_vector(f"user-{request.user_id}")
+    if student_vector:
+        embedding = student_vector["vector"]
+    else:
+        embedding = generate_embedding(request.text)
+
+    matches = query_similar(
+        embedding=embedding, limit=request.limit, filter_type="job"
+    )
+
+    return {
+        "user_id": request.user_id,
         "matches": matches,
     }
 

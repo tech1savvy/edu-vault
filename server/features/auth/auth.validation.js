@@ -1,9 +1,11 @@
 const Joi = require('joi');
 
 const signupSchema = Joi.object({
-  name: Joi.string().trim().min(1).required(),
+  name: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
+  confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
+  role: Joi.string().valid('student', 'mentor', 'administrator').default('student'),
 });
 
 const loginSchema = Joi.object({

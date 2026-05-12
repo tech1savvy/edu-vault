@@ -1,20 +1,17 @@
 const { Heading } = require('../../../models');
-const { resolveUserId } = require('../resolveUserId');
 
-const getHeading = async (params) => {
-  const userId = resolveUserId(params);
-  return await Heading.findOne({ where: { userId } });
+const getHeading = async ({ user_id }) => {
+  return await Heading.findOne({ where: { user_id } });
 };
 
-const createOrUpdateHeading = async ({ user_id, userId, name, role, email, phone, location, link, description }) => {
-  const uid = resolveUserId({ user_id, userId });
+const createOrUpdateHeading = async ({ user_id, name, role, email, phone, location, link }) => {
   const [heading, created] = await Heading.findOrCreate({
-    where: { userId: uid },
-    defaults: { userId: uid, name, role, email, phone, location, link, description },
+    where: { user_id },
+    defaults: { user_id, name, role, email, phone, location, link },
   });
 
   if (!created) {
-    return await heading.update({ name, role, email, phone, location, link, description });
+    return await heading.update({ name, role, email, phone, location, link });
   }
 
   return heading;

@@ -1,15 +1,11 @@
 const { Education } = require('../../../models');
-const { resolveUserId } = require('../resolveUserId');
 
-const getEducations = async (params) => {
-  const userId = resolveUserId(params);
-  return await Education.findAll({ where: { userId } });
+const getEducations = async ({ user_id }) => {
+  return await Education.findAll({ where: { user_id } });
 };
 
-const addEducation = async (params) => {
-  const userId = resolveUserId(params);
-  const { institution, degree, fieldOfStudy, duration, details } = params;
-  return await Education.create({ userId, institution, degree, fieldOfStudy, duration, details });
+const addEducation = async ({ user_id, institution, degree, fieldOfStudy, duration, details }) => {
+  return await Education.create({ user_id, institution, degree, fieldOfStudy, duration, details });
 };
 
 const updateEducation = async (id, { institution, degree, fieldOfStudy, duration, details }) => {
