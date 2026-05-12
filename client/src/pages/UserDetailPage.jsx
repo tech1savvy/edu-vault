@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { adminService } from '../services/adminApi';
+import { adminApi, adminService } from '../services/adminApi';
 import './UserDetailPage.css';
 
 const UserDetailPage = () => {
@@ -12,20 +12,19 @@ const UserDetailPage = () => {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const response = await adminApi.get(`/users/${id}`);
+        setUser(response.data);
+      } catch {
+        setError('Failed to load user.');
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchUser();
   }, [id]);
-
-  const fetchUser = async () => {
-    try {
-      setLoading(true);
-      const response = await adminService.getUserById(id);
-      setUser(response.data);
-    } catch {
-      setError('Failed to fetch user details.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleStatusChange = async (newStatus) => {
     try {
