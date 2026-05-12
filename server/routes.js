@@ -17,8 +17,11 @@ const analyticsRoutes = require("./features/analytics/analytics.routes");
 const jobApplicationsRoutes = require("./features/job-applications/jobApplications.routes");
 const interviewRoutes = require("./routes/interviewRoutes");
 const mentorRoutes = require("./features/mentor").router;
+const resumeRoutes = require("./features/resume/resume.routes");
+const publicRoutes = require("./features/public/public.routes");
 const { syncProfileData } = require("./features/resume/resume.sync.controller");
 router.use("/auth", authRoutes);
+router.use("/public", publicRoutes);
 
 router.use("/resume", authenticate);
 router.post("/resume/sync", syncProfileData);
@@ -29,6 +32,7 @@ router.use("/resume/achievements", achievementRoutes);
 router.use("/resume/certifications", certificationRoutes);
 router.use("/resume/education", educationRoutes);
 router.use("/resume/experiences", experienceRoutes);
+router.use("/resume", resumeRoutes);
 
 router.use("/job-descriptions", jobDescriptionRoutes);
 
