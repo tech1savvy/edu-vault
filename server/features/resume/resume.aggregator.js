@@ -25,9 +25,12 @@ const formatters = {
   heading: (item) => `${item.name} - ${item.role}\n${item.email} | ${item.phone} | ${item.location}\nLink: ${item.link}`,
   achievements: (item) => `- ${item.title}: ${item.description} (${item.date})`,
   certifications: (item) => `- ${item.name} from ${item.issuer} (${item.date})`,
-  educations: (item) => `- ${item.degree} in ${item.fieldofstudy} from ${item.institution} (${item.duration}). ${item.details}`,
+  educations: (item) => {
+    const field = item.fieldOfStudy ?? item.fieldofstudy ?? '';
+    return `- ${item.degree} in ${field} from ${item.institution} (${item.duration}). ${item.details}`;
+  },
   experiences: (item) => `- ${item.role} at ${item.company} (${item.duration}). ${item.details}`,
-  projects: (item) => `- ${item.title} (${item.type}): ${item.description}. Tech: ${item.techstack}`,
+  projects: (item) => `- ${item.title} (${item.type}): ${item.description}. Tech: ${item.techStack}`,
   skills: (item) => `- ${item.name} (${item.level})`,
 };
 
@@ -73,7 +76,46 @@ const getAllResumesForSync = async () => {
   return resumes.filter(r => r.text);
 };
 
+const toPlain = (row) => {
+  if (!row) return null;
+  if (typeof row.toJSON === 'function') return row.toJSON();
+  return row;
+};
+
+const toPlainList = (rows) => (rows || []).map((r) => toPlain(r)).filter(Boolean);
+
+const getAggregatedResumeData = async (userId) => {
+  const [
+    heading,
+    experiences,
+    educations,
+    projects,
+    skills,
+    certifications,
+    achievements,
+  ] = await Promise.all([
+    Heading.findOne({ where: { userId } }),
+    Experience.findAll({ where: { userId } }),
+    Education.findAll({ where: { userId } }),
+    Project.findAll({ where: { userId } }),
+    Skill.findAll({ where: { userId } }),
+    Certification.findAll({ where: { userId } }),
+    Achievement.findAll({ where: { userId } }),
+  ]);
+
+  return {
+    heading: toPlain(heading) || {},
+    experiences: toPlainList(experiences),
+    education: toPlainList(educations),
+    projects: toPlainList(projects),
+    skills: toPlainList(skills),
+    certifications: toPlainList(certifications),
+    achievements: toPlainList(achievements),
+  };
+};
+
 module.exports = {
   getAggregatedResumeText,
   getAllResumesForSync,
+  getAggregatedResumeData,
 };

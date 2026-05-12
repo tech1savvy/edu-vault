@@ -3,6 +3,7 @@ const router = express.Router();
 const authenticate = require("./middleware/auth");
 
 const authRoutes = require("./features/auth");
+const resumeRoutes = require("./features/resume/resume.routes");
 const headingRoutes = require("./features/resume/heading");
 const skillRoutes = require("./features/resume/skill");
 const projectRoutes = require("./features/resume/project");
@@ -12,16 +13,14 @@ const educationRoutes = require("./features/resume/education");
 const experienceRoutes = require("./features/resume/experience");
 const jobDescriptionRoutes = require("./features/job-description/jobDescription.routes");
 const syncRoutes = require("./features/ml/sync.routes");
-const userManagementRoutes = require("./features/user-management/userManagement.routes");
-const analyticsRoutes = require("./features/analytics/analytics.routes");
-const jobApplicationsRoutes = require("./features/job-applications/jobApplications.routes");
+const publicRoutes = require("./features/public/public.routes");
 const interviewRoutes = require("./routes/interviewRoutes");
-const mentorRoutes = require("./features/mentor").router;
-const { syncProfileData } = require("./features/resume/resume.sync.controller");
+
 router.use("/auth", authRoutes);
 
-router.use("/resume", authenticate);
-router.post("/resume/sync", syncProfileData);
+router.use("/public", publicRoutes);
+
+router.use("/resume", resumeRoutes);
 router.use("/resume/heading", headingRoutes);
 router.use("/resume/skills", skillRoutes);
 router.use("/resume/projects", projectRoutes);
@@ -34,13 +33,6 @@ router.use("/job-descriptions", jobDescriptionRoutes);
 
 router.use("/sync", syncRoutes);
 
-router.use("/users", userManagementRoutes);
-
-router.use("/analytics", analyticsRoutes);
-
-router.use("/applications", jobApplicationsRoutes);
-
 router.use("/interview", interviewRoutes);
-router.use("/mentor", mentorRoutes);
 
 module.exports = router;

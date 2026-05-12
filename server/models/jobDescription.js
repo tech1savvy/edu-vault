@@ -16,20 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   JobDescription.init({
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
-    requirements: DataTypes.TEXT,
-    status: {
-      type: DataTypes.ENUM('draft', 'active', 'archived', 'closed'),
-      defaultValue: 'draft'
-    },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    expiresAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      field: 'expires_at'
-    }
+    requirements: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'JobDescription',

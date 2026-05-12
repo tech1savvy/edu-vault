@@ -1,102 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signup } from '../services/api';
+import Card from '../components/ui/Card';
+import FormInput from '../components/ui/FormInput';
+import { AuthContext } from '../context/AuthContext';
+import { ResumeContext } from '../context/resumeContext';
 
 const SignupPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('student');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login: authLogin } = useContext(AuthContext);
+  const { refreshResume } = useContext(ResumeContext);
+  const passwordStrength =
+    password.length >= 10 ? 'Strong' : password.length >= 7 ? 'Medium' : password.length > 0 ? 'Weak' : 'None';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
     try {
-      await signup(name, email, password, confirmPassword, role);
-      navigate('/login');
+      setLoading(true);
+      setError('');
+      const { token, user } = await signup(name, email, password);
+      authLogin(token, user);
+      if (user?.role === 'student') {
+        await refreshResume(token);
+      }
+      navigate(user?.role === 'administrator' ? '/admin/dashboard' : '/dashboard/profile');
     } catch (error) {
       console.error('Signup failed:', error);
-      setError(error.message);
+      setError(
+        error?.response?.data?.error ||
+          error?.response?.data?.message ||
+          'Signup failed. Try again.'
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h2 className="card-title text-center">Sign Up</h2>
-              {error && <div className="alert alert-danger">{error}</div>}
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="role" className="form-label">Role</label>
-                  <select 
-                    className="form-select" 
-                    id="role" 
-                    value={role} 
-                    onChange={(e) => setRole(e.target.value)}
-                  >
-                    <option value="student">Student</option>
-                    <option value="mentor">Mentor</option>
-                    <option value="administrator">Administrator</option>
-                  </select>
-                </div>
-                <button type="submit" className="btn btn-primary w-100">Sign Up</button>
-              </form>
-              <p className="text-center mt-3">
-                Already have an account? <Link to="/login">Login</Link>
+    <div className="flex min-h-[80vh] items-center justify-center px-4 py-8">
+      <div className="w-full max-w-3xl">
+        <Card title="Create your EduVault account" subtitle="Secure your account and start building your profile.">
+          <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
+            <FormInput label="Name" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+            <FormInput label="Email address" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <div>
+              <FormInput label="Password" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
+                Password strength: <span className="font-semibold">{passwordStrength}</span>
               </p>
             </div>
-          </div>
-        </div>
+            {error && (
+              <p className="md:col-span-2 rounded-lg bg-rose-50 px-3 py-2 text-sm font-medium text-rose-800 dark:bg-rose-950/60 dark:text-rose-200 dark:ring-1 dark:ring-rose-800/80">
+                {error}
+              </p>
+            )}
+            <div className="md:col-span-2">
+              <button type="submit" className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-95" disabled={loading}>
+                {loading ? 'Signing up...' : 'Sign Up'}
+              </button>
+            </div>
+          </form>
+          <p className="mt-4 text-center text-sm text-slate-700 dark:text-slate-300">
+            Already have an account?{" "}
+            <Link className="font-semibold text-indigo-700 hover:underline dark:text-indigo-400" to="/login">
+              Login
+            </Link>
+          </p>
+        </Card>
       </div>
     </div>
   );

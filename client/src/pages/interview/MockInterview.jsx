@@ -9,7 +9,7 @@ import "./interview-pages.css";
 const MOCK_DURATION_SECONDS = 15 * 60;
 
 export default function MockInterview() {
-  const { domainSlug } = useParams();
+  const { domain: domainSlug } = useParams();
   const navigate = useNavigate();
   const slug = SLUG_TO_LABEL[domainSlug] ? domainSlug : null;
 
@@ -98,7 +98,7 @@ export default function MockInterview() {
       };
 
       const result = await submitInterview(payload);
-      navigate(`/interview/result/${result.interviewId}`, { replace: true });
+      navigate(`/dashboard/interview/result/${result.interviewId}`, { replace: true });
     } catch (e) {
       submittedRef.current = false;
       setSubmitError(e?.response?.data?.error ?? e.message ?? "Submit failed");
@@ -132,7 +132,7 @@ export default function MockInterview() {
 
   const handleExit = () => {
     if (window.confirm("Exit interview? Progress on this sitting will not be scored until you submit.")) {
-      navigate("/interview/domain");
+      navigate("/dashboard/interview");
     }
   };
 
@@ -143,7 +143,7 @@ export default function MockInterview() {
     return (
       <div className="interview-shell p-4">
         <p className="text-warning">Unknown domain slug.</p>
-        <Link to="/interview/domain">Return to domain selection</Link>
+        <Link to="/dashboard/interview">Return to domain selection</Link>
       </div>
     );
   }
@@ -161,7 +161,7 @@ export default function MockInterview() {
     return (
       <div className="interview-shell p-4">
         <div className="alert alert-danger">{fetchError}</div>
-        <Link to="/interview/domain" className="btn interview-gradient-btn">
+        <Link to="/dashboard/interview" className="btn interview-gradient-btn">
           Domain selection
         </Link>
       </div>
@@ -172,7 +172,7 @@ export default function MockInterview() {
     <div className="interview-shell p-3 p-md-4 mb-5">
       <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom border-secondary border-opacity-25">
         <div>
-          <Link to="/interview/domain" className="small text-info text-decoration-none">
+          <Link to="/dashboard/interview" className="small text-info text-decoration-none">
             ← Change domain
           </Link>
           <h1 className="h5 mb-1 mt-1">Mock Interview</h1>

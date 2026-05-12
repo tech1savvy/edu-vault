@@ -1,30 +1,24 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect, useContext } from "react";
 import "./App.css";
-// Removed useEffect as setupAxiosInterceptors is no longer used here
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Navbar from "./components/Navbar";
-// Removed AuthProvider, useAuth, setupAxiosInterceptors imports
-
 import MatchResultsPage from "./pages/MatchResultsPage";
 
 // Admin Components
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import JobDescriptionFormPage from "./pages/JobDescriptionFormPage";
-import UsersPage from "./pages/UsersPage";
-import UserDetailPage from "./pages/UserDetailPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
-import JobApplicationsPage from "./pages/JobApplicationsPage";
 import AdminRoute from "./components/AdminRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Form Components
 import HeadingForm from "./components/Resume/Forms/HeadingForm";
 import ExperienceForm from "./components/Resume/Forms/ExperienceForm";
 import EducationForm from "./components/Resume/Forms/EducationForm";
-import SkillsForm from "./components/Resume/Forms/SkillsForm";
 import ProjectsForm from "./components/Resume/Forms/ProjectsForm";
 import CertificationsForm from "./components/Resume/Forms/CertificationsForm";
 import AchievementsForm from "./components/Resume/Forms/AchievementsForm";
@@ -39,44 +33,55 @@ import Certifications from "./components/Resume/Certifications";
 import Achievements from "./components/Resume/Achievements";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import LayoutS from "./components/Portfolio/Layouts/LayoutS/LayoutS";
 import LayoutK from "./components/Portfolio/Layouts/LayoutK/LayoutK";
 import LayoutT from "./components/Portfolio/Layouts/LayoutT/LayoutT";
-import StudentRoute from "./components/StudentRoute";
+import { ResumeContext } from "./context/resumeContext";
+import { AuthContext } from "./context/AuthContext";
+import LandingPage from "./pages/LandingPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import DashboardLayout from "./layouts/DashboardLayout";
+import ProfilePage from "./pages/ProfilePage";
+import EducationPage from "./pages/EducationPage";
+import ProjectsPage from "./pages/ProjectsPage";
+import AchievementsPage from "./pages/AchievementsPage";
+import CertificationsPage from "./pages/CertificationsPage";
+import PortfolioPage from "./pages/PortfolioPage";
+import ResumePage from "./pages/ResumePage";
+import QrCodePage from "./pages/QrCodePage";
+import ExperiencePage from "./pages/ExperiencePage";
+import SkillsPage from "./pages/SkillsPage";
+import PublicPortfolioPage from "./pages/PublicPortfolioPage";
+
+// Interview Pages
 import DomainSelection from "./pages/interview/DomainSelection";
 import MockInterview from "./pages/interview/MockInterview";
 import InterviewResult from "./pages/interview/InterviewResult";
 
-import CVTemplate from "./components/Resume/CVTemplate";
-import FacultyMentoringDashboard from "./components/FacultyMentoringDashboard";
-import MentorDashboard from "./pages/MentorDashboard";
+function AppContent() {
+  const { refreshResume } = useContext(ResumeContext);
+  const { user, isLoggedIn } = useContext(AuthContext);
+  const location = useLocation();
+  const isPublicPortfolio = location.pathname.startsWith("/share/portfolio/");
 
-import { Navigate } from "react-router-dom";
-
-
-const RoleRoute = ({ allowedRoles, children }) => {
-  const storedUser = localStorage.getItem('user');
-  const user = storedUser ? JSON.parse(storedUser) : null;
-  
-  if (!user || !allowedRoles.includes(user.role)) {
-    return <Navigate to="/" />;
-  }
-  return children;
-};
-
-function App() {
-  const storedUser = localStorage.getItem('user');
-  const user = storedUser ? JSON.parse(storedUser) : null;
+  useEffect(() => {
+    if (isLoggedIn && user && user.role === 'student') {
+      refreshResume();
+    }
+  }, [isLoggedIn, user, refreshResume]);
 
   return (
     <>
-      <Navbar />
-
-      <main className="p-3">
+      {!isPublicPortfolio && <Navbar />}
+      <main className={isPublicPortfolio ? "" : "p-3"}>
         <Routes>
+          <Route path="/share/portfolio/:userId" element={<PublicPortfolioPage />} />
           {/* Auth Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           {/* Admin Routes */}
           <Route
@@ -111,113 +116,100 @@ function App() {
               </AdminRoute>
             }
           />
+
+          {/* Input Routes */}
+          <Route path="/input/heading" element={<ProtectedRoute><HeadingForm /></ProtectedRoute>} />
+          <Route path="/input/experience" element={<ProtectedRoute><ExperienceForm /></ProtectedRoute>} />
+          <Route path="/input/education" element={<ProtectedRoute><EducationForm /></ProtectedRoute>} />
+          <Route path="/input/skills" element={<ProtectedRoute><Skills isInput={true} /></ProtectedRoute>} />
+          <Route path="/input/projects" element={<ProtectedRoute><ProjectsForm /></ProtectedRoute>} />
           <Route
-            path="/admin/users"
+            path="/input/certifications"
+            element={<ProtectedRoute><CertificationsForm /></ProtectedRoute>}
+          />
+          <Route path="/input/achievements" element={<ProtectedRoute><AchievementsForm /></ProtectedRoute>} />
+
+          {/* Output Routes */}
+          <Route path="/output/heading" element={<ProtectedRoute><Heading /></ProtectedRoute>} />
+          <Route path="/output/experience" element={<ProtectedRoute><Experience /></ProtectedRoute>} />
+          <Route path="/output/education" element={<ProtectedRoute><Education /></ProtectedRoute>} />
+          <Route path="/output/skills" element={<ProtectedRoute><Skills isInput={false} /></ProtectedRoute>} />
+          <Route path="/output/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+          <Route path="/output/certifications" element={<ProtectedRoute><Certifications /></ProtectedRoute>} />
+          <Route path="/output/achievements" element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
+
+          {/* Portfolio Route */}
+          <Route path="/portfolio/layout-k" element={<ProtectedRoute><LayoutK /></ProtectedRoute>} />
+          <Route path="/portfolio/layout-t" element={<ProtectedRoute><LayoutT /></ProtectedRoute>} />
+
+          {/* Dashboard Routes */}
+          <Route
+            path="/dashboard"
             element={
-              <AdminRoute>
-                <UsersPage />
-              </AdminRoute>
+              <ProtectedRoute>
+                <Navigate to="/dashboard/profile" replace />
+              </ProtectedRoute>
             }
           />
+          <Route path="/dashboard/profile" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<ProfilePage />} />
+          </Route>
+          <Route path="/dashboard/experience" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<ExperiencePage />} />
+          </Route>
+          <Route path="/dashboard/education" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<EducationPage />} />
+          </Route>
+          <Route path="/dashboard/skills" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<SkillsPage />} />
+          </Route>
+          <Route path="/dashboard/projects" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<ProjectsPage />} />
+          </Route>
+          <Route path="/dashboard/achievements" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<AchievementsPage />} />
+          </Route>
+          <Route path="/dashboard/certifications" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<CertificationsPage />} />
+          </Route>
+          <Route path="/dashboard/portfolio" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<PortfolioPage />} />
+          </Route>
+          <Route path="/dashboard/resume" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<ResumePage />} />
+          </Route>
+          <Route path="/dashboard/qr-code" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<QrCodePage />} />
+          </Route>
+          <Route path="/dashboard/interview" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<DomainSelection />} />
+          </Route>
+          <Route path="/dashboard/interview/mock/:domain" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<MockInterview />} />
+          </Route>
+          <Route path="/dashboard/interview/result/:id" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<InterviewResult />} />
+          </Route>
+
+          {/* Default Fallback */}
           <Route
-            path="/admin/users/:id"
+            path="*"
             element={
-              <AdminRoute>
-                <UserDetailPage />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/analytics"
-            element={
-              <AdminRoute>
-                <AnalyticsPage />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/job-descriptions/:jobId/applications"
-            element={
-              <AdminRoute>
-                <JobApplicationsPage />
-              </AdminRoute>
-            }
-          />
-
-          {/* Faculty & Mentor Routes */}
-          <Route path="/faculty-dashboard" element={<RoleRoute allowedRoles={['administrator', 'mentor']}><FacultyMentoringDashboard /></RoleRoute>} />
-          <Route path="/mentor-dashboard" element={<RoleRoute allowedRoles={['administrator', 'mentor']}><MentorDashboard /></RoleRoute>} />
-
-
-
-          {/* Input Routes (Student Only) */}
-          <Route path="/input/heading" element={<RoleRoute allowedRoles={['student']}><HeadingForm /></RoleRoute>} />
-          <Route path="/input/experience" element={<RoleRoute allowedRoles={['student']}><ExperienceForm /></RoleRoute>} />
-          <Route path="/input/education" element={<RoleRoute allowedRoles={['student']}><EducationForm /></RoleRoute>} />
-          <Route path="/input/skills" element={<RoleRoute allowedRoles={['student']}><Skills isInput={true} /></RoleRoute>} />
-          <Route path="/input/projects" element={<RoleRoute allowedRoles={['student']}><ProjectsForm /></RoleRoute>} />
-          <Route path="/input/certifications" element={<RoleRoute allowedRoles={['student']}><CertificationsForm /></RoleRoute>} />
-          <Route path="/input/achievements" element={<RoleRoute allowedRoles={['student']}><AchievementsForm /></RoleRoute>} />
-
-          {/* Output Routes (Student Only) */}
-          <Route path="/output/heading" element={<RoleRoute allowedRoles={['student']}><Heading /></RoleRoute>} />
-          <Route path="/output/experience" element={<RoleRoute allowedRoles={['student']}><Experience /></RoleRoute>} />
-          <Route path="/output/education" element={<RoleRoute allowedRoles={['student']}><Education /></RoleRoute>} />
-          <Route path="/output/skills" element={<RoleRoute allowedRoles={['student']}><Skills isInput={false} /></RoleRoute>} />
-          <Route path="/output/projects" element={<RoleRoute allowedRoles={['student']}><Projects /></RoleRoute>} />
-          <Route path="/output/certifications" element={<RoleRoute allowedRoles={['student']}><Certifications /></RoleRoute>} />
-          <Route path="/output/achievements" element={<RoleRoute allowedRoles={['student']}><Achievements /></RoleRoute>} />
-
-          {/* Portfolio Route (Student Only) */}
-          <Route path="/portfolio/layout-s" element={<RoleRoute allowedRoles={['student']}><LayoutS /></RoleRoute>} />
-          <Route path="/portfolio/layout-k" element={<RoleRoute allowedRoles={['student']}><LayoutK /></RoleRoute>} />
-          <Route path="/portfolio/layout-t" element={<RoleRoute allowedRoles={['student']}><LayoutT /></RoleRoute>} />
-
-          <Route
-            path="/interview/domain"
-            element={
-              <StudentRoute>
-                <DomainSelection />
-              </StudentRoute>
-            }
-          />
-          <Route
-            path="/interview/session/:domainSlug"
-            element={
-              <StudentRoute>
-                <MockInterview />
-              </StudentRoute>
-            }
-          />
-          <Route
-            path="/interview/result/:id"
-            element={
-              <StudentRoute>
-                <InterviewResult />
-              </StudentRoute>
-            }
-          />
-
-          {/* Default Route */}
-          <Route
-            path="/"
-            element={
-              user && (user.role === 'administrator' || user.role === 'mentor') ? (
-                  <Navigate to="/mentor-dashboard" />
-              ) : (
-                <div className="container text-center mt-5">
-                  <h2>Welcome to EduVault Resume Builder</h2>
-                  <p>
-                    Select a component from the navigation menu to get started.
-                  </p>
-                </div>
-              )
+              isLoggedIn
+                ? (user?.role === 'administrator'
+                  ? <Navigate to="/admin/dashboard" replace />
+                  : <Navigate to="/dashboard/profile" replace />)
+                : <Navigate to="/" replace />
             }
           />
         </Routes>
       </main>
     </>
   );
+}
+
+function App() {
+  return <AppContent />;
 }
 
 export default App;

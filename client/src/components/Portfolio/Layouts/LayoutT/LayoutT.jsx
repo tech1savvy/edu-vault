@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import "./LayoutT.css";
 import Header from "./Header";
 import About from "./About";
@@ -9,98 +9,26 @@ import Skills from "./Skills";
 import Achievements from "./Achievements";
 import Certifications from "./Certifications";
 import Contact from "./Contact";
-
 import { ResumeContext } from "../../../../context/resumeContext";
-
-import {
-  getHeading,
-  getProjects,
-  getSkills,
-  getExperience,
-  getEducation,
-  getAchievements,
-  getCertifications,
-} from "../../../../services/api";
-
-// 👉 PDF Button
-import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
-import SyncProfileButton from "../../../Resume/SyncProfileButton";
-import CVTemplate from "../../../Resume/CVTemplate";
 
 const LayoutT = () => {
   const [theme, setTheme] = useState("dark");
-
-  const [, setData] = useState({
-    heading: null,
-    projects: [],
-    skills: [],
-    experience: [],
-    education: [],
-    achievements: [],
-    certifications: [],
-  });
-
-  // Context fallback values
   const {
-    heading: ctxHeading = {},
-    education: ctxEducation = [],
-    experiences: ctxExperiences = [],
-    projects: ctxProjects = [],
-    skills: ctxSkills = [],
-    achievements: ctxAchievements = [],
-    certifications: ctxCertifications = [],
-  } = useContext(ResumeContext) || {};
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [
-          heading,
-          projects,
-          skills,
-          experience,
-          education,
-          achievements,
-          certifications,
-        ] = await Promise.all([
-          getHeading(),
-          getProjects(),
-          getSkills(),
-          getExperience(),
-          getEducation(),
-          getAchievements(),
-          getCertifications(),
-        ]);
-
-        setData({
-          heading,
-          projects,
-          skills,
-          experience,
-          education,
-          achievements,
-          certifications,
-        });
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // Exclusively use live context data to ensure sync with input forms
-  const finalHeading = ctxHeading || {};
-  const finalEducation = ctxEducation || [];
-  const finalExperience = ctxExperiences || [];
-  const finalProjects = ctxProjects || [];
-  const finalSkills = ctxSkills || [];
-  const finalAchievements = ctxAchievements || [];
-  const finalCertifications = ctxCertifications || [];
+    heading,
+    projects,
+    skills,
+    experiences,
+    education,
+    achievements,
+    certifications,
+  } = useContext(ResumeContext);
 
   return (
     <div className="portfolio-layout-t" data-theme={theme}>
-      {/* Background Effects */}
+      {/* Background Grid Overlay */}
       <div className="layout-grid-overlay"></div>
+
+      {/* Top Gradient Line */}
       <div className="layout-top-bar"></div>
 
       {/* Theme Switcher */}
@@ -108,65 +36,50 @@ const LayoutT = () => {
         <button
           onClick={() => setTheme("dark")}
           className={theme === "dark" ? "active" : ""}
+          title="Dark Theme"
         >
-          🌙
+          <span role="img" aria-label="Dark">
+            🌙
+          </span>
         </button>
         <button
           onClick={() => setTheme("ocean")}
           className={theme === "ocean" ? "active" : ""}
+          title="Ocean Theme"
         >
-          🌊
+          <span role="img" aria-label="Ocean">
+            🌊
+          </span>
         </button>
         <button
           onClick={() => setTheme("forest")}
           className={theme === "forest" ? "active" : ""}
+          title="Forest Theme"
         >
-          🌲
+          <span role="img" aria-label="Forest">
+            🌲
+          </span>
         </button>
       </div>
 
-      {/* ------------ PRINTABLE AREA ------------ */}
-      <div id="resume-root">
-        <div className="portfolio-container">
-          <Header data={finalHeading} />
+      <div className="portfolio-container">
+        <Header data={heading} />
 
-          <main className="portfolio-content">
-            <About data={finalHeading} />
-            <Experience data={finalExperience} />
-            <Education data={finalEducation} />
-            <Projects data={finalProjects} />
-            <Skills data={finalSkills} />
-            <Achievements data={finalAchievements} />
-            <Certifications data={finalCertifications} />
-            <Contact data={finalHeading} />
-          </main>
+        <main className="portfolio-content">
+          <About data={heading} />
+          <Experience data={experiences} />
+          <Education data={education} />
+          <Projects data={projects} />
+          <Skills data={skills} />
+          <Achievements data={achievements} />
+          <Certifications data={certifications} />
+          <Contact data={heading} />
+        </main>
 
-          <footer className="portfolio-footer">
-            <div className="footer-line"></div>
-            <p>Built with passion and dedication</p>
-          </footer>
-        </div>
-      </div>
-      {/* ------------ PRINTABLE AREA END ------------ */}
-
-      {/* Hidden standard CV template for PDF export */}
-      <CVTemplate
-        visible={false}
-        dataProp={{
-          heading: finalHeading,
-          experiences: finalExperience,
-          education: finalEducation,
-          projects: finalProjects,
-          skills: finalSkills,
-          achievements: finalAchievements,
-          certifications: finalCertifications
-        }}
-      />
-
-      {/* ------------ DOWNLOAD BUTTON ------------ */}
-      <div style={{ textAlign: "center", margin: "40px 0", display: "flex", justifyContent: "center", gap: "15px" }}>
-        <SyncProfileButton />
-        <DownloadPdfButton filename={`${finalHeading?.name ? finalHeading.name.replace(/\s+/g, '-') : 'My'}-Resume.pdf`} />
+        <footer className="portfolio-footer">
+          <div className="footer-line"></div>
+          <p>Built with passion and dedication</p>
+        </footer>
       </div>
     </div>
   );

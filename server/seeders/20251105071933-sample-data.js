@@ -26,9 +26,25 @@ module.exports = {
         updatedAt: new Date()
     });
 
-    const insertedUsers = await queryInterface.bulkInsert('Users', users, { returning: ['id', 'email', 'role'] });
+    await queryInterface.bulkInsert('Users', users, {});
 
-    const studentIds = insertedUsers.filter(u => u.role === 'student').map(u => u.id);
+    const sequelize = queryInterface.sequelize;
+    const studentIds = [];
+    for (let i = 1; i <= 10; i++) {
+      const email = `student${i}@example.com`;
+      const [rows] = await sequelize.query(
+        'SELECT id FROM "Users" WHERE email = :email LIMIT 1',
+        { replacements: { email } }
+      );
+      if (rows?.[0]?.id != null) {
+        studentIds.push(rows[0].id);
+      }
+    }
+    if (studentIds.length !== 10) {
+      throw new Error(
+        `Expected 10 student users (student1..10@example.com); found ${studentIds.length}. Check Users seed.`
+      );
+    }
 
     const jobProfiles = [
       {
