@@ -18,6 +18,15 @@ module.exports = {
     }
 
     users.push({
+      name: 'Test Student @3 Alias',
+      email: 'student@3example.com',
+      password: hashedPassword,
+      role: 'student',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+
+    users.push({
         name: 'Test Admin',
         email: 'admin@example.com',
         password: hashedPassword,
@@ -45,6 +54,11 @@ module.exports = {
         `Expected 10 student users (student1..10@example.com); found ${studentIds.length}. Check Users seed.`
       );
     }
+
+    const [aliasRows] = await sequelize.query(
+      'SELECT id FROM "Users" WHERE email = :email LIMIT 1',
+      { replacements: { email: 'student@3example.com' } }
+    );
 
     const jobProfiles = [
       {
@@ -469,6 +483,14 @@ module.exports = {
       }
     ];
 
+    let profileRows = jobProfiles;
+    if (aliasRows?.[0]?.id != null) {
+      studentIds.push(aliasRows[0].id);
+      profileRows = jobProfiles.concat([
+        JSON.parse(JSON.stringify(jobProfiles[2])),
+      ]);
+    }
+
     const headings = [];
     const experiences = [];
     const educations = [];
@@ -477,9 +499,15 @@ module.exports = {
     const achievements = [];
     const certifications = [];
 
+    if (studentIds.length !== profileRows.length) {
+      throw new Error(
+        `Student ids (${studentIds.length}) must match profile rows (${profileRows.length}).`
+      );
+    }
+
     for (let i = 0; i < studentIds.length; i++) {
       const userId = studentIds[i];
-      const profile = jobProfiles[i];
+      const profile = profileRows[i];
 
       headings.push({
         user_id: userId,
