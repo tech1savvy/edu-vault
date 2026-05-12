@@ -72,7 +72,7 @@ export default function InterviewResult() {
     return (
       <div className="interview-shell p-4">
         <div className="alert alert-danger">{error ?? "Result unavailable"}</div>
-        <button type="button" className="btn interview-gradient-btn" onClick={() => navigate("/interview/domain")}>
+        <button type="button" className="btn interview-gradient-btn" onClick={() => navigate("/dashboard/interview")}>
           Back to domain selection
         </button>
       </div>
@@ -91,7 +91,7 @@ export default function InterviewResult() {
             </Link>
           </li>
           <li className="breadcrumb-item">
-            <Link to="/interview/domain" className="text-decoration-none text-info">
+            <Link to="/dashboard/interview" className="text-decoration-none text-info">
               Mock Interview
             </Link>
           </li>
@@ -108,7 +108,7 @@ export default function InterviewResult() {
             {result.selectedDomain} • Session #{result.id}
           </p>
         </div>
-        <button type="button" className="btn interview-gradient-btn px-4 py-2" onClick={() => navigate("/interview/domain")}>
+        <button type="button" className="btn interview-gradient-btn px-4 py-2" onClick={() => navigate("/dashboard/interview")}>
           Retake interview
         </button>
       </div>
@@ -198,7 +198,7 @@ export default function InterviewResult() {
               </div>
             </div>
           </div>
-          <button type="button" className="btn interview-gradient-btn-outline w-100 py-2" onClick={() => navigate("/interview/domain")}>
+          <button type="button" className="btn interview-gradient-btn-outline w-100 py-2" onClick={() => navigate("/dashboard/interview")}>
             Schedule another timed run →
           </button>
         </div>

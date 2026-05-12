@@ -1,11 +1,15 @@
 const { Certification } = require('../../../models');
+const { resolveUserId } = require('../resolveUserId');
 
-const getCertifications = async ({ user_id }) => {
-  return await Certification.findAll({ where: { user_id } });
+const getCertifications = async (params) => {
+  const userId = resolveUserId(params);
+  return await Certification.findAll({ where: { userId } });
 };
 
-const addCertification = async ({ user_id, name, issuer, date, credentialId }) => {
-  return await Certification.create({ user_id, name, issuer, date, credentialId });
+const addCertification = async (params) => {
+  const userId = resolveUserId(params);
+  const { name, issuer, date, credentialId } = params;
+  return await Certification.create({ userId, name, issuer, date, credentialId });
 };
 
 const updateCertification = async (id, { name, issuer, date, credentialId }) => {

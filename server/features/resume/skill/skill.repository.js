@@ -1,11 +1,15 @@
 const { Skill } = require('../../../models');
+const { resolveUserId } = require('../resolveUserId');
 
-const getSkills = async ({ user_id }) => {
-  return await Skill.findAll({ where: { user_id } });
+const getSkills = async (params) => {
+  const userId = resolveUserId(params);
+  return await Skill.findAll({ where: { userId } });
 };
 
-const addSkill = async ({ user_id, name, level }) => {
-  return await Skill.create({ user_id, name, level });
+const addSkill = async (params) => {
+  const userId = resolveUserId(params);
+  const { name, level } = params;
+  return await Skill.create({ userId, name, level });
 };
 
 const updateSkill = async (id, { name, level }) => {

@@ -1,173 +1,193 @@
 import { useState, useContext } from "react";
 import { ResumeContext } from "../../../context/resumeContext";
+import { addProject, updateProject, deleteProject } from "../../../services/api";
 
-function ProjectsForm() {
+function ProjectsForm({ embedded = false }) {
   const { projects, setProjects } = useContext(ResumeContext);
-
-  const [editIndex, setEditIndex] = useState(null);
 
   const [form, setForm] = useState({
     title: "",
+    type: "Personal",
     description: "",
     techStack: "",
     timeline: "",
-    type: "Individual",
     collaborators: "",
   });
+
+  const [editingId, setEditingId] = useState(null);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = () => {
-    if (editIndex !== null) {
-      const updatedProjects = [...projects];
-      updatedProjects[editIndex] = form;
-      setProjects(updatedProjects);
-      setEditIndex(null);
-    } else {
-      setProjects([...projects, form]);
+  const handleSave = async () => {
+    try {
+      if (editingId) {
+        const updated = await updateProject(editingId, form);
+        setProjects(projects.map((p) => (p.id === editingId ? updated : p)));
+        setEditingId(null);
+      } else {
+        const created = await addProject(form);
+        setProjects([...projects, created]);
+      }
+      setForm({
+        title: "",
+        type: "Personal",
+        description: "",
+        techStack: "",
+        timeline: "",
+        collaborators: "",
+      });
+    } catch (error) {
+      console.error("Failed to save project:", error);
     }
+  };
+
+  const handleEdit = (p) => {
+    setForm({
+      title: p.title,
+      type: p.type || "Personal",
+      description: p.description || "",
+      techStack: p.techStack || "",
+      timeline: p.timeline || "",
+      collaborators: p.collaborators || "",
+    });
+    setEditingId(p.id);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteProject(id);
+      setProjects(projects.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
     setForm({
       title: "",
+      type: "Personal",
       description: "",
       techStack: "",
       timeline: "",
-      type: "Individual",
       collaborators: "",
     });
   };
 
   return (
-    <div className="container">
-      <h2 className="mb-3">Projects Section</h2>
+    <div className={embedded ? "" : "container mt-3"}>
+      {!embedded && <h3 className="mb-3">Projects Section</h3>}
 
-      {/* inputs same as before */}
-      <div className="mb-3">
-        <label className="form-label">Project Title</label>
-        <input
-          type="text"
-          className="form-control"
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label">Description</label>
-        <textarea
-          className="form-control"
-          name="description"
-          rows="3"
-          value={form.description}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label">Tech Stack</label>
-        <input
-          type="text"
-          className="form-control"
-          name="techStack"
-          value={form.techStack}
-          onChange={handleChange}
-          placeholder="React, Node.js, MongoDB"
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label">Timeline</label>
-        <input
-          type="text"
-          className="form-control"
-          name="timeline"
-          value={form.timeline}
-          onChange={handleChange}
-          placeholder="e.g. 3 months (Jan - Mar 2024)"
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label">Project Type</label>
-        <select
-          className="form-select"
-          name="type"
-          value={form.type}
-          onChange={handleChange}
-        >
-          <option>Individual</option>
-          <option>Group</option>
-        </select>
-      </div>
-
-      {form.type === "Group" && (
+      <div className="card p-3 mb-4">
         <div className="mb-3">
-          <label className="form-label">Collaborators</label>
+          <label className="form-label">Project Title</label>
+          <input
+            type="text"
+            className="form-control"
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="e.g. EduVault"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Type</label>
+          <select
+            className="form-select"
+            name="type"
+            value={form.type}
+            onChange={handleChange}
+          >
+            <option value="Personal">Personal</option>
+            <option value="Academic">Academic</option>
+            <option value="Professional">Professional</option>
+          </select>
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Description</label>
+          <textarea
+            className="form-control"
+            name="description"
+            rows="3"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Briefly describe the project"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Tech Stack</label>
+          <input
+            type="text"
+            className="form-control"
+            name="techStack"
+            value={form.techStack}
+            onChange={handleChange}
+            placeholder="e.g. React, Node.js, PostgreSQL"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Link / timeline</label>
+          <input
+            type="text"
+            className="form-control"
+            name="timeline"
+            value={form.timeline}
+            onChange={handleChange}
+            placeholder="e.g. GitHub URL or project dates"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Collaborators (optional)</label>
           <input
             type="text"
             className="form-control"
             name="collaborators"
             value={form.collaborators}
             onChange={handleChange}
-            placeholder="Comma-separated names"
+            placeholder="Names or team"
           />
         </div>
-      )}
 
-      <div className="d-flex gap-2">
-        <button className={editIndex !== null ? "btn btn-success" : "btn btn-primary"} onClick={handleAdd}>
-          {editIndex !== null ? "Update Project" : "Add Project"}
-        </button>
-        {editIndex !== null && (
-          <button className="btn btn-secondary" onClick={() => {
-            setEditIndex(null);
-            setForm({ title: "", description: "", techStack: "", timeline: "", type: "Individual", collaborators: "" });
-          }}>
-            Cancel
+        <div className="mt-3">
+          <button className="btn btn-primary me-2" onClick={handleSave}>
+            {editingId ? "Update Project" : "Add Project"}
           </button>
-        )}
+          {editingId && (
+            <button className="btn btn-secondary" onClick={handleCancel}>
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
-      <hr />
+      {!embedded && <hr />}
 
-      <h4>Preview</h4>
-      {projects.length === 0 && <p>No projects added yet.</p>}
-      <ul className="list-group">
-        {projects.map((proj, idx) => (
-          <li key={idx} className="list-group-item d-flex justify-content-between align-items-start">
-            <div>
-              <strong>{proj.title}</strong> <br />
-              <small>{proj.timeline}</small>
-              <p className="mb-1">{proj.description}</p>
-              <em>{proj.techStack}</em> <br />
-              <span className="badge bg-info">{proj.type}</span>
-              {proj.type === "Group" && (
-                <p className="mb-0 mt-1">Collaborators: {proj.collaborators}</p>
-              )}
+      {!embedded && <h4>Saved Projects</h4>}
+      {embedded && <h4 className="mb-3 mt-4">Saved projects</h4>}
+      {projects.length === 0 && <p className="text-muted">No projects found.</p>}
+      <div className="list-group">
+        {projects.map((p) => (
+          <div key={p.id} className="list-group-item list-group-item-action">
+            <div className="d-flex w-100 justify-content-between">
+              <h5 className="mb-1">{p.title}</h5>
+              <span className="badge bg-info text-dark">{p.type}</span>
             </div>
-            <div className="d-flex flex-column gap-2">
-              <button 
-                className="btn btn-outline-primary btn-sm" 
-                onClick={() => {
-                  setForm(proj);
-                  setEditIndex(idx);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-              >
-                Edit
-              </button>
-              <button 
-                className="btn btn-outline-danger btn-sm" 
-                onClick={() => setProjects(projects.filter((_, i) => i !== idx))}
-              >
-                Remove
-              </button>
+            <p className="mb-1">{p.description}</p>
+            <small className="text-muted">Tech: {p.techStack}</small>
+            <div className="mt-2">
+              <button className="btn btn-sm btn-outline-primary me-2" onClick={() => handleEdit(p)}>Edit</button>
+              <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(p.id)}>Delete</button>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
