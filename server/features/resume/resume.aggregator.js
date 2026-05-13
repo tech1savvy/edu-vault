@@ -73,7 +73,38 @@ const getAllResumesForSync = async () => {
   return resumes.filter(r => r.text);
 };
 
+const getAggregatedResumeData = async (userId) => {
+  const [
+    heading,
+    experiences,
+    educations,
+    projects,
+    skills,
+    certifications,
+    achievements,
+  ] = await Promise.all([
+    Heading.findOne({ where: { userId } }),
+    Experience.findAll({ where: { userId } }),
+    Education.findAll({ where: { userId } }),
+    Project.findAll({ where: { userId } }),
+    Skill.findAll({ where: { userId } }),
+    Certification.findAll({ where: { userId } }),
+    Achievement.findAll({ where: { userId } }),
+  ]);
+
+  return {
+    heading: heading || {},
+    experiences: experiences || [],
+    education: educations || [],
+    projects: projects || [],
+    skills: skills || [],
+    certifications: certifications || [],
+    achievements: achievements || [],
+  };
+};
+
 module.exports = {
   getAggregatedResumeText,
   getAllResumesForSync,
+  getAggregatedResumeData,
 };

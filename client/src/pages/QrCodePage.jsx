@@ -51,12 +51,21 @@ const QrCodePage = () => {
         >
           Layout T
         </button>
+        <button
+          type="button"
+          onClick={() => setLayout("s")}
+          className={`rounded-xl px-3 py-1.5 text-sm font-medium ${
+            layout === "s" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+          }`}
+        >
+          Layout S
+        </button>
       </div>
 
       <div className="flex flex-col items-center gap-5">
         {shareUrl ? (
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-white">
-            <QRCodeSVG value={shareUrl} size={200} level="M" />
+            <QRCodeSVG value={shareUrl} level="M" style={{ width: 200, height: 200 }} />
           </div>
         ) : (
           <p className="text-sm text-slate-600 dark:text-slate-300">Log in as a student to generate your QR code.</p>
