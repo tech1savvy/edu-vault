@@ -69,18 +69,39 @@ const MatchResultsPage = () => {
             <div key={index} className="theme-card h-full flex flex-col">
               <div className="theme-card-header px-4 py-3 flex justify-between items-start gap-2">
                 <h5 className="text-gray-100 font-semibold mb-0 truncate">{match.user.name || 'N/A'}</h5>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-600 text-white whitespace-nowrap font-bold">
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap font-bold ${
+                  match.score >= 0.5
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                    : match.score >= 0.3
+                    ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                    : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                }`}>
                   {(match.score * 100).toFixed(2)}% Match
                 </span>
               </div>
-              <div className="p-4 flex-1 space-y-2">
-                <p className="text-gray-300 mb-0 flex items-center gap-2">
+              <div className="p-4 flex-1 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 bg-gray-700/50 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all duration-500 ${
+                        match.score >= 0.5 ? 'bg-green-500' : match.score >= 0.3 ? 'bg-yellow-500' : 'bg-red-500'
+                      }`}
+                      style={{ width: `${(match.score * 100).toFixed(0)}%` }}
+                    />
+                  </div>
+                  <span className={`text-xs font-semibold ${
+                    match.score >= 0.5 ? 'text-green-400' : match.score >= 0.3 ? 'text-yellow-400' : 'text-red-400'
+                  }`}>
+                    {(match.score * 100).toFixed(0)}%
+                  </span>
+                </div>
+                <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
                   <i className="bi bi-envelope-fill text-cyan-400"></i> {match.user.email || 'N/A'}
                 </p>
-                <p className="text-gray-300 mb-0 flex items-center gap-2">
+                <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
                   <i className="bi bi-person-badge-fill text-cyan-400"></i> Role: {match.user.role || 'N/A'}
                 </p>
-                <p className="text-gray-300 mb-0 flex items-center gap-2">
+                <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
                   <i className="bi bi-person-fill text-cyan-400"></i> User ID: {match.user.id}
                 </p>
               </div>

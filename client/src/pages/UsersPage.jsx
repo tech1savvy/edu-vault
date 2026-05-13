@@ -35,15 +35,6 @@ const UsersPage = () => {
     navigate(`/admin/users/${userId}`);
   };
 
-  const getStatusBadgeClass = (status) => {
-    switch (status) {
-      case 'active': return 'bg-green-500';
-      case 'inactive': return 'bg-yellow-500';
-      case 'suspended': return 'bg-red-500';
-      default: return 'bg-gray-500';
-    }
-  };
-
   if (loading && users.length === 0) {
     return (
       <div className="flex justify-center pt-12 theme-bg">
@@ -95,9 +86,31 @@ const UsersPage = () => {
                     <td className="px-4 py-3 text-gray-100 align-middle">{user.name || 'N/A'}</td>
                     <td className="px-4 py-3 text-gray-300 align-middle">{user.email}</td>
                     <td className="px-4 py-3 align-middle">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white ${getStatusBadgeClass(user.status)}`}>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        user.status === 'active'
+                          ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                          : user.status === 'inactive'
+                          ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                          : user.status === 'suspended'
+                          ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                          : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                      }`}>
                         {user.status}
                       </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-300 align-middle text-sm">
+                      {user.lastLogin
+                        ? new Date(user.lastLogin).toLocaleDateString()
+                        : 'Never'}
+                    </td>
+                    <td className="px-4 py-3 align-middle">
+                      <button
+                        type="button"
+                        className="theme-btn theme-btn-cyan text-xs"
+                        onClick={() => handleViewUser(user.id)}
+                      >
+                        View
+                      </button>
                     </td>
                     <td className="px-4 py-3 text-gray-300 align-middle">
                       {user.lastLogin
