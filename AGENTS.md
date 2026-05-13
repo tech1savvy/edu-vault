@@ -184,3 +184,20 @@ Integration tests use Bruno CLI and live against running services:
 - Server uses **CommonJS** - do NOT convert to ES modules
 - Do not commit or stage lock files (package-lock.json, pnpm-lock.yaml)
 - Always make atomic conventional commits during development
+
+## Commit Workflow
+
+Before committing, confirm with the user that things are working. Explain the change and ask for approval.
+
+### Full Rebuild Flow
+After changing seeders, migrations, or server code that affects data, run:
+```bash
+just full-rebuild
+```
+This rebuilds containers, runs migrations, re-seeds, clears Qdrant vectors, and re-syncs all data.
+
+If Qdrant gets stale (match results show old user IDs), clear and re-sync:
+```bash
+just qdrant-clear
+just sync
+```

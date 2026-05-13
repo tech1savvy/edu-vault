@@ -122,7 +122,8 @@ const getAverageResumeCompletion = async () => {
 };
 
 const getReadinessDistribution = async () => {
-  const { Heading, Experience, Education, Project, Skill, Certification, Achievement } = require('../../models');
+  const { MatchHistory } = require('../../models');
+  const { Sequelize } = require('sequelize');
 
   const students = await User.findAll({
     where: { role: 'student' },
@@ -133,44 +134,34 @@ const getReadinessDistribution = async () => {
     return { atRisk: 0, moderate: 0, ready: 0 };
   }
 
-  const userIds = students.map(s => s.id);
+  const avgScores = await MatchHistory.findAll({
+    attributes: [
+      'userId',
+      [Sequelize.fn('AVG', Sequelize.col('match_score')), 'avgScore']
+    ],
+    group: ['userId'],
+    raw: true
+  });
 
-  const [headings, experiences, educations, projects, skills, certifications, achievements] = await Promise.all([
-    Heading.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
-    Experience.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
-    Education.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
-    Project.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
-    Skill.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
-    Certification.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
-    Achievement.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true })
-  ]);
-
-  const headingSet = new Set(headings.map(h => h.userId));
-  const expSet = new Set(experiences.map(e => e.userId));
-  const eduSet = new Set(educations.map(e => e.userId));
-  const projSet = new Set(projects.map(p => p.userId));
-  const skillSet = new Set(skills.map(s => s.userId));
-  const certSet = new Set(certifications.map(c => c.userId));
-  const achSet = new Set(achievements.map(a => a.userId));
+  const scoreMap = {};
+  for (const row of avgScores) {
+    scoreMap[row.userId] = parseFloat(row.avgScore);
+  }
 
   let atRisk = 0, moderate = 0, ready = 0;
 
-  for (const userId of userIds) {
-    const completed = [
-      headingSet.has(userId),
-      expSet.has(userId),
-      eduSet.has(userId),
-      projSet.has(userId),
-      skillSet.has(userId),
-      certSet.has(userId),
-      achSet.has(userId)
-    ].filter(Boolean).length;
+  for (const student of students) {
+    const avg = scoreMap[student.id];
 
-    const pct = Math.round((completed / 7) * 100);
-
-    if (pct < 40) atRisk++;
-    else if (pct < 70) moderate++;
-    else ready++;
+    if (avg == null) {
+      atRisk++;
+    } else if (avg < 0.40) {
+      atRisk++;
+    } else if (avg < 0.70) {
+      moderate++;
+    } else {
+      ready++;
+    }
   }
 
   return { atRisk, moderate, ready };
