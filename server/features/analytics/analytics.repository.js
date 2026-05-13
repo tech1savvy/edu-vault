@@ -121,6 +121,67 @@ const getAverageResumeCompletion = async () => {
   return Math.round(totalCompletion / users.length);
 };
 
+const getReadinessDistribution = async () => {
+  const { MatchHistory } = require('../../models');
+  const { Sequelize } = require('sequelize');
+
+  const students = await User.findAll({
+    where: { role: 'student' },
+    attributes: ['id']
+  });
+
+  if (students.length === 0) {
+    return { atRisk: 0, moderate: 0, ready: 0 };
+  }
+
+  const avgScores = await MatchHistory.findAll({
+    attributes: [
+      'userId',
+      [Sequelize.fn('AVG', Sequelize.col('match_score')), 'avgScore']
+    ],
+    group: ['userId'],
+    raw: true
+  });
+
+  const scoreMap = {};
+  for (const row of avgScores) {
+    scoreMap[row.userId] = parseFloat(row.avgScore);
+  }
+
+  let atRisk = 0, moderate = 0, ready = 0;
+
+  for (const student of students) {
+    const avg = scoreMap[student.id];
+
+    if (avg == null) {
+      atRisk++;
+    } else if (avg < 0.40) {
+      atRisk++;
+    } else if (avg < 0.70) {
+      moderate++;
+    } else {
+      ready++;
+    }
+  }
+
+  return { atRisk, moderate, ready };
+};
+
+const getRoleDistribution = async () => {
+  const jobs = await JobDescription.findAll({
+    attributes: ['title'],
+    raw: true
+  });
+
+  const roleCount = {};
+  for (const job of jobs) {
+    const role = job.title.split(' at ')[0].trim();
+    roleCount[role] = (roleCount[role] || 0) + 1;
+  }
+
+  return Object.entries(roleCount).map(([name, value]) => ({ name, value }));
+};
+
 module.exports = {
   countUsers,
   countStudents,
@@ -134,5 +195,7 @@ module.exports = {
   getMatchHistoryByUser,
   createMatchHistory,
   getUserResumeCompletion,
-  getAverageResumeCompletion
+  getAverageResumeCompletion,
+  getReadinessDistribution,
+  getRoleDistribution
 };

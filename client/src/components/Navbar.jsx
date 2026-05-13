@@ -1,268 +1,218 @@
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-// Removed import { useAuth } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
+
+const navLink = "block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition";
+const mobileNavLink = "block px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition";
+const dropdownBtn = "flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition";
+const dropdownItem = "block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition";
 
 function Navbar() {
+  const { logout } = useContext(AuthContext);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
-  // Directly read user from localStorage
-  const getUserFromLocalStorage = () => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        return JSON.parse(storedUser);
-      } catch (error) {
-        console.error("Failed to parse user from localStorage in Navbar", error);
-        return null;
-      }
-    }
-    return null;
-  };
-
-  const user = getUserFromLocalStorage();
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? (() => { try { return JSON.parse(storedUser); } catch { return null; } })() : null;
   const role = user?.role;
   const isAdmin = role === 'administrator';
-  const isMentor = role === 'mentor';
   const isStudent = role === 'student';
+  const isMentor = role === 'mentor';
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    
-    // Clear all resume-related localStorage keys so different users don't share state
-    for (let i = localStorage.length - 1; i >= 0; i--) {
-      const key = localStorage.key(i);
-      if (key && key.startsWith('resume_')) {
-        localStorage.removeItem(key);
-      }
-    }
-    
+    logout();
     window.location.href = '/login';
   };
 
+  const toggleDropdown = (name) => {
+    setOpenDropdown(openDropdown === name ? null : name);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setOpenDropdown(null);
+  };
+
+  const Dropdown = ({ name, label, items }) => (
+    <div className="relative">
+      <button onClick={() => toggleDropdown(name)} className={dropdownBtn}>
+        {label}
+        <svg className={`w-4 h-4 transition ${openDropdown === name ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {openDropdown === name && (
+        <div className="absolute left-0 mt-1 w-48 rounded-xl border border-gray-700 bg-gray-900 py-2 shadow-lg z-50">
+          {items.map((item) => (
+            <Link key={item.to} to={item.to} onClick={closeMenu} className={dropdownItem}>
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const MobileDropdown = ({ name, label, items }) => (
+    <div>
+      <button onClick={() => toggleDropdown(name)} className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
+        {label}
+        <svg className={`w-4 h-4 transition ${openDropdown === name ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {openDropdown === name && (
+        <div className="ml-4 mt-1 space-y-1">
+          {items.map((item) => (
+            <Link key={item.to} to={item.to} onClick={closeMenu} className="block rounded-lg px-3 py-2 text-sm text-gray-500 hover:bg-gray-800 hover:text-white transition">
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
-      <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
-          EduVault
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+    <nav className="bg-gray-900/80 backdrop-blur-md border-b border-gray-700/50 sticky top-0 z-50">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-14 items-center justify-between">
+          <Link to="/" className="theme-gradient-text text-lg font-bold shrink-0" onClick={closeMenu}>
+            EduVault
+          </Link>
+
+          <div className="hidden lg:flex lg:items-center lg:gap-1">
             {isStudent && (
               <>
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdownInput"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Input Components
-                  </a>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="navbarDropdownInput"
-                  >
-                    <li>
-                      <Link className="dropdown-item" to="/input/heading">
-                        Heading
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/input/experience">
-                        Experience
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/input/education">
-                        Education
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/input/skills">
-                        Skills
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/input/projects">
-                        Projects
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/input/certifications">
-                        Certifications
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/input/achievements">
-                        Achievements
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdownOutput"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Output Components
-                  </a>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="navbarDropdownOutput"
-                  >
-                    <li>
-                      <Link className="dropdown-item" to="/output/heading">
-                        Heading
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/output/experience">
-                        Experience
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/output/education">
-                        Education
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/output/skills">
-                        Skills
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/output/projects">
-                        Projects
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/output/certifications">
-                        Certifications
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/output/achievements">
-                        Achievements
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdownPortfolio"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Portfolio
-                  </a>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="navbarDropdownPortfolio"
-                  >
-                    <li>
-                      <Link className="dropdown-item" to="/portfolio/layout-s">
-                        Layout S
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/portfolio/layout-k">
-                        Layout K
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/portfolio/layout-t">
-                        Layout T
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
+                <Dropdown name="dashboard" label="Dashboard" items={[
+                  { to: "/dashboard/profile", label: "Profile" },
+                  { to: "/dashboard/education", label: "Education" },
+                  { to: "/dashboard/experience", label: "Experience" },
+                  { to: "/dashboard/skills", label: "Skills" },
+                  { to: "/dashboard/projects", label: "Projects" },
+                  { to: "/dashboard/achievements", label: "Achievements" },
+                  { to: "/dashboard/certifications", label: "Certifications" },
+                ]} />
+                <Dropdown name="portfolio" label="Portfolio" items={[
+                  { to: "/portfolio/layout-s", label: "Layout S" },
+                  { to: "/portfolio/layout-k", label: "Layout K" },
+                  { to: "/portfolio/layout-t", label: "Layout T" },
+                ]} />
+                <Link to="/portfolio" className={navLink}>Portfolio Page</Link>
+                <Link to="/resume" className={navLink}>Resume</Link>
+                <Link to="/qr-code" className={navLink}>QR Code</Link>
               </>
             )}
-            
-            {user && (
-              <li className="nav-item">
-                <Link className="nav-link text-info fw-semibold" to="/interview/domain">
-                  Mock Interview
-                </Link>
-              </li>
-            )}
-            
-            {isMentor && (
-              <li className="nav-item">
-                <Link className="nav-link text-warning fw-bold" to="/mentor-dashboard">Mentor Dashboard</Link>
-              </li>
-            )}
-          </ul>
-          <ul className="navbar-nav">
-            {isAdmin && (
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link text-success dropdown-toggle"
-                  href="#"
-                  id="navbarDropdownAdmin"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Admin
-                </a>
-                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
-                  <li>
-                    <Link className="dropdown-item" to="/admin/dashboard">
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/admin/users">
-                      Users
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/admin/analytics">
-                      Analytics
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            )}
-            {/* Removed the extra Mentor link since it is now strictly inside the left block above */}
-            {user ? (
 
-              <li className="nav-item">
-                <button className="nav-link btn btn-link text-light" onClick={handleLogout}>Logout</button>
-              </li>
+            {user && (
+              <Link to="/interview/domain" className={`${navLink} text-cyan-400 hover:text-cyan-300`}>
+                Mock Interview
+              </Link>
+            )}
+            {isMentor && (
+              <Link to="/mentor-dashboard" className={`${navLink} text-amber-400 hover:text-amber-300`}>
+                Mentor Dashboard
+              </Link>
+            )}
+          </div>
+
+          <div className="hidden lg:flex lg:items-center lg:gap-1">
+            {isAdmin && (
+              <Dropdown name="admin" label={<span className="text-emerald-400">Admin</span>} items={[
+                { to: "/admin/dashboard", label: "Dashboard" },
+                { to: "/admin/users", label: "Users" },
+                { to: "/admin/analytics", label: "Analytics" },
+              ]} />
+            )}
+            {user ? (
+              <button onClick={handleLogout} className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition">
+                Logout
+              </button>
             ) : (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/login">Login</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/signup">Sign Up</Link>
-                </li>
+                <Link to="/login" className={navLink}>Login</Link>
+                <Link to="/signup" className="rounded-lg theme-btn-primary px-4 py-2 text-sm font-medium text-white">
+                  Sign Up
+                </Link>
               </>
             )}
-          </ul>
+          </div>
+
+          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden p-2 text-gray-400 hover:text-white">
+            {menuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
+
+      {menuOpen && (
+        <div className="lg:hidden border-t border-gray-700/50 px-4 pb-4 pt-2 space-y-1 bg-gray-900/95 backdrop-blur-md">
+
+          {isStudent && (
+            <>
+              <MobileDropdown name="m-dashboard" label="Dashboard" items={[
+                { to: "/dashboard/profile", label: "Profile" },
+                { to: "/dashboard/education", label: "Education" },
+                { to: "/dashboard/experience", label: "Experience" },
+                { to: "/dashboard/skills", label: "Skills" },
+                { to: "/dashboard/projects", label: "Projects" },
+                { to: "/dashboard/achievements", label: "Achievements" },
+                { to: "/dashboard/certifications", label: "Certifications" },
+              ]} />
+              <MobileDropdown name="m-portfolio" label="Portfolio Layouts" items={[
+                { to: "/portfolio/layout-s", label: "Layout S" },
+                { to: "/portfolio/layout-k", label: "Layout K" },
+                { to: "/portfolio/layout-t", label: "Layout T" },
+              ]} />
+              <Link to="/portfolio" onClick={closeMenu} className={mobileNavLink}>Portfolio Page</Link>
+              <Link to="/resume" onClick={closeMenu} className={mobileNavLink}>Resume</Link>
+              <Link to="/qr-code" onClick={closeMenu} className={mobileNavLink}>QR Code</Link>
+            </>
+          )}
+
+          {user && (
+            <Link to="/interview/domain" onClick={closeMenu} className={`${mobileNavLink} text-cyan-400`}>
+              Mock Interview
+            </Link>
+          )}
+
+          {isMentor && (
+            <Link to="/mentor-dashboard" onClick={closeMenu} className={`${mobileNavLink} text-amber-400`}>
+              Mentor Dashboard
+            </Link>
+          )}
+
+          <hr className="border-gray-700/50" />
+
+          {isAdmin && (
+            <MobileDropdown name="m-admin" label={<span className="text-emerald-400">Admin</span>} items={[
+              { to: "/admin/dashboard", label: "Dashboard" },
+              { to: "/admin/users", label: "Users" },
+              { to: "/admin/analytics", label: "Analytics" },
+            ]} />
+          )}
+
+          {user ? (
+            <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login" onClick={closeMenu} className={mobileNavLink}>Login</Link>
+              <Link to="/signup" onClick={closeMenu} className="block rounded-lg theme-btn-primary px-3 py-2 text-sm font-medium text-white text-center">
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   );
 }

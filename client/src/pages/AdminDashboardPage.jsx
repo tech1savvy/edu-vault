@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/adminApi';
 import { useNavigate } from 'react-router-dom';
-import './AdminDashboardPage.css';
+import { Plus, RefreshCw, Eye, Trash, Crosshair } from 'lucide-react';
 
 const AdminDashboardPage = () => {
   const [jobDescriptions, setJobDescriptions] = useState([]);
@@ -87,71 +87,83 @@ const AdminDashboardPage = () => {
   };
 
   if (loading && !isSyncing) return (
-    <div className="loading-spinner bg-dark text-light">
-      <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
+    <div className="flex flex-col items-center justify-center min-h-[50vh] text-gray-100 gap-4 theme-bg">
+      <div className="theme-spinner" role="status">
+        <span className="sr-only">Loading...</span>
       </div>
-      <p className="mt-2 text-light">Loading...</p>
+      <p className="mt-2 text-gray-100">Loading...</p>
     </div>
   );
 
-  if (error) return <div className="error-message text-danger bg-dark"><h3>Error</h3><p>{error}</p></div>;
-  if (!isAdmin) return <div className="access-denied text-danger bg-dark"><h3>Access Denied</h3><p>Please login as an administrator.</p></div>;
+  if (error) return (
+    <div className="flex flex-col items-center justify-center min-h-[50vh] text-red-400 gap-4 theme-bg">
+      <h3 className="text-xl font-bold">Error</h3>
+      <p>{error}</p>
+    </div>
+  );
+  if (!isAdmin) return (
+    <div className="flex flex-col items-center justify-center min-h-[50vh] text-red-400 gap-4 theme-bg">
+      <h3 className="text-xl font-bold">Access Denied</h3>
+      <p>Please login as an administrator.</p>
+    </div>
+  );
 
   return (
-    <div className="admin-dashboard container-fluid bg-dark text-light min-vh-100 p-4">
-      <header className="dashboard-header">
-        <h1 className="text-light mb-0">Admin Dashboard</h1>
-        <div className="actions-bar">
-          <button onClick={handleCreateJobDescription} className="btn btn-success">
-            <i className="bi bi-plus-lg"></i> Create Job
+    <div className="theme-bg">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content p-4">
+      <header className="flex justify-between items-center mb-8 flex-wrap gap-4">
+        <h1 className="theme-gradient-text mb-0 text-2xl font-bold">Admin Dashboard</h1>
+        <div className="flex gap-2">
+          <button onClick={handleCreateJobDescription} className="theme-btn theme-btn-success">
+            <Plus className="w-4 h-4" /> Create Job
           </button>
-          <button onClick={handleTriggerFullSync} className="btn btn-warning text-dark" disabled={isSyncing}>
+          <button onClick={handleTriggerFullSync} className="theme-btn theme-btn-warning" disabled={isSyncing}>
             {isSyncing ? (
               <>
-                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                <span className="ms-2">Syncing...</span>
+                <span className="animate-spin rounded-full h-4 w-4 border-2 border-gray-900 border-t-transparent" role="status" aria-hidden="true"></span>
+                <span className="ml-2">Syncing...</span>
               </>
             ) : (
               <>
-                <i className="bi bi-arrow-repeat"></i> Trigger Full Sync
+                <RefreshCw className="w-4 h-4" /> Trigger Full Sync
               </>
             )}
           </button>
         </div>
       </header>
-      {syncMessage && <p className="mt-3 text-center text-light">{syncMessage}</p>}
+      {syncMessage && <p className="mt-3 text-center text-gray-100">{syncMessage}</p>}
 
       <section className="mb-5 mt-4">
-        <h2 className="mb-3 text-light">Job Descriptions</h2>
+        <h2 className="mb-3 text-gray-100 text-xl font-semibold">Job Descriptions</h2>
         {jobDescriptions.length === 0 && !loading ? (
-          <p className="text-light">No job descriptions found.</p>
+          <p className="text-gray-400">No job descriptions found.</p>
         ) : (
-          <div className="row">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {jobDescriptions.map((job) => (
-              <div key={job.id} className="col-md-6 col-lg-4 mb-4">
-                <div className="card job-card bg-secondary text-light h-100">
-                  <div className="card-body">
-                    <h5 className="card-title text-light">{job.title}</h5>
-                    <p className="card-text text-light">{job.description.substring(0, 120)}...</p>
-                  </div>
-                  <div className="card-footer job-card-actions bg-dark border-secondary">
-                    <button onClick={() => handleViewJobDescription(job.id)} className="btn btn-info btn-sm">
-                      <i className="bi bi-eye"></i> View/Edit
-                    </button>
-                    <button onClick={() => handleDeleteJobDescription(job.id)} className="btn btn-danger btn-sm">
-                      <i className="bi bi-trash"></i> Delete
-                    </button>
-                    <button onClick={() => handleMatchJobDescription(job.id)} className="btn btn-primary btn-sm">
-                      <i className="bi bi-bullseye"></i> Match Resumes
-                    </button>
-                  </div>
+              <div key={job.id} className="theme-card h-full flex flex-col">
+                <div className="p-4 flex-1">
+                  <h5 className="text-gray-100 font-semibold text-lg mb-2">{job.title}</h5>
+                  <p className="text-gray-400">{job.description.substring(0, 120)}...</p>
+                </div>
+                <div className="theme-card-footer flex flex-wrap gap-2 p-3">
+                  <button onClick={() => handleViewJobDescription(job.id)} className="theme-btn theme-btn-cyan text-sm">
+                    <Eye className="w-4 h-4" /> View/Edit
+                  </button>
+                  <button onClick={() => handleDeleteJobDescription(job.id)} className="theme-btn theme-btn-danger text-sm">
+                    <Trash className="w-4 h-4" /> Delete
+                  </button>
+                  <button onClick={() => handleMatchJobDescription(job.id)} className="theme-btn theme-btn-primary text-sm">
+                    <Crosshair className="w-4 h-4" /> Match Resumes
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         )}
       </section>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,3 @@
-/* Dark, card-heavy styling aligned with Bootstrap navbar-dark / bg-dark */
-
 .interview-shell {
   background: linear-gradient(165deg, #0b1224 0%, #111827 40%, #0f172a 100%);
   color: #e2e8f0;
@@ -18,7 +16,7 @@
 }
 
 .interview-text-muted {
-  color: rgba(226, 232, 240, 0.7) !important;
+  color: rgba(226, 232, 240, 0.7);
 }
 
 .interview-accent-border {
@@ -26,10 +24,22 @@
 }
 
 .interview-gradient-btn {
-  background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
-  border: none;
-  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
   font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+  color: #0f172a;
+}
+
+.interview-gradient-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .interview-gradient-btn:hover:not(:disabled) {
@@ -38,9 +48,26 @@
 }
 
 .interview-gradient-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
   background: transparent;
   border: 1px solid rgba(99, 102, 241, 0.55);
   color: #c7d2fe;
+}
+
+.interview-gradient-btn-outline:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.interview-gradient-btn-outline:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.1);
 }
 
 .interview-topic-pill {
