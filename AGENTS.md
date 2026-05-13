@@ -178,6 +178,36 @@ Integration tests use Bruno CLI and live against running services:
 | Student | student1@example.com | password123 |
 | Admin | admin@example.com | password123 |
 
+## Deployment
+
+### Current Production Instance
+- **EC2 Public IP**: 13.207.65.73
+- **SSH User**: ec2-user
+- **SSH Key**: `~/.ssh/id_rsa` (imported to AWS, no .pem file)
+- **App Directory**: `/home/ec2-user/eduvault`
+- **Docker Compose**: Uses `docker-compose` (v1 hyphenated binary), NOT `docker compose` (v2 plugin)
+
+### Service URLs
+| Service | URL |
+|---------|-----|
+| Grafana | http://13.207.65.73:3000 (admin/admin) |
+| Prometheus | http://13.207.65.73:9090 |
+| Alertmanager | http://13.207.65.73:9093 |
+| Node Exporter | http://13.207.65.73:9100 |
+| Backend API | http://13.207.65.73:8000 |
+| ML Service | http://13.207.65.73:8001 |
+
+### Redeploy from Scratch
+```bash
+cd infra/terraform && terraform destroy -auto-approve && terraform apply -auto-approve
+# Wait ~3 min for EC2 user_data to finish
+cd infra/ansible && ansible-playbook playbooks/deploy.yml
+# Then SCP overlay files (docker-compose.yml, server/, ml/, monitoring/)
+# Rebuild: docker-compose up -d --build
+# Migrate: docker-compose exec -T backend npx sequelize-cli db:migrate
+# Seed: docker-compose exec -T backend npx sequelize-cli db:seed:all
+```
+
 ## Important Notes
 
 - All services run in Docker

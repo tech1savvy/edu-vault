@@ -61,3 +61,39 @@ variable "common_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "create_monitoring_role" {
+  description = "Whether to create IAM role for CloudWatch monitoring"
+  type        = bool
+  default     = false
+}
+
+variable "enable_cloudwatch" {
+  description = "Whether to create CloudWatch log groups and alarms"
+  type        = bool
+  default     = false
+}
+
+variable "cloudwatch_log_retention" {
+  description = "CloudWatch log retention in days"
+  type        = number
+  default     = 7
+}
+
+variable "alarm_sns_arn" {
+  description = "ARN of SNS topic for CloudWatch alarms (leave empty to skip)"
+  type        = string
+  default     = ""
+}
+
+variable "alarm_email" {
+  description = "Email address for CloudWatch alarm notifications (leave empty to skip)"
+  type        = string
+  default     = ""
+}
+
+variable "aws_region" {
+  description = "AWS region for CloudWatch resources"
+  type        = string
+  default     = "ap-south-1"
+}

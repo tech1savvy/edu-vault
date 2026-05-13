@@ -82,7 +82,7 @@ app.use((req, res, next) => {
 // ==============================================================================
 app.get("/metrics", async (req, res) => {
   try {
-    res.set("Content-Type", register.contentType());
+    res.set("Content-Type", register.contentType);
     res.end(await register.metrics());
   } catch (error) {
     logger.error("Error serving metrics:", error);

@@ -28,12 +28,12 @@
   notify: restart app
 
 - name: Create docker network
-  ansible.builtin.shell: docker network create eduvault_network 2>/dev/null || true
+  ansible.builtin.shell: docker network create eduvault-network 2>/dev/null || true
 
 - name: Ensure volumes exist
   ansible.builtin.shell: |
-    docker volume create edu_vault_postgres_data 2>/dev/null || true
-    docker volume create edu_vault_qdrant_data 2>/dev/null || true
+    docker volume create postgres_data 2>/dev/null || true
+    docker volume create qdrant_data 2>/dev/null || true
   become_user: "{{ app_user }}"
 
 - name: Stop existing containers

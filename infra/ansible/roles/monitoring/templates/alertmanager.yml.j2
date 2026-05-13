@@ -1,0 +1,28 @@
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: {{ smtp_host | default('localhost:25') }}
+  smtp_from: {{ smtp_from | default('alertmanager@eduvault.local') }}
+  smtp_require_tls: false
+
+route:
+  group_by: ["alertname", "job"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: default-receiver
+  routes:
+    - match:
+        severity: critical
+      receiver: critical-receiver
+      repeat_interval: 1h
+
+receivers:
+  - name: default-receiver
+    email_configs:
+      - to: {{ alert_email }}
+        send_resolved: true
+
+  - name: critical-receiver
+    email_configs:
+      - to: {{ alert_email }}
+        send_resolved: true
