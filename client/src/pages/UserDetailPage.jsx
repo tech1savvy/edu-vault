@@ -103,15 +103,15 @@ const UserDetailPage = () => {
             <div>
               <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-gray-100">
                 <dt className="text-gray-400 font-medium">Name</dt>
-                <dd className="text-gray-100">{user.name || 'N/A'}</dd>
+                <dd className="text-gray-100">{user.heading?.name || user.name || 'N/A'}</dd>
 
                 <dt className="text-gray-400 font-medium">Email</dt>
-                <dd className="text-gray-100">{user.email}</dd>
+                <dd className="text-gray-100">{user.heading?.email || user.email}</dd>
 
                 <dt className="text-gray-400 font-medium">Role</dt>
                 <dd>
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white ${getRoleBadgeClass(user.role)}`}>
-                    {user.role}
+                    {user.heading?.role || user.role}
                   </span>
                 </dd>
 
@@ -121,6 +121,15 @@ const UserDetailPage = () => {
                     {user.status}
                   </span>
                 </dd>
+
+                <dt className="text-gray-400 font-medium">Professional Role</dt>
+                <dd className="text-gray-100">{user.heading?.role || 'N/A'}</dd>
+
+                <dt className="text-gray-400 font-medium">Phone</dt>
+                <dd className="text-gray-100">{user.heading?.phone || 'N/A'}</dd>
+
+                <dt className="text-gray-400 font-medium">Location</dt>
+                <dd className="text-gray-100">{user.heading?.location || 'N/A'}</dd>
 
                 <dt className="text-gray-400 font-medium">Last Login</dt>
                 <dd className="text-gray-100">{formatDate(user.lastLogin)}</dd>
@@ -188,17 +197,31 @@ const UserDetailPage = () => {
         </div>
       </div>
 
-      <div className="rounded-lg bg-gray-800 text-gray-100 shadow-lg">
-        <div className="px-4 py-3 bg-gray-900/50 border-b border-gray-700 rounded-t-lg">
-          <h4 className="mb-0 text-gray-100 font-semibold text-lg">Resume Summary</h4>
-          <p className="text-gray-400 text-sm mb-0">Profile data from resume builder</p>
+      {user.heading && (
+        <div className="rounded-lg bg-gray-800 text-gray-100 shadow-lg">
+          <div className="px-4 py-3 bg-gray-900/50 border-b border-gray-700 rounded-t-lg">
+            <h4 className="mb-0 text-gray-100 font-semibold text-lg">Resume Summary</h4>
+            <p className="text-gray-400 text-sm mb-0">Professional profile from resume builder</p>
+          </div>
+          <div className="p-4 text-gray-100">
+            <p className="text-gray-300">
+              <span className="font-semibold">{user.heading.name}</span>
+              {user.heading.role ? ` — ${user.heading.role}` : ''}
+            </p>
+            <p className="text-gray-400 text-sm mt-1">
+              {user.heading.email}{user.heading.phone ? ` | ${user.heading.phone}` : ''}
+              {user.heading.location ? ` | ${user.heading.location}` : ''}
+            </p>
+            {user.heading.link && (
+              <p className="text-gray-400 text-sm mt-1">
+                <a href={`https://${user.heading.link}`} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                  {user.heading.link}
+                </a>
+              </p>
+            )}
+          </div>
         </div>
-        <div className="p-4 text-gray-100">
-          <p className="text-gray-300">
-            Full resume view will be implemented in a future update.
-          </p>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
