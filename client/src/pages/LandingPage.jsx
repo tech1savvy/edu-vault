@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Sparkles, FileText, Cpu, Shield } from 'lucide-react';
 import './LandingPage.css';
 
 const LandingPage = () => {
   const containerRef = useRef(null);
 
-  // Optional: Add subtle mouse tracking effect to cards
   useEffect(() => {
     const handleMouseMove = (e) => {
       const cards = document.querySelectorAll('.feature-card');
@@ -32,19 +32,17 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page" ref={containerRef}>
-      {/* Animated Ambient Background */}
       <div className="ambient-background">
         <div className="glow-orb-1"></div>
         <div className="glow-orb-2"></div>
         <div className="glow-orb-3"></div>
       </div>
       <div className="grid-overlay"></div>
-      
-      {/* Hero Section */}
-      <section className="hero-section text-center">
-        <div className="container hero-content">
+
+      <section className="hero-section">
+        <div className="hero-content">
           <div className="hero-badge">
-            <span className="hero-badge-icon"><i className="bi bi-stars"></i></span>
+            <span className="hero-badge-icon"><Sparkles size={16} /></span>
             The New Standard for Career Growth
           </div>
           <h1 className="hero-title">Unlock Your Potential<br/>with EduVault</h1>
@@ -52,7 +50,7 @@ const LandingPage = () => {
             The intelligent platform for building stunning resumes, tracking applications, 
             and effortlessly matching with your dream opportunities using advanced AI.
           </p>
-          <div className="hero-buttons d-flex justify-content-center gap-3">
+          <div className="hero-buttons">
             <Link to="/signup?role=user" className="btn-premium btn-primary-gradient">
               Start Building Free
             </Link>
@@ -63,60 +61,48 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="about-section mx-3 mx-md-5 pt-5">
-        <div className="container mt-4">
-          <h2 className="about-title text-center"><span>What this site is about:</span></h2>
-          
-          <div className="row g-4 justify-content-center mt-2">
-            {/* Feature 1 */}
-            <div className="col-md-4">
-              <div className="feature-card text-center">
-                <div className="feature-icon-wrapper">
-                  <div className="feature-icon-glow"></div>
-                  <i className="bi bi-file-earmark-person feature-icon"></i>
-                </div>
-                <h3 className="feature-title">Smart Resume Builder</h3>
-                <p className="feature-description">
-                  Craft professional, ATS-friendly resumes with our intuitive builder. 
-                  Tailor your skills and experience seamlessly to stand out from the crowd.
-                </p>
-              </div>
-            </div>
+      <section id="about" className="about-section">
+        <h2 className="about-title"><span>What this site is about:</span></h2>
 
-            {/* Feature 2 */}
-            <div className="col-md-4">
-              <div className="feature-card text-center">
-                <div className="feature-icon-wrapper">
-                  <div className="feature-icon-glow"></div>
-                  <i className="bi bi-cpu feature-icon"></i>
-                </div>
-                <h3 className="feature-title">AI Job Matching</h3>
-                <p className="feature-description">
-                  Leverage advanced machine learning to instantly match your profile against 
-                  the latest job descriptions. Get actionable insights on missing skills.
-                </p>
-              </div>
+        <div className="feature-grid">
+          <div className="feature-card">
+            <div className="feature-icon-wrapper">
+              <div className="feature-icon-glow"></div>
+              <FileText size={36} className="feature-icon" />
             </div>
+            <h3 className="feature-title">Smart Resume Builder</h3>
+            <p className="feature-description">
+              Craft professional, ATS-friendly resumes with our intuitive builder. 
+              Tailor your skills and experience seamlessly to stand out from the crowd.
+            </p>
+          </div>
 
-            {/* Feature 3 */}
-            <div className="col-md-4">
-              <div className="feature-card text-center">
-                <div className="feature-icon-wrapper">
-                  <div className="feature-icon-glow"></div>
-                  <i className="bi bi-shield-lock feature-icon"></i>
-                </div>
-                <h3 className="feature-title">Role-Based Access</h3>
-                <p className="feature-description mb-4">
-                  Whether you are a Student building a career, a Mentor guiding talent, 
-                  or an Admin managing job postings—EduVault adapts to your needs securely.
-                </p>
-                <div className="d-flex flex-column gap-2 px-3">
-                  <Link to="/signup?role=user" className="btn btn-outline-light btn-sm" style={{ borderRadius: '20px', transition: 'all 0.3s' }}>Join as Student</Link>
-                  <Link to="/signup?role=mentor" className="btn btn-outline-light btn-sm" style={{ borderRadius: '20px', transition: 'all 0.3s' }}>Join as Mentor</Link>
-                  <Link to="/signup?role=administrator" className="btn btn-outline-light btn-sm" style={{ borderRadius: '20px', transition: 'all 0.3s' }}>Join as Admin</Link>
-                </div>
-              </div>
+          <div className="feature-card">
+            <div className="feature-icon-wrapper">
+              <div className="feature-icon-glow"></div>
+              <Cpu size={36} className="feature-icon" />
+            </div>
+            <h3 className="feature-title">AI Job Matching</h3>
+            <p className="feature-description">
+              Leverage advanced machine learning to instantly match your profile against 
+              the latest job descriptions. Get actionable insights on missing skills.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon-wrapper">
+              <div className="feature-icon-glow"></div>
+              <Shield size={36} className="feature-icon" />
+            </div>
+            <h3 className="feature-title">Role-Based Access</h3>
+            <p className="feature-description">
+              Whether you are a Student building a career, a Mentor guiding talent, 
+              or an Admin managing job postings—EduVault adapts to your needs securely.
+            </p>
+            <div className="role-links">
+              <Link to="/signup?role=user" className="role-btn">Join as Student</Link>
+              <Link to="/signup?role=mentor" className="role-btn">Join as Mentor</Link>
+              <Link to="/signup?role=administrator" className="role-btn">Join as Admin</Link>
             </div>
           </div>
         </div>

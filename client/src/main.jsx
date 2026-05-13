@@ -4,8 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { ResumeProvider } from "./context/ResumeProvider";
 import { AuthProvider } from "./context/AuthProvider";
 import { Toaster } from "react-hot-toast";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import "./index.css";
 import App from "./App.jsx";
 
