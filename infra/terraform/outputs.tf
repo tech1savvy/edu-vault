@@ -41,6 +41,20 @@ output "ports_open" {
     "5173" = "Client (React Frontend)"
     "8000" = "Backend (Express API)"
     "8001" = "ML Service (FastAPI)"
+    "3000" = "Grafana"
+    "9090" = "Prometheus"
+    "9100" = "Node Exporter"
+    "9093" = "Alertmanager"
+    "8080" = "cAdvisor"
+  }
+}
+
+output "monitoring_urls" {
+  description = "Monitoring service URLs"
+  value = {
+    prometheus   = "http://${module.app_server.public_ip}:9090"
+    grafana      = "http://${module.app_server.public_ip}:3000"
+    alertmanager = "http://${module.app_server.public_ip}:9093"
   }
 }
 
@@ -50,6 +64,7 @@ output "docker_commands" {
     clone_repo = "git clone <repo-url> && cd eduvault"
     start      = "docker compose up -d"
     logs       = "docker compose logs -f"
+    monitors   = "docker compose logs -f prometheus grafana alertmanager"
   }
 }
 

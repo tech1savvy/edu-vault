@@ -18,4 +18,9 @@ module "app_server" {
   allowed_ssh_cidrs   = var.allowed_ssh_cidrs
 
   common_tags = var.common_tags
+
+  create_monitoring_role   = var.create_monitoring_role
+  enable_cloudwatch        = var.enable_cloudwatch
+  cloudwatch_log_retention = var.cloudwatch_log_retention
+  alarm_email              = var.alarm_email
 }

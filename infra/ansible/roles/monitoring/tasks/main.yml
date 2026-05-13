@@ -1,0 +1,84 @@
+---
+- name: Include secrets
+  ansible.builtin.include_vars:
+    file: ../../secrets.yml
+
+- name: Ensure monitoring directories exist
+  ansible.builtin.file:
+    path: "{{ app_dir }}/monitoring/{{ item }}"
+    state: directory
+    owner: "{{ app_user }}"
+    mode: '0755'
+  loop:
+    - prometheus
+    - grafana/datasources
+    - grafana/dashboards
+    - alertmanager
+
+- name: Copy prometheus config
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: "{{ app_dir }}/monitoring/prometheus/prometheus.yml"
+    owner: "{{ app_user }}"
+    mode: '0644'
+  notify: restart monitoring
+
+- name: Copy alert rules
+  ansible.builtin.copy:
+    src: alert.rules.yml
+    dest: "{{ app_dir }}/monitoring/prometheus/alert.rules.yml"
+    owner: "{{ app_user }}"
+    mode: '0644'
+  notify: restart monitoring
+
+- name: Copy alertmanager config
+  ansible.builtin.template:
+    src: alertmanager.yml.j2
+    dest: "{{ app_dir }}/monitoring/alertmanager/alertmanager.yml"
+    owner: "{{ app_user }}"
+    mode: '0644'
+  notify: restart monitoring
+
+- name: Copy grafana config
+  ansible.builtin.copy:
+    src: grafana.ini
+    dest: "{{ app_dir }}/monitoring/grafana/grafana.ini"
+    owner: "{{ app_user }}"
+    mode: '0644'
+  notify: restart monitoring
+
+- name: Copy grafana datasource
+  ansible.builtin.copy:
+    src: datasource.yml
+    dest: "{{ app_dir }}/monitoring/grafana/datasources/datasource.yml"
+    owner: "{{ app_user }}"
+    mode: '0644'
+  notify: restart monitoring
+
+- name: Copy grafana dashboard provider
+  ansible.builtin.copy:
+    src: dashboards.yml
+    dest: "{{ app_dir }}/monitoring/grafana/dashboards/dashboards.yml"
+    owner: "{{ app_user }}"
+    mode: '0644'
+  notify: restart monitoring
+
+- name: Copy dashboard JSONs
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ app_dir }}/monitoring/grafana/dashboards/{{ item }}"
+    owner: "{{ app_user }}"
+    mode: '0644'
+  loop:
+    - node-exporter.json
+    - eduvault-application.json
+  notify: restart monitoring
+
+- name: Ensure monitoring volumes exist
+  community.docker.docker_volume:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - prometheus_data
+    - grafana_data
+    - alertmanager_data

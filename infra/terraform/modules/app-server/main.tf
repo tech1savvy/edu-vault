@@ -127,6 +127,22 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "Node Exporter"
+    from_port   = 9100
+    to_port     = 9100
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Alertmanager"
+    from_port   = 9093
+    to_port     = 9093
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -164,6 +180,8 @@ resource "aws_instance" "app_server" {
   }
 
   key_name = local.ssh_key_name
+
+  iam_instance_profile = var.create_monitoring_role ? aws_iam_instance_profile.ec2_monitoring[0].name : null
 
   user_data = templatefile("${path.module}/user_data.sh", {
     project_name           = var.project_name
@@ -238,4 +256,14 @@ output "vpc_id" {
 output "subnet_id" {
   description = "Subnet ID"
   value       = aws_subnet.public.id
+}
+
+output "monitoring_role_arn" {
+  description = "IAM role ARN for monitoring"
+  value       = var.create_monitoring_role ? aws_iam_role.ec2_monitoring[0].arn : null
+}
+
+output "cloudwatch_dashboard" {
+  description = "CloudWatch dashboard name"
+  value       = var.enable_cloudwatch ? aws_cloudwatch_dashboard.main[0].dashboard_name : null
 }

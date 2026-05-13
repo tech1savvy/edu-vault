@@ -16,12 +16,13 @@
     - role: common
     - role: docker
     - role: app
+    - role: monitoring
 
   post_tasks:
-    - name: Verify services are running
+    - name: Verify all services are running
       ansible.builtin.shell: |
         cd {{ app_dir }}
-        docker compose ps
+        docker-compose ps
       register: service_status
 
     - name: Show service status
@@ -44,3 +45,51 @@
     - name: Show API test result
       ansible.builtin.debug:
         msg: "Backend API is {{ 'responding' if api_test.status is defined and api_test.status == 200 else 'not responding' }}"
+
+    - name: Test Prometheus health
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:9090/-/healthy"
+        method: GET
+        timeout: 10
+      register: prom_test
+      ignore_errors: yes
+
+    - name: Show Prometheus health
+      ansible.builtin.debug:
+        msg: "Prometheus is {{ 'healthy' if prom_test.status is defined and prom_test.status == 200 else 'not responding' }}"
+
+    - name: Test Grafana health
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:3000/api/health"
+        method: GET
+        timeout: 10
+      register: grafana_test
+      ignore_errors: yes
+
+    - name: Show Grafana health
+      ansible.builtin.debug:
+        msg: "Grafana is {{ 'healthy' if grafana_test.status is defined and grafana_test.status == 200 else 'not responding' }}"
+
+    - name: Test node_exporter health
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:9100/metrics"
+        method: GET
+        timeout: 10
+      register: node_test
+      ignore_errors: yes
+
+    - name: Show node_exporter health
+      ansible.builtin.debug:
+        msg: "Node Exporter is {{ 'responding' if node_test.status is defined and node_test.status == 200 else 'not responding' }}"
+
+    - name: Test Alertmanager health
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:9093/-/healthy"
+        method: GET
+        timeout: 10
+      register: am_test
+      ignore_errors: yes
+
+    - name: Show Alertmanager health
+      ansible.builtin.debug:
+        msg: "Alertmanager is {{ 'healthy' if am_test.status is defined and am_test.status == 200 else 'not responding' }}"

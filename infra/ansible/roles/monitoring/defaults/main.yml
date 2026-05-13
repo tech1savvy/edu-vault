@@ -1,0 +1,8 @@
+---
+grafana_admin_user: admin
+grafana_admin_password: "{{ vault_grafana_admin_password | default('admin') }}"
+
+prometheus_retention: 15d
+alert_email: "{{ vault_alert_email | default('admin@example.com') }}"
+smtp_host: "{{ vault_smtp_host | default('') }}"
+smtp_from: "{{ vault_smtp_from | default('alertmanager@eduvault.local') }}"

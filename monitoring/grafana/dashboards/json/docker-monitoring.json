@@ -1,0 +1,65 @@
+{
+  "title": "Docker Container Monitoring",
+  "uid": "docker-monitoring-eduvault",
+  "schemaVersion": 38,
+  "version": 1,
+  "tags": ["eduvault", "docker"],
+  "timezone": "browser",
+  "time": { "from": "now-30m", "to": "now" },
+  "editable": true,
+  "panels": [
+    {
+      "title": "Container CPU Usage",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        { "expr": "rate(container_cpu_usage_seconds_total{name!~\"\"}[2m]) * 100", "legendFormat": "{{name}}" }
+      ],
+      "options": {
+        "legend": { "calcs": ["mean", "max"], "displayMode": "table", "placement": "bottom" }
+      }
+    },
+    {
+      "title": "Container Memory Usage",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        { "expr": "container_memory_usage_bytes{name!~\"\"}", "legendFormat": "{{name}}" }
+      ],
+      "options": {
+        "legend": { "calcs": ["mean", "max"], "displayMode": "table", "placement": "bottom" }
+      },
+      "fieldConfig": {
+        "defaults": { "unit": "bytes" }
+      }
+    },
+    {
+      "title": "Container Network RX",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [
+        { "expr": "rate(container_network_receive_bytes_total{name!~\"\"}[2m])", "legendFormat": "{{name}}" }
+      ],
+      "options": {
+        "legend": { "calcs": ["mean", "max"], "displayMode": "table", "placement": "bottom" }
+      },
+      "fieldConfig": {
+        "defaults": { "unit": "Bps" }
+      }
+    },
+    {
+      "title": "Container Network TX",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        { "expr": "rate(container_network_transmit_bytes_total{name!~\"\"}[2m])", "legendFormat": "{{name}}" }
+      ],
+      "options": {
+        "legend": { "calcs": ["mean", "max"], "displayMode": "table", "placement": "bottom" }
+      },
+      "fieldConfig": {
+        "defaults": { "unit": "Bps" }
+      }
+    }
+  ]
+}
