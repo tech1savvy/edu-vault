@@ -56,11 +56,6 @@ const UserDetailPage = () => {
     return role === 'administrator' ? 'bg-blue-600' : 'bg-gray-500';
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Never';
-    return new Date(dateString).toLocaleString();
-  };
-
   if (loading) {
     return (
       <div className="flex justify-center pt-12 bg-gray-900 min-h-screen">
@@ -122,20 +117,11 @@ const UserDetailPage = () => {
                   </span>
                 </dd>
 
-                <dt className="text-gray-400 font-medium">Professional Role</dt>
-                <dd className="text-gray-100">{user.heading?.role || 'N/A'}</dd>
-
                 <dt className="text-gray-400 font-medium">Phone</dt>
                 <dd className="text-gray-100">{user.heading?.phone || 'N/A'}</dd>
 
-                <dt className="text-gray-400 font-medium">Location</dt>
-                <dd className="text-gray-100">{user.heading?.location || 'N/A'}</dd>
-
-                <dt className="text-gray-400 font-medium">Last Login</dt>
-                <dd className="text-gray-100">{formatDate(user.lastLogin)}</dd>
-
-                <dt className="text-gray-400 font-medium">Created</dt>
-                <dd className="text-gray-100">{formatDate(user.createdAt)}</dd>
+                <dt className="text-gray-400 font-medium">CGPA</dt>
+                <dd className="text-gray-100">{user.education?.cgpa ?? 'N/A'}</dd>
               </dl>
             </div>
 
@@ -201,7 +187,6 @@ const UserDetailPage = () => {
         <div className="rounded-lg bg-gray-800 text-gray-100 shadow-lg">
           <div className="px-4 py-3 bg-gray-900/50 border-b border-gray-700 rounded-t-lg">
             <h4 className="mb-0 text-gray-100 font-semibold text-lg">Resume Summary</h4>
-            <p className="text-gray-400 text-sm mb-0">Professional profile from resume builder</p>
           </div>
           <div className="p-4 text-gray-100">
             <p className="text-gray-300">
@@ -210,7 +195,6 @@ const UserDetailPage = () => {
             </p>
             <p className="text-gray-400 text-sm mt-1">
               {user.heading.email}{user.heading.phone ? ` | ${user.heading.phone}` : ''}
-              {user.heading.location ? ` | ${user.heading.location}` : ''}
             </p>
             {user.heading.link && (
               <p className="text-gray-400 text-sm mt-1">
