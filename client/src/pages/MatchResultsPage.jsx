@@ -82,8 +82,8 @@ const MatchResultsPage = () => {
                 </p>
               </div>
               <div className="px-4 py-3 bg-gray-900/50 border-t border-gray-700 rounded-b-lg text-right">
-                <button className="inline-flex items-center gap-1 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold rounded transition-all duration-300">
-                  <i className="bi bi-file-earmark-text"></i> View Full Resume
+                <button onClick={() => navigate(`/admin/users/${match.user.id}`)} className="inline-flex items-center gap-1 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold rounded transition-all duration-300">
+                  <i className="bi bi-file-earmark-text"></i> View Student Details
                 </button>
               </div>
             </div>
