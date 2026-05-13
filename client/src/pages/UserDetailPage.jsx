@@ -44,17 +44,17 @@ const UserDetailPage = () => {
     return user.role === 'student' && user.id !== currentUser.id;
   };
 
-  const getStatusBadgeClass = (status) => {
+  const statusBadgeClass = (status) => {
     switch (status) {
-      case 'active': return 'bg-green-500';
-      case 'inactive': return 'bg-yellow-500 text-gray-900';
-      case 'suspended': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'active': return 'bg-green-500/20 text-green-400 border border-green-500/30';
+      case 'inactive': return 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
+      case 'suspended': return 'bg-red-500/20 text-red-400 border border-red-500/30';
+      default: return 'bg-gray-500/20 text-gray-400 border border-gray-500/30';
     }
   };
 
-  const getRoleBadgeClass = (role) => {
-    return role === 'administrator' ? 'bg-blue-600' : 'bg-gray-500';
+  const roleBadgeClass = (role) => {
+    return role === 'administrator' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-gray-500/20 text-gray-400 border border-gray-500/30';
   };
 
   if (loading) {
@@ -111,14 +111,21 @@ const UserDetailPage = () => {
 
                 <dt className="text-gray-400 font-medium">Role</dt>
                 <dd>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white ${getRoleBadgeClass(user.role)}`}>
-                    {user.heading?.role || user.role}
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${roleBadgeClass(user.role)}`}>
+                    {user.role}
                   </span>
                 </dd>
 
                 <dt className="text-gray-400 font-medium">Status</dt>
                 <dd>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white ${getStatusBadgeClass(user.status)}`}>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(user.status)}`}>
+                    {user.status}
+                  </span>
+                </dd>
+
+                <dt className="text-gray-400 font-medium">Status</dt>
+                <dd>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(user.status)}`}>
                     {user.status}
                   </span>
                 </dd>
@@ -140,10 +147,10 @@ const UserDetailPage = () => {
                     <div className="flex rounded-md overflow-hidden">
                       <button
                         type="button"
-                        className={`flex-1 px-3 py-1.5 text-sm font-medium transition-all duration-300 ${
+                        className={`flex-1 px-3 py-1.5 text-sm font-medium transition-all duration-300 rounded-l-md ${
                           user.status === 'active'
-                            ? 'bg-green-600 text-white'
-                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border-r border-gray-600'
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
                         }`}
                         onClick={() => handleStatusChange('active')}
                         disabled={updating || user.status === 'active'}
@@ -154,8 +161,8 @@ const UserDetailPage = () => {
                         type="button"
                         className={`flex-1 px-3 py-1.5 text-sm font-medium transition-all duration-300 ${
                           user.status === 'inactive'
-                            ? 'bg-yellow-500 text-gray-900'
-                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border-r border-gray-600'
+                            ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
                         }`}
                         onClick={() => handleStatusChange('inactive')}
                         disabled={updating || user.status === 'inactive'}
@@ -164,10 +171,10 @@ const UserDetailPage = () => {
                       </button>
                       <button
                         type="button"
-                        className={`flex-1 px-3 py-1.5 text-sm font-medium transition-all duration-300 ${
+                        className={`flex-1 px-3 py-1.5 text-sm font-medium transition-all duration-300 rounded-r-md ${
                           user.status === 'suspended'
-                            ? 'bg-red-600 text-white'
-                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                            ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
                         }`}
                         onClick={() => handleStatusChange('suspended')}
                         disabled={updating || user.status === 'suspended'}
