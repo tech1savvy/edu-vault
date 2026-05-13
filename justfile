@@ -31,10 +31,19 @@ restart service="server":
 rebuild:
     docker compose up -d --build
 
+# just full-rebuild → rebuild, migrate, re-seed, clear qdrant, re-sync
+full-rebuild: rebuild
+    just db migrate
+    just db unseed
+    just db seed
+    just qdrant-clear
+    just sync
+
 # ─── Database ──────────────────────────────────────────────────────────────────
 # just db migrate → run migrations
 # just db seed    → run seeders
 # just db unseed  → undo all seeds
+# just db undo    → revert last migration
 
 db action="migrate":
     #!/usr/bin/env sh
@@ -49,6 +58,29 @@ db action="migrate":
     else
       echo "Unknown action: {{action}}. Use: migrate, seed, unseed, undo"
     fi
+
+# ─── Qdrant ────────────────────────────────────────────────────────────────────
+# just qdrant-clear → wipe all vectors from Qdrant
+# just sync         → login as admin and trigger full syn
+
+qdrant-clear:
+    #!/usr/bin/env sh
+    curl -s -X POST http://localhost:6333/collections/eduvault/points/delete \
+      -H "Content-Type: application/json" \
+      -d '{"filter": {"must": [{"key": "type", "match": {"value": "resume"}}]}}'
+    curl -s -X POST http://localhost:6333/collections/eduvault/points/delete \
+      -H "Content-Type: application/json" \
+      -d '{"filter": {"must": [{"key": "type", "match": {"value": "job"}}]}}'
+
+sync:
+    #!/usr/bin/env sh
+    TOKEN=$(curl -s -X POST http://localhost:8000/api/auth/login \
+      -H "Content-Type: application/json" \
+      -d '{"email":"admin@example.com","password":"password123"}' \
+      | node -e "process.stdin.on('data',d=>{try{console.log(JSON.parse(d).token)}catch(e){console.log('')}})")
+    curl -s -X POST http://localhost:8000/api/sync/all \
+      -H "Authorization: Bearer $TOKEN" \
+      -H "Content-Type: application/json"
 
 clean:
     #!/usr/bin/env sh
