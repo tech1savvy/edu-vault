@@ -23,12 +23,11 @@ const LoginPage = () => {
     e.preventDefault();
     setError(null);
     try {
-      const { token, user } = await login(email, password); // Get user object from response
+      const { token, user } = await login(email, password);
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user)); // Store user object
+      localStorage.setItem('user', JSON.stringify(user));
       authLogin(token, user);
 
-      // Clear any existing local storage resume keys from previous accounts
       for (let i = localStorage.length - 1; i >= 0; i--) {
         const key = localStorage.key(i);
         if (key && key.startsWith('resume_')) {
@@ -36,7 +35,6 @@ const LoginPage = () => {
         }
       }
 
-      // If student, fetch their existing resume data from DB and prepopulate localStorage
       if (user && user.role === 'student') {
         try {
           const [heading, projects, skills, exp, edu, ach, cert] = await Promise.all([
@@ -90,43 +88,47 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h2 className="card-title text-center">Login</h2>
-              {error && <div className="alert alert-danger">{error}</div>}
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <button type="submit" className="btn btn-primary w-100">Login</button>
-              </form>
-              <p className="text-center mt-3">
-                Don't have an account? <Link to="/signup">Sign up</Link>
-              </p>
+    <div className="theme-bg flex items-center justify-center">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content w-full max-w-md mx-auto px-4 py-12">
+        <div className="theme-card p-6">
+          <h2 className="text-2xl font-bold text-center mb-6 theme-gradient-text inline-block w-full">Login</h2>
+          {error && (
+            <div className="px-4 py-3 rounded-lg mb-4 bg-red-500/20 text-red-400 border border-red-500/30 text-sm">
+              {error}
             </div>
-          </div>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">Email address</label>
+              <input
+                type="email"
+                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                id="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-400 mb-1">Password</label>
+              <input
+                type="password"
+                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                id="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="theme-btn theme-btn-primary w-full justify-center py-2.5">Login</button>
+          </form>
+          <p className="text-center mt-4 text-sm text-gray-400">
+            Don&apos;t have an account? <Link to="/signup" className="text-cyan-400 hover:text-cyan-300">Sign up</Link>
+          </p>
         </div>
       </div>
     </div>
