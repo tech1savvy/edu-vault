@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signup } from '../services/api';
 
 const SignupPage = () => {
@@ -10,6 +10,15 @@ const SignupPage = () => {
   const [role, setRole] = useState('student');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const roleParam = params.get('role');
+    if (roleParam && ['student', 'mentor', 'administrator'].includes(roleParam)) {
+      setRole(roleParam);
+    }
+  }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

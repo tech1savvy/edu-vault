@@ -1,32 +1,57 @@
 .theme-bg {
-  background: linear-gradient(135deg, #020617, #0f172a, #020617);
+  background-color: #050505;
   color: #f8fafc;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Grid overlay for texture */
+.theme-bg::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 0;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
 }
 
 .theme-blob {
   position: fixed;
-  width: 32rem;
-  height: 32rem;
   border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.12;
+  filter: blur(120px);
+  opacity: 0.35;
+  animation: floatOrb 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   z-index: 0;
 }
 
 .theme-blob-tr {
-  top: -12rem;
-  right: -12rem;
-  background: radial-gradient(circle, #3b82f6, transparent);
+  width: 600px;
+  height: 600px;
+  background: rgba(99, 102, 241, 0.8); /* Indigo */
+  top: -10%;
+  right: -10%;
 }
 
 .theme-blob-bl {
-  bottom: -12rem;
-  left: -12rem;
-  background: radial-gradient(circle, #06b6d4, transparent);
+  width: 700px;
+  height: 700px;
+  background: rgba(56, 189, 248, 0.6); /* Light Blue */
+  bottom: -20%;
+  left: -10%;
+  animation-delay: -5s;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(10%, 10%) scale(1.1); }
+  100% { transform: translate(-10%, 15%) scale(0.9); }
 }
 
 .theme-content {
@@ -34,118 +59,139 @@
   z-index: 10;
 }
 
-.theme-card {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(51, 65, 85, 0.5);
-  border-radius: 1rem;
-  transition: all 0.3s ease;
+/* Advanced Glassmorphism Cards */
+.theme-card, .theme-kpi-card {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.5rem;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-.theme-card:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 0 24px rgba(59, 130, 246, 0.15);
+.theme-card:hover, .theme-kpi-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(129, 140, 248, 0.4);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(79, 70, 229, 0.2);
 }
 
 .theme-card-header {
   background: rgba(15, 23, 42, 0.5);
-  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-  border-radius: 1rem 1rem 0 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem 1.5rem 0 0;
 }
 
 .theme-card-footer {
   background: rgba(15, 23, 42, 0.3);
-  border-top: 1px solid rgba(51, 65, 85, 0.5);
-  border-radius: 0 0 1rem 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0 0 1.5rem 1.5rem;
 }
 
+/* High-end Buttons */
 .theme-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.75rem;
+  padding: 0.875rem 2.5rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
   border: none;
   cursor: pointer;
 }
 
 .theme-btn-primary {
-  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  background: linear-gradient(135deg, #4f46e5 0%, #38bdf8 100%);
   color: white;
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+}
+
+.theme-btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #38bdf8 0%, #4f46e5 100%);
+  z-index: -1;
+  transition: opacity 0.4s ease;
+  opacity: 0;
 }
 
 .theme-btn-primary:hover {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-  transform: scale(1.02);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(56, 189, 248, 0.5);
+  color: white;
 }
 
+.theme-btn-primary:hover::before {
+  opacity: 1;
+}
+
+/* Other button styles */
 .theme-btn-success {
   background: linear-gradient(to right, #059669, #10b981);
   color: white;
 }
-
 .theme-btn-success:hover {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+  transform: translateY(-2px);
 }
 
 .theme-btn-warning {
   background: linear-gradient(to right, #d97706, #f59e0b);
   color: #1c1917;
 }
-
 .theme-btn-warning:hover {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
-  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+  transform: translateY(-2px);
 }
 
 .theme-btn-danger {
   background: linear-gradient(to right, #dc2626, #ef4444);
   color: white;
 }
-
 .theme-btn-danger:hover {
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
-  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
 }
 
 .theme-btn-cyan {
   background: linear-gradient(to right, #0891b2, #06b6d4);
   color: white;
 }
-
 .theme-btn-cyan:hover {
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4);
+  transform: translateY(-2px);
 }
 
+/* Animated Gradient Text */
 .theme-gradient-text {
-  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  background: linear-gradient(to right, #f8fafc, #818cf8, #38bdf8, #f8fafc);
+  background-size: 300% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   display: inline-block;
+  animation: shine 5s linear infinite;
 }
 
-.theme-kpi-card {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(51, 65, 85, 0.5);
-  border-radius: 1rem;
-  transition: all 0.3s ease;
-}
-
-.theme-kpi-card:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 0 24px rgba(59, 130, 246, 0.15);
-  transform: translateY(-2px);
+@keyframes shine {
+  to { background-position: 300% center; }
 }
 
 .theme-spinner {
   width: 3rem;
   height: 3rem;
   border: 4px solid rgba(51, 65, 85, 0.5);
-  border-top-color: #3b82f6;
+  border-top-color: #818cf8;
   border-radius: 50%;
   animation: theme-spin 0.8s linear infinite;
 }
