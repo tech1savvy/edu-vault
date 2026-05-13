@@ -18,7 +18,7 @@ echo "=== Installing Docker Compose ==="
 curl -sL "https://github.com/docker/compose/releases/download/v${docker_compose_version}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
-docker compose version
+docker-compose version
 
 echo "=== Adding ec2-user to docker group ==="
 usermod -aG docker ec2-user

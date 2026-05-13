@@ -73,3 +73,27 @@ variable "common_tags" {
     Environment = "development"
   }
 }
+
+variable "create_monitoring_role" {
+  description = "Whether to create IAM role for CloudWatch monitoring"
+  type        = bool
+  default     = false
+}
+
+variable "enable_cloudwatch" {
+  description = "Whether to create CloudWatch log groups and alarms"
+  type        = bool
+  default     = false
+}
+
+variable "cloudwatch_log_retention" {
+  description = "CloudWatch log retention in days (free tier: 7 days recommended)"
+  type        = number
+  default     = 7
+}
+
+variable "alarm_email" {
+  description = "Email address for CloudWatch alarm notifications (leave empty to skip)"
+  type        = string
+  default     = ""
+}

@@ -81,9 +81,104 @@ services:
     networks:
       - eduvault-network
 
+  # ==============================================================================
+  # Monitoring Stack
+  # ==============================================================================
+
+  node_exporter:
+    image: prom/node-exporter:v1.8.0
+    container_name: eduvault-node-exporter
+    command:
+      - "--path.rootfs=/host"
+    ports:
+      - "9100:9100"
+    volumes:
+      - /:/host:ro,rslave
+    pid: host
+    restart: unless-stopped
+    networks:
+      - eduvault-network
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: eduvault-cadvisor
+    privileged: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    restart: unless-stopped
+    networks:
+      - eduvault-network
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: eduvault-prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-15d}"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--web.enable-lifecycle"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml:ro
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+    networks:
+      - eduvault-network
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: eduvault-alertmanager
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+      - "--storage.path=/alertmanager"
+    ports:
+      - "9093:9093"
+    environment:
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_FROM: ${SMTP_FROM:-alertmanager@eduvault.local}
+      ALERT_EMAIL: ${ALERT_EMAIL:-}
+    volumes:
+      - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager_data:/alertmanager
+    restart: unless-stopped
+    networks:
+      - eduvault-network
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: eduvault-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    volumes:
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./monitoring/grafana/dashboards/providers:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/dashboards/json:/var/lib/grafana/dashboards:ro
+      - ./monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - eduvault-network
+
 volumes:
   postgres_data:
   qdrant_data:
+  prometheus_data:
+  alertmanager_data:
+  grafana_data:
 
 # ==============================================================================
 # Networks
