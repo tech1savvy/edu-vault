@@ -4,7 +4,7 @@ This guide covers deploying the full EduVault stack (app + monitoring) on AWS EC
 
 ## Architecture
 
-The production environment runs 10 Docker containers on a single EC2 instance:
+The production environment runs 9 Docker containers on a single EC2 instance:
 
 | Container | Service | Description |
 |-----------|---------|-------------|
@@ -17,7 +17,7 @@ The production environment runs 10 Docker containers on a single EC2 instance:
 | `eduvault-grafana` | Grafana 11.1 | Dashboards, port `:3000` |
 | `eduvault-alertmanager` | Alertmanager 0.27 | Alert routing, port `:9093` |
 | `eduvault-node-exporter` | Node Exporter 1.8 | Host metrics, port `:9100` |
-| `eduvault-cadvisor` | cAdvisor latest | Container metrics, port `:8080` |
+
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ terraform apply -auto-approve
 
 This creates:
 - VPC with public subnet, IGW, route table
-- Security group (ports: 22, 80, 443, 5173, 8000, 8001, 3000, 6333, 8080, 9090, 9093, 9100)
+- Security group (ports: 22, 80, 443, 5173, 8000, 8001, 3000, 6333, 9090, 9093, 9100)
 - EC2 t3.small instance (30GB gp3, Amazon Linux 2023)
 - Elastic IP
 - IAM role for CloudWatch metrics
@@ -101,7 +101,6 @@ docker-compose exec -T backend npx sequelize-cli db:seed:all
 | **Grafana** | `http://<IP>:3000` | `admin / admin` |
 | **Alertmanager** | `http://<IP>:9093` | — |
 | **Node Exporter** | `http://<IP>:9100` | — |
-| **cAdvisor** | `http://<IP>:8080` | — |
 
 ### Grafana Dashboards
 

@@ -204,7 +204,6 @@ Integration tests use Bruno CLI and live against running services:
 | Prometheus | http://13.207.65.73:9090 |
 | Alertmanager | http://13.207.65.73:9093 |
 | Node Exporter | http://13.207.65.73:9100 |
-| cAdvisor | http://13.207.65.73:8080 |
 | Backend API | http://13.207.65.73:8000 |
 | ML Service | http://13.207.65.73:8001 |
 

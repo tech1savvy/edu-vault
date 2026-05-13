@@ -35,7 +35,4 @@ scrape_configs:
       - targets:
           - ml:8001
 
-  - job_name: cadvisor
-    static_configs:
-      - targets:
-          - cadvisor:8080
+
