@@ -3,6 +3,7 @@ import { adminService } from '../services/adminApi';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Activity, Users, BookOpen, Target, CheckCircle, BarChart3 } from 'lucide-react';
 
+
 const COLORS = ['#20c997', '#ffc107', '#dc3545'];
 const ROLE_COLORS = ['#0d6efd', '#6610f2', '#6f42c1', '#d63384'];
 
@@ -30,16 +31,18 @@ const AnalyticsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center bg-gray-900 min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-600 border-t-blue-500" role="status"></div>
+      <div className="flex justify-center items-center theme-bg">
+        <div className="theme-spinner" role="status"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="w-full px-4 pt-4 bg-gray-900 min-h-screen">
-        <div className="px-4 py-3 rounded-lg bg-red-900/50 text-red-300 border border-red-800" role="alert">{error}</div>
+      <div className="theme-bg">
+        <div className="theme-content px-4 pt-4">
+          <div className="px-4 py-3 rounded-lg bg-red-900/50 text-red-300 border border-red-800" role="alert">{error}</div>
+        </div>
       </div>
     );
   }
@@ -51,49 +54,44 @@ const AnalyticsPage = () => {
   ] : [];
 
   return (
-    <div className="w-full px-4 py-5 bg-gray-900 text-gray-100 min-h-screen">
+    <div className="theme-bg">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content px-4 py-5">
       <header className="mb-5 text-center">
-        <h1 className="text-gray-100 font-bold text-3xl">🎓 Institutional Analytics Dashboard</h1>
+        <h1 className="theme-gradient-text font-bold text-3xl inline-block">🎓 Institutional Analytics Dashboard</h1>
         <p className="text-gray-400 text-lg">Placement readiness & platform utilization overview</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-5">
-        <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200">
-          <div className="p-4 text-center">
-            <Users className="text-blue-500 mb-3 inline-block" size={32} />
-            <h2 className="text-blue-500 font-bold mb-1 text-3xl">{stats?.totalUsers || 0}</h2>
-            <p className="mb-0 text-gray-400">Total Users</p>
-          </div>
+        <div className="theme-kpi-card p-4 text-center">
+          <Users className="text-blue-500 mb-3 inline-block" size={32} />
+          <h2 className="text-blue-500 font-bold mb-1 text-3xl">{stats?.totalUsers || 0}</h2>
+          <p className="mb-0 text-gray-400">Total Users</p>
         </div>
 
-        <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200">
-          <div className="p-4 text-center">
-            <Activity className="text-green-500 mb-3 inline-block" size={32} />
-            <h2 className="text-green-500 font-bold mb-1 text-3xl">{stats?.activeUsers || 0}</h2>
-            <p className="mb-0 text-gray-400">Active Users</p>
-          </div>
+        <div className="theme-kpi-card p-4 text-center">
+          <Activity className="text-green-500 mb-3 inline-block" size={32} />
+          <h2 className="text-green-500 font-bold mb-1 text-3xl">{stats?.activeUsers || 0}</h2>
+          <p className="mb-0 text-gray-400">Active Users</p>
         </div>
 
-        <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200">
-          <div className="p-4 text-center">
-            <BookOpen className="text-cyan-400 mb-3 inline-block" size={32} />
-            <h2 className="text-cyan-400 font-bold mb-1 text-3xl">{stats?.totalJobs || 0}</h2>
-            <p className="mb-0 text-gray-400">Job Benchmarks</p>
-          </div>
+        <div className="theme-kpi-card p-4 text-center">
+          <BookOpen className="text-cyan-400 mb-3 inline-block" size={32} />
+          <h2 className="text-cyan-400 font-bold mb-1 text-3xl">{stats?.totalJobs || 0}</h2>
+          <p className="mb-0 text-gray-400">Job Benchmarks</p>
         </div>
 
-        <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200">
-          <div className="p-4 text-center">
-            <Target className="text-yellow-500 mb-3 inline-block" size={32} />
-            <h2 className="text-yellow-500 font-bold mb-1 text-3xl">{stats?.totalMatches || 0}</h2>
-            <p className="mb-0 text-gray-400">AI Vector Matches</p>
-          </div>
+        <div className="theme-kpi-card p-4 text-center">
+          <Target className="text-yellow-500 mb-3 inline-block" size={32} />
+          <h2 className="text-yellow-500 font-bold mb-1 text-3xl">{stats?.totalMatches || 0}</h2>
+          <p className="mb-0 text-gray-400">AI Vector Matches</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-5">
         
-        <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg p-3 h-full">
+        <div className="theme-card p-3 h-full">
           <div className="px-0 pt-2 pb-3 border-0 flex items-center gap-2">
             <CheckCircle className="text-green-500" size={24} />
             <h4 className="mb-0 font-bold text-lg">Placement Readiness Distribution</h4>
@@ -123,7 +121,7 @@ const AnalyticsPage = () => {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg p-3 h-full">
+        <div className="theme-card p-3 h-full">
           <div className="px-0 pt-2 pb-3 border-0 flex items-center gap-2">
             <Target className="text-cyan-400" size={24} />
             <h4 className="mb-0 font-bold text-lg">Target Role Distribution</h4>
@@ -156,7 +154,7 @@ const AnalyticsPage = () => {
         
       </div>
 
-      <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg p-3 mb-5">
+      <div className="theme-card p-3 mb-5">
         <div className="px-0 pt-2 pb-3 border-0 flex items-center gap-2">
           <BarChart3 className="text-purple-400" size={24} />
           <h4 className="mb-0 font-bold text-lg">Top Skills Across Batch</h4>
@@ -184,6 +182,7 @@ const AnalyticsPage = () => {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

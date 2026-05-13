@@ -31,8 +31,8 @@ const MatchResultsPage = () => {
   }, [id]);
 
   if (loading) return (
-    <div className="w-full bg-gray-900 text-gray-100 min-h-screen flex justify-center items-center flex-col gap-3">
-      <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-600 border-t-blue-500" role="status">
+    <div className="flex justify-center items-center flex-col gap-3 theme-bg">
+      <div className="theme-spinner" role="status">
         <span className="sr-only">Loading...</span>
       </div>
       <p className="text-gray-100">Finding best candidates...</p>
@@ -40,19 +40,22 @@ const MatchResultsPage = () => {
   );
 
   if (error) return (
-    <div className="w-full bg-gray-900 text-gray-100 min-h-screen flex justify-center items-center flex-col gap-3">
+    <div className="flex justify-center items-center flex-col gap-3 theme-bg">
       <h3 className="text-red-400">Error</h3>
       <p className="text-red-400">{error}</p>
     </div>
   );
 
   return (
-    <div className="w-full bg-gray-900 text-gray-100 min-h-screen p-4">
-      <header className="flex justify-between items-center mb-8 flex-wrap gap-4 border-b border-gray-700 pb-6">
-        <button onClick={() => navigate('/admin/dashboard')} className="inline-flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-all duration-300">
+    <div className="theme-bg">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content p-4">
+      <header className="flex justify-between items-center mb-8 flex-wrap gap-4 border-b border-gray-700/50 pb-6">
+        <button onClick={() => navigate('/admin/dashboard')} className="theme-btn theme-btn-cyan">
           <i className="bi bi-arrow-left"></i> Back to Dashboard
         </button>
-        <h1 className="text-gray-100 mb-0 font-semibold text-xl text-center flex-1">Top Matches for &quot;{jobDescription?.title}&quot;</h1>
+        <h1 className="theme-gradient-text mb-0 font-semibold text-xl text-center flex-1">Top Matches for &quot;{jobDescription?.title}&quot;</h1>
         <div />
       </header>
 
@@ -63,8 +66,8 @@ const MatchResultsPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {matches.map((match, index) => (
-            <div key={index} className="rounded-lg bg-gray-800 text-gray-100 h-full flex flex-col shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
-              <div className="px-4 py-3 bg-gray-900/50 border-b border-gray-700 rounded-t-lg flex justify-between items-start gap-2">
+            <div key={index} className="theme-card h-full flex flex-col">
+              <div className="theme-card-header px-4 py-3 flex justify-between items-start gap-2">
                 <h5 className="text-gray-100 font-semibold mb-0 truncate">{match.user.name || 'N/A'}</h5>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-600 text-white whitespace-nowrap font-bold">
                   {(match.score * 100).toFixed(2)}% Match
@@ -81,8 +84,8 @@ const MatchResultsPage = () => {
                   <i className="bi bi-person-fill text-cyan-400"></i> User ID: {match.user.id}
                 </p>
               </div>
-              <div className="px-4 py-3 bg-gray-900/50 border-t border-gray-700 rounded-b-lg text-right">
-                <button onClick={() => navigate(`/admin/users/${match.user.id}`)} className="inline-flex items-center gap-1 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold rounded transition-all duration-300">
+              <div className="theme-card-footer text-right p-3">
+                <button onClick={() => navigate(`/admin/users/${match.user.id}`)} className="theme-btn theme-btn-cyan text-sm">
                   <i className="bi bi-file-earmark-text"></i> View Student Details
                 </button>
               </div>
@@ -90,6 +93,7 @@ const MatchResultsPage = () => {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 };

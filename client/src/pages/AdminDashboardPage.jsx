@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/adminApi';
 import { useNavigate } from 'react-router-dom';
-
 const AdminDashboardPage = () => {
   const [jobDescriptions, setJobDescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -86,8 +85,8 @@ const AdminDashboardPage = () => {
   };
 
   if (loading && !isSyncing) return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] bg-gray-900 text-gray-100 gap-4">
-      <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-600 border-t-blue-500" role="status">
+    <div className="flex flex-col items-center justify-center min-h-[50vh] text-gray-100 gap-4 theme-bg">
+      <div className="theme-spinner" role="status">
         <span className="sr-only">Loading...</span>
       </div>
       <p className="mt-2 text-gray-100">Loading...</p>
@@ -95,27 +94,30 @@ const AdminDashboardPage = () => {
   );
 
   if (error) return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] bg-gray-900 text-red-400 gap-4">
+    <div className="flex flex-col items-center justify-center min-h-[50vh] text-red-400 gap-4 theme-bg">
       <h3 className="text-xl font-bold">Error</h3>
       <p>{error}</p>
     </div>
   );
   if (!isAdmin) return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] bg-gray-900 text-red-400 gap-4">
+    <div className="flex flex-col items-center justify-center min-h-[50vh] text-red-400 gap-4 theme-bg">
       <h3 className="text-xl font-bold">Access Denied</h3>
       <p>Please login as an administrator.</p>
     </div>
   );
 
   return (
-    <div className="w-full bg-gray-900 text-gray-100 min-h-screen p-4">
+    <div className="theme-bg">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content p-4">
       <header className="flex justify-between items-center mb-8 flex-wrap gap-4">
-        <h1 className="text-gray-100 mb-0 text-2xl font-bold">Admin Dashboard</h1>
+        <h1 className="theme-gradient-text mb-0 text-2xl font-bold">Admin Dashboard</h1>
         <div className="flex gap-2">
-          <button onClick={handleCreateJobDescription} className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all duration-300">
+          <button onClick={handleCreateJobDescription} className="theme-btn theme-btn-success">
             <i className="bi bi-plus-lg"></i> Create Job
           </button>
-          <button onClick={handleTriggerFullSync} className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold rounded-lg transition-all duration-300" disabled={isSyncing}>
+          <button onClick={handleTriggerFullSync} className="theme-btn theme-btn-warning" disabled={isSyncing}>
             {isSyncing ? (
               <>
                 <span className="animate-spin rounded-full h-4 w-4 border-2 border-gray-900 border-t-transparent" role="status" aria-hidden="true"></span>
@@ -138,19 +140,19 @@ const AdminDashboardPage = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {jobDescriptions.map((job) => (
-              <div key={job.id} className="rounded-lg bg-gray-800 text-gray-100 h-full flex flex-col shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+              <div key={job.id} className="theme-card h-full flex flex-col">
                 <div className="p-4 flex-1">
                   <h5 className="text-gray-100 font-semibold text-lg mb-2">{job.title}</h5>
                   <p className="text-gray-400">{job.description.substring(0, 120)}...</p>
                 </div>
-                <div className="px-4 py-3 border-t border-gray-700 bg-gray-900/50 rounded-b-lg flex flex-wrap gap-2">
-                  <button onClick={() => handleViewJobDescription(job.id)} className="inline-flex items-center gap-1 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-medium rounded transition-all duration-300">
+                <div className="theme-card-footer flex flex-wrap gap-2 p-3">
+                  <button onClick={() => handleViewJobDescription(job.id)} className="theme-btn theme-btn-cyan text-sm">
                     <i className="bi bi-eye"></i> View/Edit
                   </button>
-                  <button onClick={() => handleDeleteJobDescription(job.id)} className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition-all duration-300">
+                  <button onClick={() => handleDeleteJobDescription(job.id)} className="theme-btn theme-btn-danger text-sm">
                     <i className="bi bi-trash"></i> Delete
                   </button>
-                  <button onClick={() => handleMatchJobDescription(job.id)} className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded transition-all duration-300">
+                  <button onClick={() => handleMatchJobDescription(job.id)} className="theme-btn theme-btn-primary text-sm">
                     <i className="bi bi-bullseye"></i> Match Resumes
                   </button>
                 </div>
@@ -159,6 +161,7 @@ const AdminDashboardPage = () => {
           </div>
         )}
       </section>
+      </div>
     </div>
   );
 };
