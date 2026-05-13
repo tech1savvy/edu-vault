@@ -9,48 +9,37 @@ EduVault is a resume-building platform with three services:
 
 ## Development Setup
 
-All services can run locally without Docker. For database dependencies:
+All services run in Docker:
 ```bash
-# Start required services
-docker compose up -d postgres qdrant
-
-# Or run everything in Docker
 docker compose up -d
 ```
 
-### Server Database Setup
+This starts:
+- **PostgreSQL** (port 5432)
+- **Qdrant** (port 6333)
+- **Server** (port 8000)
+- **ML Service** (port 8001)
+- **Client** (port 5173)
+
+### Database Setup
 ```bash
-cd server
-npm install
-npx sequelize-cli db:migrate
-npx sequelize-cli db:seed:all
+# Run migrations
+docker compose exec server npx sequelize-cli db:migrate
+
+# Seed data
+docker compose exec server npx sequelize-cli db:seed:all
 ```
 
 ## Commands
 
-### Client
+### Docker
 ```bash
-cd client
-npm install
-npm run dev          # Start dev server (port 5173)
-npm run build        # Production build
-npm run lint         # Run ESLint
-npm run preview      # Preview production build
-```
-
-### Server
-```bash
-cd server
-npm install
-npm run dev          # Start with nodemon (port 8000)
-npm start            # Production start
-```
-
-### ML Service
-```bash
-cd ml
-uv sync           # Install dependencies
-uv run uvicorn main:app --reload --port 8001
+docker compose up -d          # Start all services
+docker compose logs -f        # View logs
+docker compose logs -f client # View specific service logs
+docker compose restart client # Restart a service
+docker compose down         # Stop all services
+docker compose build        # Rebuild after code changes
 ```
 
 ### Testing (Bruno API Tests)
@@ -178,6 +167,7 @@ Integration tests use Bruno CLI and live against running services:
 | Server | `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`, `DB_PORT` | PostgreSQL connection |
 | Server | `JWT_SECRET` | Token signing secret |
 | Server | `ML_SERVICE_URL` | ML service endpoint |
+| Client | `VITE_API_BASE_URL` | Server API URL |
 | ML | `QDRANT_URL` | Qdrant server URL |
 | ML | `QDRANT_COLLECTION` | Vector collection name |
 
@@ -220,8 +210,24 @@ cd infra/ansible && ansible-playbook playbooks/deploy.yml
 
 ## Important Notes
 
-- All services and tools needed are available locally (no Docker required for development)
+- All services run in Docker
 - Server uses **CommonJS** - do NOT convert to ES modules
-- ML service requires Python 3.10+
-- Use `uv` for Python package management in ML service
-- Ansible `docker compose` commands must use `docker-compose` (hyphenated) — the EC2 only has the standalone binary, not the plugin
+- Do not commit or stage lock files (package-lock.json, pnpm-lock.yaml)
+- Always make atomic conventional commits during development
+
+## Commit Workflow
+
+Before committing, confirm with the user that things are working. Explain the change and ask for approval.
+
+### Full Rebuild Flow
+After changing seeders, migrations, or server code that affects data, run:
+```bash
+just full-rebuild
+```
+This rebuilds containers, runs migrations, re-seeds, clears Qdrant vectors, and re-syncs all data.
+
+If Qdrant gets stale (match results show old user IDs), clear and re-sync:
+```bash
+just qdrant-clear
+just sync
+```

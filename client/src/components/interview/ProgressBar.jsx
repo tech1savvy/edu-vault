@@ -4,7 +4,7 @@ export default function ProgressBar({ answeredCount, total, currentIndex }) {
 
   return (
     <div>
-      <div className="d-flex justify-content-between align-items-center mb-1 interview-text-muted small">
+      <div className="flex justify-between items-center mb-1 interview-text-muted text-xs">
         <span>Answered</span>
         <span>
           <strong>{answeredCount}</strong> / {safeTotal}{" "}
@@ -15,8 +15,14 @@ export default function ProgressBar({ answeredCount, total, currentIndex }) {
           )}
         </span>
       </div>
-      <div className="progress interview-progress-wrap" style={{ height: "0.5rem", background: "rgba(148,163,184,0.15)" }}>
-        <div className="progress-bar bg-gradient" style={{ width: `${pct}%`, background: "linear-gradient(90deg,#6366f1,#22d3ee)" }} />
+      <div className="h-2 bg-gray-400/15 rounded-full overflow-hidden" style={{ background: "rgba(148,163,184,0.15)" }}>
+        <div
+          className="h-full rounded-full transition-all"
+          style={{
+            width: `${pct}%`,
+            background: "linear-gradient(90deg,#6366f1,#22d3ee)",
+          }}
+        />
       </div>
     </div>
   );

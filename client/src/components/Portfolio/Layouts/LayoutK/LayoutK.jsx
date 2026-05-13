@@ -22,9 +22,6 @@ import {
   getCertifications,
 } from "../../../../services/api";
 
-// 👉 PDF Button
-import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
-import SyncProfileButton from "../../../Resume/SyncProfileButton";
 import CVTemplate from "../../../Resume/CVTemplate";
 
 const LayoutK = () => {
@@ -76,11 +73,17 @@ const LayoutK = () => {
 
   return (
     <div className="portfolio-layout-k" data-theme={theme}>
+      {/* Ambient Background Elements */}
+      <div className="k-ambient-bg no-print">
+        <div className="k-orb k-orb-1"></div>
+        <div className="k-orb k-orb-2"></div>
+      </div>
+
       {/* Theme Switcher */}
       <div className="theme-switcher">
         <button onClick={() => setTheme("dark")}>🌙</button>
         <button onClick={() => setTheme("light")}>☀️</button>
-        <button onClick={() => setTheme("blue")}>💧</button>
+        <button onClick={() => setTheme("cyan")}>💧</button>
       </div>
 
       {/* ------------ PRINTABLE AREA ------------ */}
@@ -116,11 +119,6 @@ const LayoutK = () => {
         }} 
       />
 
-      {/* ------------ DOWNLOAD BUTTON ------------ */}
-      <div style={{ textAlign: "center", margin: "40px 0", display: "flex", justifyContent: "center", gap: "15px" }}>
-        <SyncProfileButton />
-        <DownloadPdfButton filename={`${finalHeading?.name ? finalHeading.name.replace(/\s+/g, '-') : 'My'}-Resume.pdf`} />
-      </div>
     </div>
   );
 };

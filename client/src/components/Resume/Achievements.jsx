@@ -5,21 +5,17 @@ function Achievements() {
   const { achievements } = useContext(ResumeContext);
 
   return (
-    <div className="container">
-      <h2 className="mb-3">Achievements</h2>
+    <div className="theme-card p-3">
+      <h2 className="text-lg font-semibold text-gray-100 mb-3">Achievements</h2>
       {achievements.length === 0 ? (
-        <p>No achievements added yet.</p>
+        <p className="text-gray-400 text-sm">No achievements added yet.</p>
       ) : (
-        <ul className="list-unstyled">
+        <ul className="list-none p-0 space-y-3">
           {achievements.map((achievement, idx) => (
-            <li key={idx} className="mb-3">
-              <strong className="d-block">{achievement.title}</strong>
-              {achievement.description && (
-                <p className="mb-1 text-muted">{achievement.description}</p>
-              )}
-              {achievement.date && (
-                <small className="text-muted">{achievement.date}</small>
-              )}
+            <li key={idx} className="text-gray-200 text-sm">
+              <strong className="block text-gray-100">{achievement.title}</strong>
+              {achievement.description && <p className="mb-1 text-gray-400">{achievement.description}</p>}
+              {achievement.date && <small className="text-gray-400">{achievement.date}</small>}
             </li>
           ))}
         </ul>

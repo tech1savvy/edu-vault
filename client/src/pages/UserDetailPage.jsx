@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { adminService } from '../services/adminApi';
-import './UserDetailPage.css';
+import { adminApi, adminService } from '../services/adminApi';
+
 
 const UserDetailPage = () => {
   const { id } = useParams();
@@ -12,20 +12,19 @@ const UserDetailPage = () => {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const response = await adminApi.get(`/users/${id}`);
+        setUser(response.data);
+      } catch {
+        setError('Failed to load user.');
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchUser();
   }, [id]);
-
-  const fetchUser = async () => {
-    try {
-      setLoading(true);
-      const response = await adminService.getUserById(id);
-      setUser(response.data);
-    } catch {
-      setError('Failed to fetch user details.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleStatusChange = async (newStatus) => {
     try {
@@ -45,29 +44,24 @@ const UserDetailPage = () => {
     return user.role === 'student' && user.id !== currentUser.id;
   };
 
-  const getStatusBadgeClass = (status) => {
+  const statusBadgeClass = (status) => {
     switch (status) {
-      case 'active': return 'bg-success';
-      case 'inactive': return 'bg-warning text-dark';
-      case 'suspended': return 'bg-danger';
-      default: return 'bg-secondary';
+      case 'active': return 'bg-green-500/20 text-green-400 border border-green-500/30';
+      case 'inactive': return 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
+      case 'suspended': return 'bg-red-500/20 text-red-400 border border-red-500/30';
+      default: return 'bg-gray-500/20 text-gray-400 border border-gray-500/30';
     }
   };
 
-  const getRoleBadgeClass = (role) => {
-    return role === 'administrator' ? 'bg-primary' : 'bg-secondary';
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Never';
-    return new Date(dateString).toLocaleString();
+  const roleBadgeClass = (role) => {
+    return role === 'administrator' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-gray-500/20 text-gray-400 border border-gray-500/30';
   };
 
   if (loading) {
     return (
-      <div className="text-center mt-5 bg-dark min-vh-100">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
+      <div className="flex justify-center pt-12 theme-bg">
+        <div className="theme-spinner" role="status">
+          <span className="sr-only">Loading...</span>
         </div>
       </div>
     );
@@ -75,73 +69,89 @@ const UserDetailPage = () => {
 
   if (error || !user) {
     return (
-      <div className="container mt-4 bg-dark min-vh-100">
-        <div className="alert alert-danger" role="alert">
-          {error || 'User not found'}
+      <div className="theme-bg">
+        <div className="theme-content px-4 pt-4">
+          <div className="px-4 py-3 rounded-lg bg-red-900/50 text-red-300 border border-red-800 mb-4" role="alert">
+            {error || 'User not found'}
+          </div>
+          <button type="button" className="theme-btn theme-btn-cyan" onClick={() => navigate('/admin/users')}>
+            Back to Users
+          </button>
         </div>
-        <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/users')}>
-          Back to Users
-        </button>
       </div>
     );
   }
 
   return (
-    <div className="user-detail-page container-fluid py-4 bg-dark text-light min-vh-100">
+    <div className="theme-bg">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content px-4 py-4">
       <button
         type="button"
-        className="btn btn-link text-decoration-none mb-3 p-0 text-light"
+        className="text-blue-400 hover:text-blue-300 no-underline mb-3 p-0 inline-flex items-center transition-colors"
         onClick={() => navigate('/admin/users')}
       >
         &larr; Back to Users
       </button>
 
-      <div className="card mb-4 bg-secondary text-light">
-        <div className="card-header bg-dark border-secondary text-light">
-          <h4 className="mb-0 text-light">User Profile</h4>
+      <div className="theme-card mb-4">
+        <div className="theme-card-header px-4 py-3">
+          <h4 className="mb-0 text-gray-100 font-semibold text-lg">User Profile</h4>
         </div>
-        <div className="card-body text-light">
-          <div className="row">
-            <div className="col-md-6">
-              <dl className="row mb-0 text-light">
-                <dt className="col-sm-3 text-light">Name</dt>
-                <dd className="col-sm-9 text-light">{user.name || 'N/A'}</dd>
+        <div className="p-4 text-gray-100">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-gray-100">
+                <dt className="text-gray-400 font-medium">Name</dt>
+                <dd className="text-gray-100">{user.heading?.name || user.name || 'N/A'}</dd>
 
-                <dt className="col-sm-3 text-light">Email</dt>
-                <dd className="col-sm-9 text-light">{user.email}</dd>
+                <dt className="text-gray-400 font-medium">Email</dt>
+                <dd className="text-gray-100">{user.heading?.email || user.email}</dd>
 
-                <dt className="col-sm-3 text-light">Role</dt>
-                <dd className="col-sm-9">
-                  <span className={`badge ${getRoleBadgeClass(user.role)}`}>
+                <dt className="text-gray-400 font-medium">Role</dt>
+                <dd>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${roleBadgeClass(user.role)}`}>
                     {user.role}
                   </span>
                 </dd>
 
-                <dt className="col-sm-3 text-light">Status</dt>
-                <dd className="col-sm-9">
-                  <span className={`badge ${getStatusBadgeClass(user.status)}`}>
+                <dt className="text-gray-400 font-medium">Status</dt>
+                <dd>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(user.status)}`}>
                     {user.status}
                   </span>
                 </dd>
 
-                <dt className="col-sm-3 text-light">Last Login</dt>
-                <dd className="col-sm-9 text-light">{formatDate(user.lastLogin)}</dd>
+                <dt className="text-gray-400 font-medium">Status</dt>
+                <dd>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(user.status)}`}>
+                    {user.status}
+                  </span>
+                </dd>
 
-                <dt className="col-sm-3 text-light">Created</dt>
-                <dd className="col-sm-9 text-light">{formatDate(user.createdAt)}</dd>
+                <dt className="text-gray-400 font-medium">Phone</dt>
+                <dd className="text-gray-100">{user.heading?.phone || 'N/A'}</dd>
+
+                <dt className="text-gray-400 font-medium">CGPA</dt>
+                <dd className="text-gray-100">{user.education?.cgpa ?? 'N/A'}</dd>
               </dl>
             </div>
 
-            <div className="col-md-6">
+            <div>
               {canModifyUser() ? (
-                <div className="card bg-dark border-secondary text-light">
-                  <div className="card-body">
-                    <h6 className="card-title text-light">Quick Actions</h6>
-                    <p className="text-light small mb-2">Change user status</p>
-                    <div className="btn-group" role="group">
+                <div className="rounded-lg bg-gray-900 border border-gray-700 text-gray-100">
+                  <div className="p-4">
+                    <h6 className="text-gray-100 font-semibold mb-1">Quick Actions</h6>
+                    <p className="text-gray-400 text-sm mb-2">Change user status</p>
+                    <div className="flex rounded-md overflow-hidden">
                       <button
                         type="button"
-                        className={`btn btn-sm ${user.status === 'active' ? 'btn-success' : 'btn-outline-success'}`}
+                        className={`flex-1 px-3 py-1.5 text-sm font-medium transition-all duration-300 rounded-l-md ${
+                          user.status === 'active'
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                        }`}
                         onClick={() => handleStatusChange('active')}
                         disabled={updating || user.status === 'active'}
                       >
@@ -149,7 +159,11 @@ const UserDetailPage = () => {
                       </button>
                       <button
                         type="button"
-                        className={`btn btn-sm ${user.status === 'inactive' ? 'btn-warning text-dark' : 'btn-outline-warning'}`}
+                        className={`flex-1 px-3 py-1.5 text-sm font-medium transition-all duration-300 ${
+                          user.status === 'inactive'
+                            ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                        }`}
                         onClick={() => handleStatusChange('inactive')}
                         disabled={updating || user.status === 'inactive'}
                       >
@@ -157,7 +171,11 @@ const UserDetailPage = () => {
                       </button>
                       <button
                         type="button"
-                        className={`btn btn-sm ${user.status === 'suspended' ? 'btn-danger' : 'btn-outline-danger'}`}
+                        className={`flex-1 px-3 py-1.5 text-sm font-medium transition-all duration-300 rounded-r-md ${
+                          user.status === 'suspended'
+                            ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                        }`}
                         onClick={() => handleStatusChange('suspended')}
                         disabled={updating || user.status === 'suspended'}
                       >
@@ -167,7 +185,7 @@ const UserDetailPage = () => {
                   </div>
                 </div>
               ) : (
-                <div className="alert alert-secondary mb-0 text-light">
+                <div className="px-4 py-3 rounded-lg bg-gray-700 text-gray-300">
                   {user.role === 'administrator'
                     ? 'Administrator accounts cannot be modified.'
                     : 'You cannot modify your own account.'}
@@ -178,16 +196,29 @@ const UserDetailPage = () => {
         </div>
       </div>
 
-      <div className="card bg-secondary text-light">
-        <div className="card-header bg-dark border-secondary text-light">
-          <h4 className="mb-0 text-light">Resume Summary</h4>
-          <p className="text-light small mb-0">Profile data from resume builder</p>
+      {user.heading && (
+        <div className="theme-card">
+          <div className="theme-card-header px-4 py-3">
+            <h4 className="mb-0 text-gray-100 font-semibold text-lg">Resume Summary</h4>
+          </div>
+          <div className="p-4 text-gray-100">
+            <p className="text-gray-300">
+              <span className="font-semibold">{user.heading.name}</span>
+              {user.heading.role ? ` — ${user.heading.role}` : ''}
+            </p>
+            <p className="text-gray-400 text-sm mt-1">
+              {user.heading.email}{user.heading.phone ? ` | ${user.heading.phone}` : ''}
+            </p>
+            {user.heading.link && (
+              <p className="text-gray-400 text-sm mt-1">
+                <a href={`https://${user.heading.link}`} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                  {user.heading.link}
+                </a>
+              </p>
+            )}
+          </div>
         </div>
-        <div className="card-body text-light">
-          <p className="text-light">
-            Full resume view will be implemented in a future update.
-          </p>
-        </div>
+      )}
       </div>
     </div>
   );

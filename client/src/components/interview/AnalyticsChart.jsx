@@ -6,9 +6,6 @@ const CHART_CORRECT = "#34d399";
 const CHART_INCORRECT = "#f87171";
 const CHART_SKIPPED = "rgba(148,163,184,0.55)";
 
-/**
- * Circular match confidence visualization (percent 0–100).
- */
 export function MatchConfidenceRadial({ percentage }) {
   const pct = Math.min(100, Math.max(0, Number(percentage) || 0));
   const rest = Math.max(0.0001, 100 - pct);
@@ -18,7 +15,7 @@ export function MatchConfidenceRadial({ percentage }) {
   ];
 
   return (
-    <div className="position-relative w-100" style={{ height: 200 }}>
+    <div className="relative w-full" style={{ height: 200 }}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -47,17 +44,14 @@ export function MatchConfidenceRadial({ percentage }) {
           />
         </PieChart>
       </ResponsiveContainer>
-      <div className="position-absolute top-50 start-50 translate-middle text-center pointer-events-none">
-        <div className="h3 mb-0 text-info">{Math.round(pct)}%</div>
-        <small className="interview-text-muted text-uppercase small">confidence</small>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+        <div className="text-2xl font-semibold mb-0 text-cyan-400">{Math.round(pct)}%</div>
+        <small className="interview-text-muted uppercase text-xs">confidence</small>
       </div>
     </div>
   );
 }
 
-/**
- * Donut: correct / incorrect / skipped.
- */
 export function ResultDonut({ correct = 0, incorrect = 0, skipped = 0 }) {
   const data = [
     { name: "Correct", value: Math.max(0, correct), fill: CHART_CORRECT },
@@ -72,7 +66,7 @@ export function ResultDonut({ correct = 0, incorrect = 0, skipped = 0 }) {
   const total = data.reduce((s, d) => s + d.value, 0);
 
   return (
-    <div className="position-relative w-100" style={{ height: 260 }}>
+    <div className="relative w-full" style={{ height: 260 }}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -102,8 +96,8 @@ export function ResultDonut({ correct = 0, incorrect = 0, skipped = 0 }) {
           />
         </PieChart>
       </ResponsiveContainer>
-      <div className="position-absolute top-50 start-50 translate-middle text-center">
-        <div className="h5 mb-0">{total}</div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+        <div className="text-lg font-semibold mb-0">{total}</div>
         <small className="interview-text-muted">attempts</small>
       </div>
     </div>

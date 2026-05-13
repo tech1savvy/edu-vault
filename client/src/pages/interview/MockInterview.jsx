@@ -142,8 +142,8 @@ export default function MockInterview() {
   if (!slug) {
     return (
       <div className="interview-shell p-4">
-        <p className="text-warning">Unknown domain slug.</p>
-        <Link to="/interview/domain">Return to domain selection</Link>
+        <p className="text-yellow-400">Unknown domain slug.</p>
+        <Link to="/interview/domain" className="text-cyan-400 no-underline">Return to domain selection</Link>
       </div>
     );
   }
@@ -151,7 +151,7 @@ export default function MockInterview() {
   if (loading) {
     return (
       <div className="interview-shell p-5 text-center interview-text-muted">
-        <div className="spinner-border text-info" />
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-cyan-400 border-t-transparent mx-auto" role="status" />
         <p className="mt-3 mb-0">Building your timed session...</p>
       </div>
     );
@@ -160,8 +160,8 @@ export default function MockInterview() {
   if (fetchError) {
     return (
       <div className="interview-shell p-4">
-        <div className="alert alert-danger">{fetchError}</div>
-        <Link to="/interview/domain" className="btn interview-gradient-btn">
+        <div className="px-4 py-3 rounded-lg text-sm bg-red-500/20 text-red-400 border border-red-500/30">{fetchError}</div>
+        <Link to="/interview/domain" className="btn interview-gradient-btn mt-3">
           Domain selection
         </Link>
       </div>
@@ -170,22 +170,27 @@ export default function MockInterview() {
 
   return (
     <div className="interview-shell p-3 p-md-4 mb-5">
-      <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-gray-600/25">
         <div>
-          <Link to="/interview/domain" className="small text-info text-decoration-none">
+          <Link to="/interview/domain" className="text-sm text-cyan-400 no-underline">
             ← Change domain
           </Link>
-          <h1 className="h5 mb-1 mt-1">Mock Interview</h1>
+          <h1 className="text-lg font-semibold mb-1 mt-1">Mock Interview</h1>
           <small className="interview-text-muted">{canonicalDomain}</small>
         </div>
-        <div className="d-flex align-items-center flex-wrap gap-2">
+        <div className="flex items-center flex-wrap gap-2">
           <Timer secondsRemaining={timeLeft} label="Interview timer" dangerThreshold={90} />
-          <button type="button" className="btn btn-outline-danger btn-sm" onClick={handleExit} disabled={submitting}>
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-semibold transition border border-red-400/50 text-red-400 hover:bg-red-500/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+            onClick={handleExit}
+            disabled={submitting}
+          >
             Exit interview
           </button>
           <button
             type="button"
-            className="btn interview-gradient-btn btn-sm px-3"
+            className="btn interview-gradient-btn px-3 py-1.5 text-sm"
             onClick={() => runSubmit()}
             disabled={submitting}
           >
@@ -194,10 +199,14 @@ export default function MockInterview() {
         </div>
       </div>
 
-      {submitError && <div className="alert alert-warning mb-3">{submitError}</div>}
+      {submitError && (
+        <div className="px-4 py-3 rounded-lg text-sm bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 mb-3">
+          {submitError}
+        </div>
+      )}
 
-      <div className="row g-4">
-        <div className="col-lg-8 order-lg-1 order-2">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="lg:col-span-8 order-2 lg:order-1">
           {current ? (
             <QuestionCard
               question={current}
@@ -209,29 +218,39 @@ export default function MockInterview() {
           ) : (
             <p className="interview-text-muted">No question loaded.</p>
           )}
-          <div className="d-flex justify-content-between flex-wrap gap-2 mt-4">
-            <button type="button" className="btn interview-gradient-btn-outline px-4" onClick={goPrev} disabled={idx === 0 || submitting}>
+          <div className="flex justify-between flex-wrap gap-2 mt-4">
+            <button
+              type="button"
+              className="btn interview-gradient-btn-outline px-4"
+              onClick={goPrev}
+              disabled={idx === 0 || submitting}
+            >
               Previous
             </button>
-            <div className="d-flex gap-2">
+            <div className="flex gap-2">
               <button
                 type="button"
-                className="btn btn-link interview-text-muted text-decoration-none"
+                className="text-cyan-400/70 hover:text-cyan-400 no-underline bg-transparent border-none cursor-pointer text-sm disabled:opacity-50 disabled:cursor-not-allowed px-2"
                 disabled={submitting || !current}
                 onClick={() => current && setAnswers((a) => ({ ...a, [current.id]: null }))}
               >
                 Skip this question
               </button>
-              <button type="button" className="btn interview-gradient-btn px-4" onClick={goNext} disabled={idx >= questions.length - 1 || submitting}>
+              <button
+                type="button"
+                className="btn interview-gradient-btn px-4"
+                onClick={goNext}
+                disabled={idx >= questions.length - 1 || submitting}
+              >
                 Next
               </button>
             </div>
           </div>
         </div>
-        <div className="col-lg-4 order-lg-2 order-1">
+        <div className="lg:col-span-4 order-1 lg:order-2">
           <div className="interview-card p-3 sticky-lg-top" style={{ top: "1rem", zIndex: 1 }}>
-            <h2 className="h6 mb-3">Questions</h2>
-            <div className="d-flex flex-wrap gap-2 mb-3">
+            <h2 className="text-xs font-semibold mb-3">Questions</h2>
+            <div className="flex flex-wrap gap-2 mb-3">
               {questions.map((q, i) => {
                 const has =
                   answers[q.id] !== null &&
@@ -240,12 +259,12 @@ export default function MockInterview() {
                   <button
                     key={q.id}
                     type="button"
-                    className={`btn btn-sm ${
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-semibold transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                       i === idx
-                        ? "btn-info text-dark"
+                        ? "bg-cyan-500 text-gray-900"
                         : has
-                          ? "btn-outline-info"
-                          : "btn-outline-secondary interview-text-muted"
+                          ? "border border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
+                          : "border border-gray-600 text-gray-400 hover:bg-gray-600/20"
                     }`}
                     disabled={submitting}
                     onClick={() => setIdx(i)}
@@ -256,16 +275,16 @@ export default function MockInterview() {
               })}
             </div>
             <ProgressBar answeredCount={answeredCount} total={questions.length} currentIndex={idx} />
-            <hr className="border-secondary opacity-25 my-4" />
-            <div className="small mb-2">
-              <span className="text-uppercase interview-text-muted" style={{ fontSize: "0.65rem" }}>
+            <hr className="border-gray-600/25 my-4" />
+            <div className="text-xs mb-2">
+              <span className="uppercase interview-text-muted" style={{ fontSize: "0.65rem" }}>
                 Current topic
               </span>
-              <div className="fw-semibold">{current?.topic ?? "—"}</div>
+              <div className="font-semibold">{current?.topic ?? "—"}</div>
             </div>
-            <div className="interview-card-muted p-3 rounded-3 small interview-text-muted">
-              <strong className="text-light d-block mb-2">Instructions</strong>
-              <ul className="ps-3 mb-0">
+            <div className="interview-card-muted p-3 rounded-lg text-sm interview-text-muted">
+              <strong className="text-gray-100 block mb-2">Instructions</strong>
+              <ul className="pl-3 mb-0">
                 <li className="mb-2">Select the best MCQ answer; skips count as unanswered.</li>
                 <li className="mb-2">Timer auto-submits—keep an eye on the clock.</li>
                 <li>Use the navigator to revise earlier answers freely.</li>

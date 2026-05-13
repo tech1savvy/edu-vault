@@ -25,10 +25,10 @@ services:
     networks:
       - eduvault-network
 
-  backend:
+  server:
     build:
       context: ./server
-    container_name: eduvault-backend
+    container_name: eduvault-server
     command: node index.js
     ports:
       - "8000:8000"
@@ -73,7 +73,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://backend:8000}
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
     volumes:
       - ./client:/app
       - /app/node_modules

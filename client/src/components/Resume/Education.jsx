@@ -5,25 +5,17 @@ function Education() {
   const { education } = useContext(ResumeContext);
 
   if (!education || education.length === 0) {
-    return (
-      <p className="m-3 text-danger">
-        No Education Data Found. Please fill the form first.
-      </p>
-    );
+    return <p className="text-red-400 p-3">No Education Data Found. Please fill the form first.</p>;
   }
 
   return (
-    <div className="container mt-4 p-3 border rounded shadow">
-      <h4 className="fw-bold">Education</h4>
+    <div className="theme-card p-3">
+      <h4 className="font-bold text-gray-100 mb-3">Education</h4>
       {education.map((edu, index) => (
-        <div key={index} className="mb-3">
-          <p className="fw-bold">{edu.degree}</p>
-          <p>
-            {edu.college}, {edu.location}
-          </p>
-          <p>
-            {edu.startDate} - {edu.endDate || "Present"}
-          </p>
+        <div key={index} className="mb-3 text-gray-200 text-sm">
+          <p className="font-semibold">{edu.degree}</p>
+          <p className="text-gray-400">{edu.college}, {edu.location}</p>
+          <p className="text-gray-400">{edu.startDate} - {edu.endDate || "Present"}</p>
           <p>Score: {edu.score}</p>
         </div>
       ))}

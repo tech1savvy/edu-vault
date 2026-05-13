@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { adminService } from '../services/adminApi';
-import './MatchResultsPage.css';
+import { ArrowLeft, Mail, BadgeCheck, User, FileText } from 'lucide-react';
 
 const MatchResultsPage = () => {
   const { id } = useParams();
@@ -32,62 +32,90 @@ const MatchResultsPage = () => {
   }, [id]);
 
   if (loading) return (
-    <div className="match-results-page container-fluid bg-dark text-light min-vh-100 d-flex justify-content-center align-items-center flex-column gap-3">
-      <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
+    <div className="flex justify-center items-center flex-col gap-3 theme-bg">
+      <div className="theme-spinner" role="status">
+        <span className="sr-only">Loading...</span>
       </div>
-      <p className="text-light">Finding best candidates...</p>
+      <p className="text-gray-100">Finding best candidates...</p>
     </div>
   );
 
-  if (error) return <div className="container-fluid bg-dark text-light min-vh-100 d-flex justify-content-center align-items-center flex-column gap-3"><h3 className="text-danger">Error</h3><p className="text-danger">{error}</p></div>;
+  if (error) return (
+    <div className="flex justify-center items-center flex-col gap-3 theme-bg">
+      <h3 className="text-red-400">Error</h3>
+      <p className="text-red-400">{error}</p>
+    </div>
+  );
 
   return (
-    <div className="match-results-page container-fluid bg-dark text-light min-vh-100 p-4">
-      <header className="results-header mb-4">
-        <button onClick={() => navigate('/admin/dashboard')} className="btn btn-secondary">
-          <i className="bi bi-arrow-left"></i> Back to Dashboard
+    <div className="theme-bg">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content p-4">
+      <header className="flex justify-between items-center mb-8 flex-wrap gap-4 border-b border-gray-700/50 pb-6">
+        <button onClick={() => navigate('/admin/dashboard')} className="theme-btn theme-btn-cyan">
+          <ArrowLeft className="w-4 h-4" /> Back to Dashboard
         </button>
-        <h1 className="text-light mb-0">Top Matches for &quot;{jobDescription?.title}&quot;</h1>
+        <h1 className="theme-gradient-text mb-0 font-semibold text-xl text-center flex-1">Top Matches for &quot;{jobDescription?.title}&quot;</h1>
         <div />
       </header>
 
       {matches.length === 0 ? (
-        <div className="text-center text-light">
+        <div className="text-center text-gray-400">
           <p>No matching resumes found for this job description.</p>
         </div>
       ) : (
-        <div className="row">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {matches.map((match, index) => (
-            <div key={index} className="col-md-6 col-lg-4 mb-4">
-              <div className="match-card card bg-secondary text-light h-100">
-                <div className="match-card-header card-header bg-dark border-secondary d-flex justify-content-between align-items-start">
-                  <h5 className="match-card-title mb-0 text-light">{match.user.name || 'N/A'}</h5>
-                  <span className="badge bg-primary match-score">
-                    {(match.score * 100).toFixed(2)}% Match
+            <div key={index} className="theme-card h-full flex flex-col">
+              <div className="theme-card-header px-4 py-3 flex justify-between items-start gap-2">
+                <h5 className="text-gray-100 font-semibold mb-0 truncate">{match.user.name || 'N/A'}</h5>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap font-bold ${
+                  match.score >= 0.5
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                    : match.score >= 0.3
+                    ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                    : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                }`}>
+                  {(match.score * 100).toFixed(2)}% Match
+                </span>
+              </div>
+              <div className="p-4 flex-1 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 bg-gray-700/50 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all duration-500 ${
+                        match.score >= 0.5 ? 'bg-green-500' : match.score >= 0.3 ? 'bg-yellow-500' : 'bg-red-500'
+                      }`}
+                      style={{ width: `${(match.score * 100).toFixed(0)}%` }}
+                    />
+                  </div>
+                  <span className={`text-xs font-semibold ${
+                    match.score >= 0.5 ? 'text-green-400' : match.score >= 0.3 ? 'text-yellow-400' : 'text-red-400'
+                  }`}>
+                    {(match.score * 100).toFixed(0)}%
                   </span>
                 </div>
-                <div className="match-card-body card-body">
-                  <p className="match-card-text mb-2 text-light">
-                    <i className="bi bi-envelope-fill me-2"></i> {match.user.email || 'N/A'}
-                  </p>
-                  <p className="match-card-text mb-2 text-light">
-                    <i className="bi bi-person-badge-fill me-2"></i> Role: {match.user.role || 'N/A'}
-                  </p>
-                  <p className="match-card-text mb-0 text-light">
-                    <i className="bi bi-person-fill me-2"></i> User ID: {match.user.id}
-                  </p>
-                </div>
-                <div className="match-card-footer card-footer bg-dark border-secondary text-end">
-                  <button className="btn btn-sm btn-info">
-                    <i className="bi bi-file-earmark-text"></i> View Full Resume
-                  </button>
-                </div>
+                <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
+                  <Mail className="text-cyan-400 w-4 h-4" /> {match.user.email || 'N/A'}
+                </p>
+                <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
+                  <BadgeCheck className="text-cyan-400 w-4 h-4" /> Role: {match.user.role || 'N/A'}
+                </p>
+                <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
+                  <User className="text-cyan-400 w-4 h-4" /> User ID: {match.user.id}
+                </p>
+              </div>
+              <div className="theme-card-footer text-right p-3">
+                <button onClick={() => navigate(`/admin/users/${match.user.id}`)} className="theme-btn theme-btn-cyan text-sm">
+                  <FileText className="w-4 h-4" /> View Student Details
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 };
