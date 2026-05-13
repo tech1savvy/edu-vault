@@ -25,9 +25,9 @@ const formatters = {
   heading: (item) => `${item.name} - ${item.role}\n${item.email} | ${item.phone} | ${item.location}\nLink: ${item.link}`,
   achievements: (item) => `- ${item.title}: ${item.description} (${item.date})`,
   certifications: (item) => `- ${item.name} from ${item.issuer} (${item.date})`,
-  educations: (item) => `- ${item.degree} in ${item.fieldofstudy} from ${item.institution} (${item.duration}). ${item.details}`,
+  educations: (item) => `- ${item.degree} in ${item.fieldOfStudy} from ${item.institution} (${item.duration}). ${item.details}`,
   experiences: (item) => `- ${item.role} at ${item.company} (${item.duration}). ${item.details}`,
-  projects: (item) => `- ${item.title} (${item.type}): ${item.description}. Tech: ${item.techstack}`,
+  projects: (item) => `- ${item.title} (${item.type}): ${item.description}. Tech: ${item.techStack}`,
   skills: (item) => `- ${item.name} (${item.level})`,
 };
 

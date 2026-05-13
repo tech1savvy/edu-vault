@@ -74,9 +74,6 @@ services:
       - "5173:5173"
     environment:
       VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
-    volumes:
-      - ./client:/app
-      - /app/node_modules
     restart: unless-stopped
     networks:
       - eduvault-network
@@ -93,7 +90,7 @@ services:
     ports:
       - "9100:9100"
     volumes:
-      - /:/host:ro,rslave
+      - /:/host:ro
     pid: host
     restart: unless-stopped
     networks:
@@ -146,7 +143,7 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
-      GF_INSTALL_PLUGINS: grafana-piechart-panel
+      GF_INSTALL_PLUGINS: ""
     volumes:
       - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
       - ./monitoring/grafana/dashboards/providers:/etc/grafana/provisioning/dashboards:ro
