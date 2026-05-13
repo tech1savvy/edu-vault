@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
-import { ResumeContext } from '../../../context/resumeContext.jsx';
+import { ResumeContext } from '../../../context/resumeContext.js';
 
 const LayoutS = () => {
   const { 

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ResumeContext } from "../../context/resumeContext.jsx";
+import { ResumeContext } from "../../context/resumeContext.js";
 
 function Experience() {
   const { experiences } = useContext(ResumeContext);
