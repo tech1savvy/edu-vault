@@ -22,9 +22,6 @@ import {
   getCertifications,
 } from "../../../../services/api";
 
-// 👉 PDF Button
-import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
-import SyncProfileButton from "../../../Resume/SyncProfileButton";
 import CVTemplate from "../../../Resume/CVTemplate";
 
 const LayoutT = () => {
@@ -163,11 +160,6 @@ const LayoutT = () => {
         }}
       />
 
-      {/* ------------ DOWNLOAD BUTTON ------------ */}
-      <div style={{ textAlign: "center", margin: "40px 0", display: "flex", justifyContent: "center", gap: "15px" }}>
-        <SyncProfileButton />
-        <DownloadPdfButton filename={`${finalHeading?.name ? finalHeading.name.replace(/\s+/g, '-') : 'My'}-Resume.pdf`} />
-      </div>
     </div>
   );
 };
