@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'Georgia Institute of Technology', degree: 'Master of Science',
     fieldOfStudy: 'Computer Science', duration: '2019-2021',
-    details: 'Specialized in Machine Learning.',
+    details: 'Specialized in Machine Learning.', cgpa: 9.0,
   },
   project: {
     title: 'Image Recognition System', description: 'Built an image recognition system for autonomous vehicles.',

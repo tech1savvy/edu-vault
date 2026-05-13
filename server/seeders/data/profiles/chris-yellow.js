@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'Purdue University', degree: 'Bachelor of Science',
     fieldOfStudy: 'Network Engineering Technology', duration: '2014-2018',
-    details: 'Focused on network design and security.',
+    details: 'Focused on network design and security.', cgpa: 7.1,
   },
   project: {
     title: 'Office Network Overhaul', description: 'Overhauled the network infrastructure for a large office.',

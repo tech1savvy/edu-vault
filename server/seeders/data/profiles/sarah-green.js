@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'Carnegie Mellon University', degree: 'Master of Science',
     fieldOfStudy: 'Information Security', duration: '2018-2020',
-    details: 'Specialized in ethical hacking.',
+    details: 'Specialized in ethical hacking.', cgpa: 7.4,
   },
   project: {
     title: 'Intrusion Detection System', description: 'Developed a custom intrusion detection system.',
