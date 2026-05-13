@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { 
+import {
   login,
   getHeading,
   getProjects,
@@ -11,6 +11,7 @@ import {
   getAchievements,
   getCertifications
 } from '../services/api';
+import './LoginPage.css';
 
 const LoginPage = () => {
   const { login: authLogin } = useContext(AuthContext);
@@ -88,23 +89,23 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="theme-bg flex items-center justify-center">
-      <div className="theme-blob theme-blob-tr" />
-      <div className="theme-blob theme-blob-bl" />
-      <div className="theme-content w-full max-w-md mx-auto px-4 py-12">
-        <div className="theme-card p-6">
-          <h2 className="text-2xl font-bold text-center mb-6 theme-gradient-text inline-block w-full">Login</h2>
+    <div className="login-page">
+      <div className="login-blob login-blob-tr" />
+      <div className="login-blob login-blob-bl" />
+      <div className="login-content">
+        <div className="login-card">
+          <h2 className="login-title">Login</h2>
           {error && (
-            <div className="px-4 py-3 rounded-lg mb-4 bg-red-500/20 text-red-400 border border-red-500/30 text-sm">
+            <div className="login-error">
               {error}
             </div>
           )}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">Email address</label>
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="login-field">
+              <label htmlFor="email" className="login-label">Email address</label>
               <input
                 type="email"
-                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                className="login-input"
                 id="email"
                 placeholder="you@example.com"
                 value={email}
@@ -112,11 +113,11 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-400 mb-1">Password</label>
+            <div className="login-field">
+              <label htmlFor="password" className="login-label">Password</label>
               <input
                 type="password"
-                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                className="login-input"
                 id="password"
                 placeholder="••••••••"
                 value={password}
@@ -124,10 +125,10 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <button type="submit" className="theme-btn theme-btn-primary w-full justify-center py-2.5">Login</button>
+            <button type="submit" className="login-btn">Login</button>
           </form>
-          <p className="text-center mt-4 text-sm text-gray-400">
-            Don&apos;t have an account? <Link to="/signup" className="text-cyan-400 hover:text-cyan-300">Sign up</Link>
+          <p className="login-footer">
+            Don&apos;t have an account? <Link to="/signup" className="login-link">Sign up</Link>
           </p>
         </div>
       </div>
