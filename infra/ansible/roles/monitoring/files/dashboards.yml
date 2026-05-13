@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: EduVault Dashboards
+    orgId: 1
+    folder: EduVault
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    options:
+      path: /var/lib/grafana/dashboards

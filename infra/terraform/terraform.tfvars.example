@@ -13,12 +13,17 @@ volume_size   = 30
 volume_type   = "gp3"
 
 # SSH Configuration
-# Leave empty to create a new key pair, or specify existing key name
 ssh_key_pair_name   = ""
 ssh_public_key_path = ""
 
 # Allowed SSH CIDRs (restrict to your team's IP addresses for security)
 allowed_ssh_cidrs = ["0.0.0.0/0"]
+
+# Monitoring Configuration (free tier compatible)
+create_monitoring_role = true
+enable_cloudwatch      = true
+cloudwatch_log_retention = 7
+# alarm_email = "your-team@example.com"  # Uncomment to receive alarm notifications
 
 # Tags
 common_tags = {

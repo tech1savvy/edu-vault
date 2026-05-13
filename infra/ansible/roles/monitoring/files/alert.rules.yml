@@ -1,0 +1,48 @@
+groups:
+  - name: eduvault_alerts
+    interval: 30s
+    rules:
+      - alert: HighCPULoad
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU load is high on {{ $labels.instance }}"
+          description: "CPU usage is at {{ $value }}% for 5 minutes"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memory usage is high on {{ $labels.instance }}"
+          description: "Memory usage is at {{ $value }}% for 5 minutes"
+
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint="/",fstype!="tmpfs"} / node_filesystem_size_bytes{mountpoint="/",fstype!="tmpfs"}) * 100 < 15
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk space is low on {{ $labels.instance }}"
+          description: "Only {{ $value }}% disk space remaining on {{ $labels.mountpoint }}"
+
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "Instance {{ $labels.instance }} of job {{ $labels.job }} has been unreachable for 1 minute"
+
+      - alert: BackendHighErrorRate
+        expr: rate(http_requests_total{job="backend",status=~"5.."}[5m]) / rate(http_requests_total{job="backend"}[5m]) * 100 > 5
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Backend error rate is high"
+          description: "5xx error rate is at {{ $value }}% averaged over 5 minutes"
