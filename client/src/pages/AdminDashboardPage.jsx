@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/adminApi';
 import { useNavigate } from 'react-router-dom';
+import { Plus, RefreshCw, Eye, Trash, Crosshair } from 'lucide-react';
+
 const AdminDashboardPage = () => {
   const [jobDescriptions, setJobDescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -115,7 +117,7 @@ const AdminDashboardPage = () => {
         <h1 className="theme-gradient-text mb-0 text-2xl font-bold">Admin Dashboard</h1>
         <div className="flex gap-2">
           <button onClick={handleCreateJobDescription} className="theme-btn theme-btn-success">
-            <i className="bi bi-plus-lg"></i> Create Job
+            <Plus className="w-4 h-4" /> Create Job
           </button>
           <button onClick={handleTriggerFullSync} className="theme-btn theme-btn-warning" disabled={isSyncing}>
             {isSyncing ? (
@@ -125,7 +127,7 @@ const AdminDashboardPage = () => {
               </>
             ) : (
               <>
-                <i className="bi bi-arrow-repeat"></i> Trigger Full Sync
+                <RefreshCw className="w-4 h-4" /> Trigger Full Sync
               </>
             )}
           </button>
@@ -147,13 +149,13 @@ const AdminDashboardPage = () => {
                 </div>
                 <div className="theme-card-footer flex flex-wrap gap-2 p-3">
                   <button onClick={() => handleViewJobDescription(job.id)} className="theme-btn theme-btn-cyan text-sm">
-                    <i className="bi bi-eye"></i> View/Edit
+                    <Eye className="w-4 h-4" /> View/Edit
                   </button>
                   <button onClick={() => handleDeleteJobDescription(job.id)} className="theme-btn theme-btn-danger text-sm">
-                    <i className="bi bi-trash"></i> Delete
+                    <Trash className="w-4 h-4" /> Delete
                   </button>
                   <button onClick={() => handleMatchJobDescription(job.id)} className="theme-btn theme-btn-primary text-sm">
-                    <i className="bi bi-bullseye"></i> Match Resumes
+                    <Crosshair className="w-4 h-4" /> Match Resumes
                   </button>
                 </div>
               </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { adminService } from '../services/adminApi';
+import { ArrowLeft, Mail, BadgeCheck, User, FileText } from 'lucide-react';
 
 const MatchResultsPage = () => {
   const { id } = useParams();
@@ -53,7 +54,7 @@ const MatchResultsPage = () => {
       <div className="theme-content p-4">
       <header className="flex justify-between items-center mb-8 flex-wrap gap-4 border-b border-gray-700/50 pb-6">
         <button onClick={() => navigate('/admin/dashboard')} className="theme-btn theme-btn-cyan">
-          <i className="bi bi-arrow-left"></i> Back to Dashboard
+          <ArrowLeft className="w-4 h-4" /> Back to Dashboard
         </button>
         <h1 className="theme-gradient-text mb-0 font-semibold text-xl text-center flex-1">Top Matches for &quot;{jobDescription?.title}&quot;</h1>
         <div />
@@ -96,18 +97,18 @@ const MatchResultsPage = () => {
                   </span>
                 </div>
                 <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
-                  <i className="bi bi-envelope-fill text-cyan-400"></i> {match.user.email || 'N/A'}
+                  <Mail className="text-cyan-400 w-4 h-4" /> {match.user.email || 'N/A'}
                 </p>
                 <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
-                  <i className="bi bi-person-badge-fill text-cyan-400"></i> Role: {match.user.role || 'N/A'}
+                  <BadgeCheck className="text-cyan-400 w-4 h-4" /> Role: {match.user.role || 'N/A'}
                 </p>
                 <p className="text-gray-300 mb-0 flex items-center gap-2 text-sm">
-                  <i className="bi bi-person-fill text-cyan-400"></i> User ID: {match.user.id}
+                  <User className="text-cyan-400 w-4 h-4" /> User ID: {match.user.id}
                 </p>
               </div>
               <div className="theme-card-footer text-right p-3">
                 <button onClick={() => navigate(`/admin/users/${match.user.id}`)} className="theme-btn theme-btn-cyan text-sm">
-                  <i className="bi bi-file-earmark-text"></i> View Student Details
+                  <FileText className="w-4 h-4" /> View Student Details
                 </button>
               </div>
             </div>
