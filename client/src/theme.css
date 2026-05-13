@@ -66,7 +66,7 @@
   border-radius: 0.75rem !important;
   font-weight: 600 !important;
   transition: all 0.3s ease !important;
-  border: none !important;
+  border: none;
   cursor: pointer !important;
 }
 
