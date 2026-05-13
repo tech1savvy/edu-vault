@@ -15,7 +15,6 @@ export default function SyncProfileButton() {
       setError(null);
       setSuccess(false);
 
-      // Extract the current state from context
       const payload = {
         heading: contextData.heading || {},
         experiences: contextData.experiences || [],
@@ -28,8 +27,6 @@ export default function SyncProfileButton() {
 
       await syncResumeProfile(payload);
       setSuccess(true);
-
-      // Hide success message after 3 seconds
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError(err.message || "Failed to sync profile");
@@ -39,15 +36,15 @@ export default function SyncProfileButton() {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center">
-      <button 
-        className={`btn ${success ? 'btn-success' : 'btn-outline-primary'}`} 
-        onClick={handleSync} 
+    <div className="flex flex-col items-center">
+      <button
+        className={success ? "theme-btn theme-btn-success" : "theme-btn border border-blue-500/50 text-blue-400 hover:bg-blue-500/20"}
+        onClick={handleSync}
         disabled={syncing}
       >
         {syncing ? "Syncing..." : success ? "Synced Successfully!" : "Sync Profile to Database"}
       </button>
-      {error && <small className="text-danger mt-1">{error}</small>}
+      {error && <small className="text-red-400 mt-1">{error}</small>}
     </div>
   );
 }

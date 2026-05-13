@@ -1,4 +1,3 @@
-// client/src/components/Resume/DownloadPdfButton.jsx
 import React from "react";
 import html2pdf from "html2pdf.js";
 
@@ -10,20 +9,15 @@ export default function DownloadPdfButton({ filename = "My-Resume.pdf", rootId =
       return;
     }
 
-    // 100% BULLETPROOF FIX: html2canvas hates hidden elements.
-    // So we create a fully visible container that covers the screen temporarily,
-    // inject the raw HTML, capture it, and destroy it instantly.
     const tempContainer = document.createElement("div");
     tempContainer.style.position = "absolute";
     tempContainer.style.top = "0";
     tempContainer.style.left = "0";
     tempContainer.style.width = "210mm";
     tempContainer.style.backgroundColor = "white";
-    tempContainer.style.zIndex = "999999"; // Sit on top of everything
-    
-    // We clone the node deeply so it retains all inline styles and classes
+    tempContainer.style.zIndex = "999999";
+
     const clone = originalElement.cloneNode(true);
-    // Remove any hidden styles from the clone
     clone.style.position = "relative";
     clone.style.left = "auto";
     clone.style.top = "auto";
@@ -36,7 +30,7 @@ export default function DownloadPdfButton({ filename = "My-Resume.pdf", rootId =
     document.body.appendChild(tempContainer);
 
     const opt = {
-      margin:       [10, 10, 10, 10], // top, left, bottom, right (mm)
+      margin:       [10, 10, 10, 10],
       filename,
       image:        { type: "jpeg", quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true, logging: true, scrollX: 0, scrollY: 0 },
@@ -45,21 +39,18 @@ export default function DownloadPdfButton({ filename = "My-Resume.pdf", rootId =
     };
 
     try {
-      // Give browser a tiny tick to paint the tempContainer
       await new Promise(r => setTimeout(r, 150));
-      
       await html2pdf().set(opt).from(clone).save();
     } catch (err) {
       console.error("PDF generation failed:", err);
       alert("Failed to generate PDF (see console).");
     } finally {
-      // Remove the flash container
       document.body.removeChild(tempContainer);
     }
   };
 
   return (
-    <button className="btn btn-primary" onClick={handleDownload}>
+    <button className="theme-btn theme-btn-primary" onClick={handleDownload}>
       Download CV (PDF)
     </button>
   );

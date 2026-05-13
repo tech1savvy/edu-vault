@@ -27,29 +27,29 @@ const Skills = ({ isInput = false, embedded = false }) => {
     }
   };
 
+  const inputClass = "bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 placeholder-gray-500";
+
   return (
-    <div className={embedded ? "" : "container mt-4"}>
+    <div className={embedded ? "" : "mt-4"}>
       {isInput && (
-        <div className="card p-3 mb-4">
+        <div className="theme-card p-3 mb-4">
           {!embedded && (
             <>
-              <h2>Skills Section</h2>
-              <p className="text-muted">
-                Add your skills, programming languages, and tools expertise below.
-              </p>
+              <h2 className="text-lg font-semibold text-gray-100">Skills Section</h2>
+              <p className="text-gray-400 text-sm">Add your skills, programming languages, and tools expertise below.</p>
             </>
           )}
 
-          <div className="d-flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             <input
               type="text"
               value={newSkill}
               onChange={(e) => setNewSkill(e.target.value)}
               placeholder="Enter a skill"
-              className="form-control"
+              className={inputClass + " flex-1"}
             />
             <select
-              className={`form-select ${embedded ? "w-auto min-w-[8rem]" : "w-25"}`}
+              className={inputClass + " " + (embedded ? "w-auto min-w-[8rem]" : "w-1/4")}
               value={level}
               onChange={(e) => setLevel(e.target.value)}
             >
@@ -58,41 +58,36 @@ const Skills = ({ isInput = false, embedded = false }) => {
               <option value="Advanced">Advanced</option>
               <option value="Expert">Expert</option>
             </select>
-            <button onClick={handleAddSkill} className="btn btn-primary">
-              Add
-            </button>
+            <button onClick={handleAddSkill} className="theme-btn theme-btn-primary">Add</button>
           </div>
         </div>
       )}
 
-      {/* Preview / Output */}
       {skills.length > 0 ? (
         <div className="mt-3">
-          <h4>{embedded ? "Your skills" : "Your Skills"}</h4>
-          <div className="d-flex flex-wrap gap-2">
+          <h4 className="text-base font-semibold text-gray-100">{embedded ? "Your skills" : "Your Skills"}</h4>
+          <div className="flex flex-wrap gap-2">
             {skills.map((skill) => (
               <div
                 key={skill.id}
-                className="badge bg-secondary p-2 d-flex align-items-center gap-2"
-                style={{ fontSize: "1rem" }}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm bg-gray-500/20 text-gray-200 border border-gray-500/30"
               >
-                <span>
-                  {skill.name} <small>({skill.level})</small>
-                </span>
+                <span>{skill.name} <small className="text-gray-400">({skill.level})</small></span>
                 {isInput && (
                   <button
                     onClick={() => handleDeleteSkill(skill.id)}
-                    className="btn btn-close btn-close-white"
-                    style={{ fontSize: "0.6rem" }}
+                    className="w-4 h-4 rounded-full bg-gray-600 hover:bg-red-500 flex items-center justify-center text-white text-[0.5rem] leading-none transition-colors"
                     aria-label="Remove"
-                  ></button>
+                  >
+                    &times;
+                  </button>
                 )}
               </div>
             ))}
           </div>
         </div>
       ) : (
-        <p className="text-muted mt-3">
+        <p className="text-gray-400 mt-3 text-sm">
           {isInput ? "No skills added yet." : "No skills to display."}
         </p>
       )}
