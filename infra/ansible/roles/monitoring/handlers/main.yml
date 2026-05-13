@@ -2,5 +2,5 @@
 - name: restart monitoring
   ansible.builtin.shell: |
     cd {{ app_dir }}
-    docker-compose restart prometheus grafana alertmanager node_exporter cadvisor
+    docker-compose restart prometheus grafana alertmanager node_exporter
   become_user: "{{ app_user }}"

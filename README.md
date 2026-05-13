@@ -37,10 +37,6 @@ docker compose up -d
 │  │ Metrics  │──│Dashboards│──│ Notifications│  │   Host      │  │
 │  │ Storage  │  │  (4 dash)│  │  (email)    │  │   Metrics   │  │
 │  └──────────┘  └──────────┘  └─────────────┘  └─────────────┘  │
-│  ┌──────────────┐                                               │
-│  │   cAdvisor   │                                               │
-│  │Container OTel│                                               │
-│  └──────────────┘                                               │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
@@ -54,9 +50,8 @@ The production deployment includes a full observability stack:
 | **Grafana** | `:3000` | Dashboards for app, Docker, system, node metrics |
 | **Alertmanager** | `:9093` | Alert routing & email notifications (requires SMTP config) |
 | **Node Exporter** | `:9100` | Server-level CPU, memory, disk metrics |
-| **cAdvisor** | `:8080` | Per-container resource usage metrics |
 
-Both the **Server** (Express) and **ML** (FastAPI) services expose `/metrics` endpoints instrumented with Prometheus clients.
+Both the **Server** (Express) and **ML** (FastAPI) services expose `/metrics` endpoints instrumented with Prometheus clients. Container-level resource usage can be viewed via `docker stats`.
 
 ## Tech Stack
 
@@ -66,7 +61,7 @@ Both the **Server** (Express) and **ML** (FastAPI) services expose `/metrics` en
 - **Database**: PostgreSQL 16
 - **Vector DB**: Qdrant
 - **Infrastructure**: Docker Compose, Terraform, Ansible
-- **Monitoring**: Prometheus, Grafana, Alertmanager, Node Exporter, cAdvisor
+- **Monitoring**: Prometheus, Grafana, Alertmanager, Node Exporter
 
 ## Deployment
 

@@ -71,7 +71,6 @@
     mode: '0644'
   loop:
     - node-exporter.json
-    - docker-monitoring.json
     - eduvault-application.json
   notify: restart monitoring
 
