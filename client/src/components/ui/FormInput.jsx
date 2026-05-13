@@ -1,5 +1,5 @@
 const baseStyles =
-  "w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-50 dark:placeholder:text-slate-400 dark:focus:border-indigo-400 dark:focus:ring-indigo-500/40";
+  "w-full rounded-xl border border-gray-600 bg-gray-900 px-4 py-2.5 text-sm text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 placeholder:text-gray-500";
 
 const FormInput = ({
   label,
@@ -10,11 +10,11 @@ const FormInput = ({
   options = [],
   ...props
 }) => {
-  const inputClass = `${baseStyles} ${error ? "border-rose-400 focus:ring-rose-200" : ""} ${className}`;
+  const inputClass = `${baseStyles} ${error ? "border-red-400 focus:ring-red-500/40" : ""} ${className}`;
 
   return (
     <label className="block space-y-2">
-      {label && <span className="text-sm font-medium text-slate-800 dark:text-slate-100">{label}</span>}
+      {label && <span className="text-sm font-medium text-gray-300">{label}</span>}
       {as === "textarea" ? (
         <textarea name={name} className={inputClass} {...props} />
       ) : as === "select" ? (
@@ -28,7 +28,7 @@ const FormInput = ({
       ) : (
         <input name={name} className={inputClass} {...props} />
       )}
-      {error && <span className="text-xs font-medium text-rose-600 dark:text-rose-300">{error}</span>}
+      {error && <span className="text-xs font-medium text-red-400">{error}</span>}
     </label>
   );
 };
