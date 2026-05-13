@@ -62,7 +62,7 @@ const LandingPage = () => {
       </section>
 
       <section id="about" className="about-section">
-        <h2 className="about-title"><span>What this site is about:</span></h2>
+
 
         <div className="feature-grid">
           <div className="feature-card">

@@ -208,19 +208,6 @@
   margin-right: 1rem;
 }
 
-.about-title {
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 4rem;
-  text-align: center;
-  color: #f8fafc;
-  letter-spacing: -1px;
-}
-
-.about-title span {
-  color: #818cf8;
-}
-
 .feature-grid {
   display: grid;
   grid-template-columns: 1fr;
