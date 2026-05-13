@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { adminApi, adminService } from '../services/adminApi';
 
+
 const UserDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -58,8 +59,8 @@ const UserDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center pt-12 bg-gray-900 min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-600 border-t-blue-500" role="status">
+      <div className="flex justify-center pt-12 theme-bg">
+        <div className="theme-spinner" role="status">
           <span className="sr-only">Loading...</span>
         </div>
       </div>
@@ -68,19 +69,24 @@ const UserDetailPage = () => {
 
   if (error || !user) {
     return (
-      <div className="w-full px-4 pt-4 bg-gray-900 min-h-screen">
-        <div className="px-4 py-3 rounded-lg bg-red-900/50 text-red-300 border border-red-800 mb-4" role="alert">
-          {error || 'User not found'}
+      <div className="theme-bg">
+        <div className="theme-content px-4 pt-4">
+          <div className="px-4 py-3 rounded-lg bg-red-900/50 text-red-300 border border-red-800 mb-4" role="alert">
+            {error || 'User not found'}
+          </div>
+          <button type="button" className="theme-btn theme-btn-cyan" onClick={() => navigate('/admin/users')}>
+            Back to Users
+          </button>
         </div>
-        <button type="button" className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-all duration-300" onClick={() => navigate('/admin/users')}>
-          Back to Users
-        </button>
       </div>
     );
   }
 
   return (
-    <div className="w-full px-4 py-4 bg-gray-900 text-gray-100 min-h-screen">
+    <div className="theme-bg">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content px-4 py-4">
       <button
         type="button"
         className="text-blue-400 hover:text-blue-300 no-underline mb-3 p-0 inline-flex items-center transition-colors"
@@ -89,8 +95,8 @@ const UserDetailPage = () => {
         &larr; Back to Users
       </button>
 
-      <div className="rounded-lg bg-gray-800 text-gray-100 shadow-lg mb-4">
-        <div className="px-4 py-3 bg-gray-900/50 border-b border-gray-700 rounded-t-lg">
+      <div className="theme-card mb-4">
+        <div className="theme-card-header px-4 py-3">
           <h4 className="mb-0 text-gray-100 font-semibold text-lg">User Profile</h4>
         </div>
         <div className="p-4 text-gray-100">
@@ -184,8 +190,8 @@ const UserDetailPage = () => {
       </div>
 
       {user.heading && (
-        <div className="rounded-lg bg-gray-800 text-gray-100 shadow-lg">
-          <div className="px-4 py-3 bg-gray-900/50 border-b border-gray-700 rounded-t-lg">
+        <div className="theme-card">
+          <div className="theme-card-header px-4 py-3">
             <h4 className="mb-0 text-gray-100 font-semibold text-lg">Resume Summary</h4>
           </div>
           <div className="p-4 text-gray-100">
@@ -206,6 +212,7 @@ const UserDetailPage = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
