@@ -67,8 +67,8 @@ const matchJob = async (jobId, topN = 10) => {
       userId,
       user: {
         id: userId,
-        name: user ? user.name : heading ? heading.name : "N/A",
-        email: user ? user.email : heading ? heading.email : "N/A",
+        name: heading ? heading.name : user ? user.name : "N/A",
+        email: heading ? heading.email : user ? user.email : "N/A",
         role: heading ? heading.role : user ? user.role : "N/A",
       },
     };
