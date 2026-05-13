@@ -145,19 +145,26 @@
   font-weight: 700;
   margin: 0;
   animation: fadeInDown 1s;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #1a1a2e;
   display: inline-block;
+}
+
+[data-theme='dark'] .portfolio-header h1,
+[data-theme='cyan'] .portfolio-header h1 {
+  color: #f0fdfa;
 }
 
 .portfolio-header p {
   font-size: 1.5rem;
-  color: var(--secondary-color);
+  color: #334155;
   font-weight: 300;
   margin-top: 0.5rem;
   animation: fadeInUp 1s;
+}
+
+[data-theme='dark'] .portfolio-header p,
+[data-theme='cyan'] .portfolio-header p {
+  color: #cbd5e1;
 }
 
 .portfolio-header .contact-info {
@@ -167,16 +174,31 @@
   justify-content: center;
   gap: 1.5rem;
   animation: fadeInUp 1s 0.5s;
+  color: #475569;
+}
+
+[data-theme='dark'] .portfolio-header .contact-info,
+[data-theme='cyan'] .portfolio-header .contact-info {
+  color: #94a3b8;
 }
 
 .portfolio-header a {
-  color: var(--secondary-color);
+  color: #0f766e;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s;
 }
 .portfolio-header a:hover {
-  color: var(--text-color);
+  color: #1e293b;
+}
+
+[data-theme='dark'] .portfolio-header a,
+[data-theme='cyan'] .portfolio-header a {
+  color: #2dd4bf;
+}
+[data-theme='dark'] .portfolio-header a:hover,
+[data-theme='cyan'] .portfolio-header a:hover {
+  color: #f0fdfa;
 }
 
 .portfolio-section {
@@ -221,11 +243,13 @@
   margin-bottom: 2.5rem;
   display: inline-block;
   padding-bottom: 0.5rem;
-  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #1e293b;
   border-bottom: 3px solid var(--secondary-color);
+}
+
+[data-theme='dark'] .portfolio-section h2,
+[data-theme='cyan'] .portfolio-section h2 {
+  color: #f0fdfa;
 }
 
 .experience-list, .education-list {
@@ -270,8 +294,15 @@
 }
 
 .experience-item h3, .education-item h3 {
-  color: var(--primary-color);
+  color: #0f766e;
   margin-top: 0;
+}
+
+[data-theme='dark'] .experience-item h3,
+[data-theme='dark'] .education-item h3,
+[data-theme='cyan'] .experience-item h3,
+[data-theme='cyan'] .education-item h3 {
+  color: var(--primary-color);
 }
 
 .experience-item h4, .education-item h4 {
@@ -323,8 +354,13 @@
 }
 
 .project-card h3 {
-  color: var(--primary-color);
+  color: #0f766e;
   margin-top: 0;
+}
+
+[data-theme='dark'] .project-card h3,
+[data-theme='cyan'] .project-card h3 {
+  color: var(--primary-color);
 }
 
 .skills-list {

@@ -25,7 +25,7 @@ import {
 import CVTemplate from "../../../Resume/CVTemplate";
 
 const LayoutK = () => {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const [, setHeading] = useState(null);
   const [, setProjects] = useState([]);
   const [, setSkills] = useState([]);
@@ -81,9 +81,9 @@ const LayoutK = () => {
 
       {/* Theme Switcher */}
       <div className="theme-switcher">
-        <button onClick={() => setTheme("dark")}>🌙</button>
         <button onClick={() => setTheme("light")}>☀️</button>
         <button onClick={() => setTheme("cyan")}>💧</button>
+        <button onClick={() => setTheme("dark")}>🌙</button>
       </div>
 
       {/* ------------ PRINTABLE AREA ------------ */}
