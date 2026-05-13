@@ -34,7 +34,7 @@
   border-radius: 50%;
   filter: blur(120px);
   opacity: 0.5;
-  animation: floatOrb 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+  animation: float-orb 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glow-orb-1 {
@@ -63,7 +63,7 @@
   animation-delay: -10s;
 }
 
-@keyframes floatOrb {
+@keyframes float-orb {
   0% { transform: translate(0, 0) scale(1); }
   50% { transform: translate(10%, 10%) scale(1.1); }
   100% { transform: translate(-10%, 15%) scale(0.9); }
