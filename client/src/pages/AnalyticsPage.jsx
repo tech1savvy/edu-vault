@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { adminService } from '../services/adminApi';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Activity, Users, BookOpen, Target, CheckCircle } from 'lucide-react';
+import { Activity, Users, BookOpen, Target, CheckCircle, BarChart3 } from 'lucide-react';
 
 const COLORS = ['#20c997', '#ffc107', '#dc3545'];
 const ROLE_COLORS = ['#0d6efd', '#6610f2', '#6f42c1', '#d63384'];
@@ -128,45 +128,61 @@ const AnalyticsPage = () => {
             <Target className="text-cyan-400" size={24} />
             <h4 className="mb-0 font-bold text-lg">Target Role Distribution</h4>
           </div>
-          <div style={{ height: '350px' }}>
+          <div className="text-center" style={{ height: '350px' }}>
               <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
+                  <PieChart>
+                  <Pie
                       data={stats?.roleDistribution || []}
-                      margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      outerRadius={100}
+                      innerRadius={60}
+                      fill="#8884d8"
+                      dataKey="value"
+                      nameKey="name"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   >
-                      <XAxis dataKey="name" stroke="#fff" tick={{ fill: '#aaa' }} />
-                      <YAxis stroke="#fff" tick={{ fill: '#aaa' }} />
-                      <Tooltip contentStyle={{ backgroundColor: '#222', borderColor: '#444' }} cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }} />
-                      <Bar dataKey="value" radius={[10, 10, 0, 0]}>
-                          {(stats?.roleDistribution || []).map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={ROLE_COLORS[index % ROLE_COLORS.length]} />
-                          ))}
-                      </Bar>
-                  </BarChart>
+                      {(stats?.roleDistribution || []).map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={ROLE_COLORS[index % ROLE_COLORS.length]} />
+                      ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ backgroundColor: '#222', borderColor: '#444' }} itemStyle={{ color: '#fff' }} />
+                  <Legend />
+                  </PieChart>
               </ResponsiveContainer>
           </div>
         </div>
         
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
-        <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg p-3 mb-5">
-          <div className="px-0 pt-2 pb-3 border-b border-gray-700">
-            <h4 className="mb-0 font-bold text-lg">Top Missing Skills Across Batch</h4>
-          </div>
-          <div className="mt-3">
-            {stats?.topSkills && stats.topSkills.length > 0 ? (
-              <div className="flex flex-wrap gap-3">
-                {stats.topSkills.map((skill, index) => (
-                  <span key={index} className="inline-flex items-center gap-1 bg-gray-900 border border-gray-600 px-4 py-3 rounded-full text-base shadow-sm">
-                    {skill.name} <span className="inline-flex items-center justify-center bg-blue-600 text-white text-xs rounded-full ml-1 w-5 h-5">{skill.count}</span>
-                  </span>
-                ))}
-              </div>
-            ) : (
+      <div className="rounded-2xl bg-gray-800 text-gray-100 border-0 shadow-lg p-3 mb-5">
+        <div className="px-0 pt-2 pb-3 border-0 flex items-center gap-2">
+          <BarChart3 className="text-purple-400" size={24} />
+          <h4 className="mb-0 font-bold text-lg">Top Skills Across Batch</h4>
+        </div>
+        <div style={{ height: '400px' }}>
+          {stats?.topSkills && stats.topSkills.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={stats.topSkills.slice(0, 10)}
+                margin={{ top: 10, right: 30, left: 0, bottom: 5 }}
+              >
+                <XAxis dataKey="name" stroke="#fff" tick={{ fill: '#aaa' }} />
+                <YAxis type="number" stroke="#aaa" tick={{ fill: '#aaa' }} />
+                <Tooltip
+                  contentStyle={{ backgroundColor: '#222', borderColor: '#444' }}
+                  itemStyle={{ color: '#fff' }}
+                  formatter={(value) => [`${value} students`, 'Count']}
+                />
+                <Bar dataKey="count" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex items-center justify-center h-full">
               <p className="text-gray-500 text-lg">No skills data available yet.</p>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
