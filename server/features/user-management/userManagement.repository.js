@@ -23,13 +23,16 @@ const findAll = async (page = 1, limit = 20) => {
 };
 
 const findById = async (id) => {
-  const { Heading } = require('../../models');
+  const { Heading, Education } = require('../../models');
   const user = await User.findByPk(id, {
     attributes: ['id', 'name', 'email', 'role', 'status', 'lastLogin', 'createdAt', 'updatedAt']
   });
   if (!user) return null;
-  const heading = await Heading.findOne({ where: { userId: id }, raw: true });
-  return { ...user.toJSON(), heading };
+  const [heading, education] = await Promise.all([
+    Heading.findOne({ where: { userId: id }, raw: true }),
+    Education.findOne({ where: { userId: id }, raw: true })
+  ]);
+  return { ...user.toJSON(), heading, education };
 };
 
 const updateRole = async (id, role) => {
