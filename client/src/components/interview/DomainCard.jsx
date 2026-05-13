@@ -8,30 +8,30 @@ export default function DomainCard({ domain, stats, checked, onSelect }) {
 
   return (
     <div
-      className={`interview-card p-3 h-100 ${
-        checked ? "border border-info shadow-sm interview-accent-border" : "border-secondary border-opacity-25"
+      className={`interview-card p-3 h-full ${
+        checked ? "border border-cyan-400/60 shadow-sm interview-accent-border" : "border-gray-600/25"
       }`}
     >
-      <div className="form-check d-flex gap-3">
+      <div className="flex gap-3">
         <input
           id={`domain-radio-${slugId}`}
           type="radio"
-          className="form-check-input mt-1 flex-shrink-0"
+          className="mt-1 shrink-0 h-4 w-4 accent-cyan-500"
           checked={checked}
           onChange={() => onSelect(domain)}
         />
-        <label className="form-check-label w-100 cursor-pointer" htmlFor={`domain-radio-${slugId}`}>
-          <div className="d-flex justify-content-between flex-wrap gap-2 mb-2">
-            <span className="fw-semibold text-light">{domain}</span>
-            <span className="badge rounded-pill text-bg-dark border border-opacity-25 border-secondary">
+        <label className="w-full cursor-pointer" htmlFor={`domain-radio-${slugId}`}>
+          <div className="flex justify-between flex-wrap gap-2 mb-2">
+            <span className="font-semibold text-gray-100">{domain}</span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-900/50 text-gray-200 border border-gray-600/25">
               {Math.round(Number(confidence) || 0)}% match
             </span>
           </div>
-          <p className="small interview-text-muted mb-2">{description}</p>
+          <p className="text-sm interview-text-muted mb-2">{description}</p>
           {matchedSkills?.length > 0 && (
-            <div className="d-flex flex-wrap gap-1 mb-2">
+            <div className="flex flex-wrap gap-1 mb-2">
               {matchedSkills.slice(0, 8).map((s) => (
-                <span key={s} className="badge text-bg-secondary text-wrap fw-normal opacity-85">
+                <span key={s} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-normal bg-gray-600/20 text-gray-300 opacity-85">
                   {s}
                 </span>
               ))}
