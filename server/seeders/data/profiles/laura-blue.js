@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'University of Florida', degree: 'Bachelor of Science',
     fieldOfStudy: 'Computer Science', duration: '2013-2017',
-    details: 'Specialized in database systems.',
+    details: 'Specialized in database systems.', cgpa: 8.9,
   },
   project: {
     title: 'Database Optimization', description: 'Optimized database performance for a high-traffic application.',

@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'Rhode Island School of Design', degree: 'Bachelor of Fine Arts',
     fieldOfStudy: 'Graphic Design', duration: '2015-2019',
-    details: 'Specialized in user-centered design.',
+    details: 'Specialized in user-centered design.', cgpa: 8.1,
   },
   project: {
     title: 'E-commerce App Redesign', description: 'Redesigned the user interface of a popular e-commerce app.',

@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'Stanford University', degree: 'PhD',
     fieldOfStudy: 'Statistics', duration: '2015-2019',
-    details: 'Focused on predictive modeling.',
+    details: 'Focused on predictive modeling.', cgpa: 9.2,
   },
   project: {
     title: 'Sentiment Analysis Tool', description: 'A tool to analyze sentiment from social media data.',

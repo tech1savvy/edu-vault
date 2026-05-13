@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'University of Illinois Urbana-Champaign', degree: 'Bachelor of Science',
     fieldOfStudy: 'Computer Engineering', duration: '2015-2019',
-    details: 'Focused on cloud computing.',
+    details: 'Focused on cloud computing.', cgpa: 6.9,
   },
   project: {
     title: 'Cloud Migration', description: 'Migrated on-premise infrastructure to the cloud.',

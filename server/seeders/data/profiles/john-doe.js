@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'University of XYZ', degree: 'Master of Science',
     fieldOfStudy: 'Computer Science', duration: '2018-2020',
-    details: 'Specialized in AI and Machine Learning.',
+    details: 'Specialized in AI and Machine Learning.', cgpa: 8.4,
   },
   project: {
     title: 'EduVault', description: 'A platform for managing educational records.',

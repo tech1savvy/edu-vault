@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'Texas A&M University', degree: 'Bachelor of Science',
     fieldOfStudy: 'Information Technology', duration: '2017-2021',
-    details: 'Focused on systems administration.',
+    details: 'Focused on systems administration.', cgpa: 7.8,
   },
   project: {
     title: 'Automated Deployment System', description: 'A system to automate application deployments.',

@@ -12,7 +12,7 @@ module.exports = {
   education: {
     institution: 'Harvard Business School', degree: 'MBA',
     fieldOfStudy: 'Business Administration', duration: '2016-2018',
-    details: 'Focused on product strategy.',
+    details: 'Focused on product strategy.', cgpa: 6.5,
   },
   project: {
     title: 'New Feature Launch', description: 'Launched a new feature for a major software product.',
