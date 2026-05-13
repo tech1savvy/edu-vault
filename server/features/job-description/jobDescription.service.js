@@ -69,7 +69,7 @@ const matchJob = async (jobId, topN = 10) => {
         id: userId,
         name: user ? user.name : heading ? heading.name : "N/A",
         email: user ? user.email : heading ? heading.email : "N/A",
-        role: heading ? heading.role : "N/A",
+        role: heading ? heading.role : user ? user.role : "N/A",
       },
     };
   });
