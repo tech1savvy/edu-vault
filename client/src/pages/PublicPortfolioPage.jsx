@@ -4,11 +4,12 @@ import { getPublicResume } from "../services/api";
 import { EphemeralResumeProvider } from "../context/EphemeralResumeProvider";
 import LayoutK from "../components/Portfolio/Layouts/LayoutK/LayoutK";
 import LayoutT from "../components/Portfolio/Layouts/LayoutT/LayoutT";
+import LayoutS from "../components/Portfolio/Layouts/LayoutS/LayoutS";
 
 const PublicPortfolioPage = () => {
   const { userId } = useParams();
   const [searchParams] = useSearchParams();
-  const layout = searchParams.get("layout") === "t" ? "t" : "k";
+  const layout = searchParams.get("layout") || "k";
 
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
@@ -70,7 +71,7 @@ const PublicPortfolioPage = () => {
       {!loading && !error && data && (
         <EphemeralResumeProvider data={data}>
           <div className="mx-auto max-w-6xl">
-            {layout === "t" ? <LayoutT /> : <LayoutK />}
+            {layout === "t" ? <LayoutT /> : layout === "s" ? <LayoutS /> : <LayoutK />}
           </div>
         </EphemeralResumeProvider>
       )}
