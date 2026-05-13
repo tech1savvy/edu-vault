@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { adminService } from '../services/adminApi';
 
 const JobDescriptionFormPage = () => {
-  const { id } = useParams(); // Get ID from URL for editing
+  const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
@@ -45,7 +45,6 @@ const JobDescriptionFormPage = () => {
     e.preventDefault();
     setError(null);
 
-    // Basic validation
     if (!formData.title || !formData.description || !formData.requirements) {
       setError('All fields are required.');
       return;
@@ -60,7 +59,7 @@ const JobDescriptionFormPage = () => {
         await adminService.createJobDescription(formData);
         alert('Job Description created successfully!');
       }
-      navigate('/admin/dashboard'); // Redirect to dashboard after success
+      navigate('/admin/dashboard');
     } catch (err) {
       setError('Failed to save job description.');
       console.error('Error saving job description:', err);
@@ -69,18 +68,18 @@ const JobDescriptionFormPage = () => {
     }
   };
 
-  if (loading && isEditing) return <div className="text-center mt-8">Loading job description...</div>;
-  if (error) return <div className="text-center mt-8 text-danger">{error}</div>;
+  if (loading && isEditing) return <div className="text-center mt-8 text-gray-100">Loading job description...</div>;
+  if (error) return <div className="text-center mt-8 text-red-400">{error}</div>;
 
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">{isEditing ? 'Edit Job Description' : 'Create New Job Description'}</h1>
+    <div className="max-w-3xl mx-auto mt-4 px-4">
+      <h1 className="mb-4 text-2xl font-bold text-gray-100">{isEditing ? 'Edit Job Description' : 'Create New Job Description'}</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="title" className="form-label">Title</label>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">Title</label>
           <input
             type="text"
-            className="form-control"
+            className="w-full bg-gray-900 text-gray-100 border border-gray-600 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
             id="title"
             name="title"
             value={formData.title}
@@ -89,9 +88,9 @@ const JobDescriptionFormPage = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="description" className="form-label">Description</label>
+          <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">Description</label>
           <textarea
-            className="form-control"
+            className="w-full bg-gray-900 text-gray-100 border border-gray-600 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
             id="description"
             name="description"
             rows="5"
@@ -101,9 +100,9 @@ const JobDescriptionFormPage = () => {
           ></textarea>
         </div>
         <div className="mb-3">
-          <label htmlFor="requirements" className="form-label">Requirements</label>
+          <label htmlFor="requirements" className="block text-sm font-medium text-gray-300 mb-1">Requirements</label>
           <textarea
-            className="form-control"
+            className="w-full bg-gray-900 text-gray-100 border border-gray-600 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
             id="requirements"
             name="requirements"
             rows="5"
@@ -112,10 +111,10 @@ const JobDescriptionFormPage = () => {
             required
           ></textarea>
         </div>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
+        <button type="submit" className="theme-btn theme-btn-primary" disabled={loading}>
           {loading ? 'Saving...' : (isEditing ? 'Update Job Description' : 'Create Job Description')}
         </button>
-        <button type="button" className="btn btn-secondary ms-2" onClick={() => navigate('/admin/dashboard')}>
+        <button type="button" className="theme-btn border border-gray-500 text-gray-300 ml-2" onClick={() => navigate('/admin/dashboard')}>
           Cancel
         </button>
       </form>
