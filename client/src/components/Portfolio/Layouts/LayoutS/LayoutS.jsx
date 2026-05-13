@@ -11,8 +11,6 @@
 // import Certifications from "./Certifications";
 // import Contact from "./Contact";
 
-// // PDF Button Component
-// import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
 
 // export default function LayoutS() {
 //   // read the shape your ResumeContext provides
@@ -103,10 +101,6 @@
 //       </div>
 //       {/* -------------------- PRINTABLE AREA ENDS HERE -------------------- */}
 
-//       {/* -------------------- PDF DOWNLOAD BUTTON -------------------- */}
-//       <div style={{ textAlign: "center", margin: "40px 0" }}>
-//         <DownloadPdfButton filename="My-Resume.pdf" />
-//       </div>
 
 //     </div>
 //   );
@@ -135,9 +129,6 @@ import Achievements from "./Achievements";
 import Certifications from "./Certifications";
 import Contact from "./Contact";
 
-// PDF Button Component (keep)
-import DownloadPdfButton from "../../../Resume/DownloadPdfButton";
-import SyncProfileButton from "../../../Resume/SyncProfileButton";
 import CVTemplate from "../../../Resume/CVTemplate";
 
 // API helpers (same as LayoutT)
@@ -326,12 +317,6 @@ export default function LayoutS() {
           certifications
         }} 
       />
-
-      {/* -------------------- PDF DOWNLOAD BUTTON -------------------- */}
-      <div style={{ textAlign: "center", margin: "40px 0", display: "flex", justifyContent: "center", gap: "15px" }}>
-        <SyncProfileButton />
-        <DownloadPdfButton filename={`${heading?.name ? heading.name.replace(/\s+/g, '-') : 'My'}-Resume.pdf`} />
-      </div>
 
     </div>
   );
