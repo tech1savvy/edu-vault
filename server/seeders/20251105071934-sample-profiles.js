@@ -20,7 +20,7 @@ module.exports = {
       const profile = jobProfiles[i];
 
       headings.push({
-        user_id: userId,
+        userId,
         name: profile.name,
         role: profile.role,
         email: profile.email,
@@ -32,14 +32,14 @@ module.exports = {
       });
 
       experiences.push({
-        user_id: userId,
+        userId,
         ...profile.experience,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
       educations.push({
-        user_id: userId,
+        userId,
         ...profile.education,
         createdAt: new Date(),
         updatedAt: new Date()

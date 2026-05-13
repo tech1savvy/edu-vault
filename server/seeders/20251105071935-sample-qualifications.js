@@ -21,7 +21,7 @@ module.exports = {
       const profile = jobProfiles[i];
 
       projects.push({
-        user_id: userId,
+        userId,
         ...profile.project,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -29,7 +29,7 @@ module.exports = {
 
       for (const skill of profile.skills) {
         skills.push({
-          user_id: userId,
+          userId,
           name: skill.name,
           level: skill.level,
           createdAt: new Date(),
@@ -38,14 +38,14 @@ module.exports = {
       }
 
       achievements.push({
-        user_id: userId,
+        userId,
         ...profile.achievement,
         createdAt: new Date(),
         updatedAt: new Date()
       });
 
       certifications.push({
-        user_id: userId,
+        userId,
         ...profile.certification,
         createdAt: new Date(),
         updatedAt: new Date()
