@@ -2,10 +2,10 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-const navLink = "block px-3 py-2 text-sm font-medium text-slate-200 hover:text-white transition";
-const mobileNavLink = "block px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white rounded-lg transition";
-const dropdownBtn = "flex items-center gap-1 px-3 py-2 text-sm font-medium text-slate-200 hover:text-white transition";
-const dropdownItem = "block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white transition";
+const navLink = "block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition";
+const mobileNavLink = "block px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition";
+const dropdownBtn = "flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition";
+const dropdownItem = "block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition";
 
 function Navbar() {
   const { logout } = useContext(AuthContext);
@@ -42,7 +42,7 @@ function Navbar() {
         </svg>
       </button>
       {openDropdown === name && (
-        <div className="absolute left-0 mt-1 w-48 rounded-xl border border-slate-200 bg-white py-2 shadow-lg dark:border-slate-700 dark:bg-slate-800 z-50">
+        <div className="absolute left-0 mt-1 w-48 rounded-xl border border-gray-700 bg-gray-900 py-2 shadow-lg z-50">
           {items.map((item) => (
             <Link key={item.to} to={item.to} onClick={closeMenu} className={dropdownItem}>
               {item.label}
@@ -55,7 +55,7 @@ function Navbar() {
 
   const MobileDropdown = ({ name, label, items }) => (
     <div>
-      <button onClick={() => toggleDropdown(name)} className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white rounded-lg transition">
+      <button onClick={() => toggleDropdown(name)} className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
         {label}
         <svg className={`w-4 h-4 transition ${openDropdown === name ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -64,7 +64,7 @@ function Navbar() {
       {openDropdown === name && (
         <div className="ml-4 mt-1 space-y-1">
           {items.map((item) => (
-            <Link key={item.to} to={item.to} onClick={closeMenu} className="block rounded-lg px-3 py-2 text-sm text-slate-400 hover:bg-slate-700 hover:text-white transition">
+            <Link key={item.to} to={item.to} onClick={closeMenu} className="block rounded-lg px-3 py-2 text-sm text-gray-500 hover:bg-gray-800 hover:text-white transition">
               {item.label}
             </Link>
           ))}
@@ -74,15 +74,13 @@ function Navbar() {
   );
 
   return (
-    <nav className="bg-slate-900 border-b border-slate-700">
+    <nav className="bg-gray-900/80 backdrop-blur-md border-b border-gray-700/50 sticky top-0 z-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-14 items-center justify-between">
-          {/* Brand */}
-          <Link to="/" className="text-lg font-bold text-white shrink-0" onClick={closeMenu}>
+          <Link to="/" className="theme-gradient-text text-lg font-bold shrink-0" onClick={closeMenu}>
             EduVault
           </Link>
 
-          {/* Desktop nav */}
           <div className="hidden lg:flex lg:items-center lg:gap-1">
             {isStudent && (
               <>
@@ -107,7 +105,7 @@ function Navbar() {
             )}
 
             {user && (
-              <Link to="/interview/domain" className={`${navLink} text-indigo-400 hover:text-indigo-300`}>
+              <Link to="/interview/domain" className={`${navLink} text-cyan-400 hover:text-cyan-300`}>
                 Mock Interview
               </Link>
             )}
@@ -118,7 +116,6 @@ function Navbar() {
             )}
           </div>
 
-          {/* Desktop right */}
           <div className="hidden lg:flex lg:items-center lg:gap-1">
             {isAdmin && (
               <Dropdown name="admin" label={<span className="text-emerald-400">Admin</span>} items={[
@@ -128,21 +125,20 @@ function Navbar() {
               ]} />
             )}
             {user ? (
-              <button onClick={handleLogout} className="px-3 py-2 text-sm font-medium text-slate-200 hover:text-white transition">
+              <button onClick={handleLogout} className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition">
                 Logout
               </button>
             ) : (
               <>
                 <Link to="/login" className={navLink}>Login</Link>
-                <Link to="/signup" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition">
+                <Link to="/signup" className="rounded-lg theme-btn-primary px-4 py-2 text-sm font-medium text-white">
                   Sign Up
                 </Link>
               </>
             )}
           </div>
 
-          {/* Mobile hamburger */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden p-2 text-slate-300 hover:text-white">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden p-2 text-gray-400 hover:text-white">
             {menuOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -156,9 +152,8 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <div className="lg:hidden border-t border-slate-700 px-4 pb-4 pt-2 space-y-1">
+        <div className="lg:hidden border-t border-gray-700/50 px-4 pb-4 pt-2 space-y-1 bg-gray-900/95 backdrop-blur-md">
 
           {isStudent && (
             <>
@@ -183,7 +178,7 @@ function Navbar() {
           )}
 
           {user && (
-            <Link to="/interview/domain" onClick={closeMenu} className={`${mobileNavLink} text-indigo-400`}>
+            <Link to="/interview/domain" onClick={closeMenu} className={`${mobileNavLink} text-cyan-400`}>
               Mock Interview
             </Link>
           )}
@@ -194,7 +189,7 @@ function Navbar() {
             </Link>
           )}
 
-          <hr className="border-slate-700" />
+          <hr className="border-gray-700/50" />
 
           {isAdmin && (
             <MobileDropdown name="m-admin" label={<span className="text-emerald-400">Admin</span>} items={[
@@ -205,13 +200,13 @@ function Navbar() {
           )}
 
           {user ? (
-            <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white rounded-lg transition">
+            <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
               Logout
             </button>
           ) : (
             <>
               <Link to="/login" onClick={closeMenu} className={mobileNavLink}>Login</Link>
-              <Link to="/signup" onClick={closeMenu} className="block rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white text-center hover:bg-indigo-500 transition">
+              <Link to="/signup" onClick={closeMenu} className="block rounded-lg theme-btn-primary px-3 py-2 text-sm font-medium text-white text-center">
                 Sign Up
               </Link>
             </>

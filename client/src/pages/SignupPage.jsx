@@ -24,78 +24,84 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h2 className="card-title text-center">Sign Up</h2>
-              {error && <div className="alert alert-danger">{error}</div>}
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="role" className="form-label">Role</label>
-                  <select 
-                    className="form-select" 
-                    id="role" 
-                    value={role} 
-                    onChange={(e) => setRole(e.target.value)}
-                  >
-                    <option value="student">Student</option>
-                    <option value="mentor">Mentor</option>
-                    <option value="administrator">Administrator</option>
-                  </select>
-                </div>
-                <button type="submit" className="btn btn-primary w-100">Sign Up</button>
-              </form>
-              <p className="text-center mt-3">
-                Already have an account? <Link to="/login">Login</Link>
-              </p>
+    <div className="theme-bg flex items-center justify-center">
+      <div className="theme-blob theme-blob-tr" />
+      <div className="theme-blob theme-blob-bl" />
+      <div className="theme-content w-full max-w-md mx-auto px-4 py-12">
+        <div className="theme-card p-6">
+          <h2 className="text-2xl font-bold text-center mb-6 theme-gradient-text inline-block w-full">Sign Up</h2>
+          {error && (
+            <div className="px-4 py-3 rounded-lg mb-4 bg-red-500/20 text-red-400 border border-red-500/30 text-sm">
+              {error}
             </div>
-          </div>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">Name</label>
+              <input
+                type="text"
+                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                id="name"
+                placeholder="Your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">Email address</label>
+              <input
+                type="email"
+                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                id="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-400 mb-1">Password</label>
+              <input
+                type="password"
+                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                id="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-400 mb-1">Confirm Password</label>
+              <input
+                type="password"
+                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500 placeholder-gray-500"
+                id="confirmPassword"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-400 mb-1">Role</label>
+              <select 
+                className="w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm shadow-sm focus:outline-none focus:border-blue-500"
+                id="role" 
+                value={role} 
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="student">Student</option>
+                <option value="mentor">Mentor</option>
+                <option value="administrator">Administrator</option>
+              </select>
+            </div>
+            <button type="submit" className="theme-btn theme-btn-primary w-full justify-center py-2.5">Sign Up</button>
+          </form>
+          <p className="text-center mt-4 text-sm text-gray-400">
+            Already have an account? <Link to="/login" className="text-cyan-400 hover:text-cyan-300">Login</Link>
+          </p>
         </div>
       </div>
     </div>
