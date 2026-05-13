@@ -99,11 +99,6 @@ const LandingPage = () => {
               Whether you are a Student building a career, a Mentor guiding talent, 
               or an Admin managing job postings—EduVault adapts to your needs securely.
             </p>
-            <div className="role-links">
-              <Link to="/signup?role=user" className="role-btn">Join as Student</Link>
-              <Link to="/signup?role=mentor" className="role-btn">Join as Mentor</Link>
-              <Link to="/signup?role=administrator" className="role-btn">Join as Admin</Link>
-            </div>
           </div>
         </div>
       </section>
