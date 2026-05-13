@@ -121,6 +121,76 @@ const getAverageResumeCompletion = async () => {
   return Math.round(totalCompletion / users.length);
 };
 
+const getReadinessDistribution = async () => {
+  const { Heading, Experience, Education, Project, Skill, Certification, Achievement } = require('../../models');
+
+  const students = await User.findAll({
+    where: { role: 'student' },
+    attributes: ['id']
+  });
+
+  if (students.length === 0) {
+    return { atRisk: 0, moderate: 0, ready: 0 };
+  }
+
+  const userIds = students.map(s => s.id);
+
+  const [headings, experiences, educations, projects, skills, certifications, achievements] = await Promise.all([
+    Heading.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
+    Experience.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
+    Education.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
+    Project.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
+    Skill.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
+    Certification.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true }),
+    Achievement.findAll({ where: { userId: userIds }, attributes: ['userId'], raw: true })
+  ]);
+
+  const headingSet = new Set(headings.map(h => h.userId));
+  const expSet = new Set(experiences.map(e => e.userId));
+  const eduSet = new Set(educations.map(e => e.userId));
+  const projSet = new Set(projects.map(p => p.userId));
+  const skillSet = new Set(skills.map(s => s.userId));
+  const certSet = new Set(certifications.map(c => c.userId));
+  const achSet = new Set(achievements.map(a => a.userId));
+
+  let atRisk = 0, moderate = 0, ready = 0;
+
+  for (const userId of userIds) {
+    const completed = [
+      headingSet.has(userId),
+      expSet.has(userId),
+      eduSet.has(userId),
+      projSet.has(userId),
+      skillSet.has(userId),
+      certSet.has(userId),
+      achSet.has(userId)
+    ].filter(Boolean).length;
+
+    const pct = Math.round((completed / 7) * 100);
+
+    if (pct < 40) atRisk++;
+    else if (pct < 70) moderate++;
+    else ready++;
+  }
+
+  return { atRisk, moderate, ready };
+};
+
+const getRoleDistribution = async () => {
+  const jobs = await JobDescription.findAll({
+    attributes: ['title'],
+    raw: true
+  });
+
+  const roleCount = {};
+  for (const job of jobs) {
+    const role = job.title.split(' at ')[0].trim();
+    roleCount[role] = (roleCount[role] || 0) + 1;
+  }
+
+  return Object.entries(roleCount).map(([name, value]) => ({ name, value }));
+};
+
 module.exports = {
   countUsers,
   countStudents,
@@ -134,5 +204,7 @@ module.exports = {
   getMatchHistoryByUser,
   createMatchHistory,
   getUserResumeCompletion,
-  getAverageResumeCompletion
+  getAverageResumeCompletion,
+  getReadinessDistribution,
+  getRoleDistribution
 };
