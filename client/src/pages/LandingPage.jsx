@@ -1,32 +1,107 @@
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { Sparkles, FileText, Cpu, Shield } from 'lucide-react';
+import './LandingPage.css';
 
 const LandingPage = () => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const cards = document.querySelectorAll('.feature-card');
+      for (const card of cards) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      }
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('mousemove', handleMouseMove);
+      }
+    };
+  }, []);
+
   return (
-    <div className="theme-bg">
-      <div className="theme-blob theme-blob-tr" />
-      <div className="theme-blob theme-blob-bl" />
-      <div className="theme-content mx-auto w-full max-w-7xl space-y-12 px-4 py-10 sm:px-6 lg:px-8">
-        <section className="rounded-3xl theme-card p-8 sm:p-12 overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-64 h-64 rounded-full filter blur-3xl opacity-20 pointer-events-none"
-            style={{ background: 'radial-gradient(circle, #3b82f6, transparent)' }} />
-          <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full filter blur-3xl opacity-20 pointer-events-none"
-            style={{ background: 'radial-gradient(circle, #06b6d4, transparent)' }} />
-          <div className="relative z-10">
-            <h1 className="text-3xl font-bold sm:text-5xl theme-gradient-text">Build Your Career Story with EduVault</h1>
-            <p className="mt-4 max-w-2xl text-gray-400">
-              Create polished resumes, portfolio pages, and professional profiles in one modern workspace.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/signup" className="theme-btn theme-btn-primary px-5 py-2.5">
-                Get Started
-              </Link>
-              <Link to="/login" className="theme-btn border border-gray-600 text-gray-300 hover:border-gray-500 hover:text-white px-5 py-2.5">
-                Login
-              </Link>
-            </div>
-          </div>
-        </section>
+    <div className="landing-page" ref={containerRef}>
+      <div className="ambient-background">
+        <div className="glow-orb-1"></div>
+        <div className="glow-orb-2"></div>
+        <div className="glow-orb-3"></div>
       </div>
+      <div className="grid-overlay"></div>
+
+      <section className="hero-section">
+        <div className="hero-content">
+          <div className="hero-badge">
+            <span className="hero-badge-icon"><Sparkles size={16} /></span>
+            The New Standard for Career Growth
+          </div>
+          <h1 className="hero-title">Unlock Your Potential<br/>with EduVault</h1>
+          <p className="hero-subtitle">
+            The intelligent platform for building stunning resumes, tracking applications, 
+            and effortlessly matching with your dream opportunities using advanced AI.
+          </p>
+          <div className="hero-buttons">
+            <Link to="/signup?role=user" className="btn-premium btn-primary-gradient">
+              Start Building Free
+            </Link>
+            <Link to="/login" className="btn-premium btn-outline-glow">
+              Login to Account
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="about-section">
+
+
+        <div className="feature-grid">
+          <div className="feature-card">
+            <div className="feature-icon-wrapper">
+              <div className="feature-icon-glow"></div>
+              <FileText size={36} className="feature-icon" />
+            </div>
+            <h3 className="feature-title">Smart Resume Builder</h3>
+            <p className="feature-description">
+              Craft professional, ATS-friendly resumes with our intuitive builder. 
+              Tailor your skills and experience seamlessly to stand out from the crowd.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon-wrapper">
+              <div className="feature-icon-glow"></div>
+              <Cpu size={36} className="feature-icon" />
+            </div>
+            <h3 className="feature-title">AI Job Matching</h3>
+            <p className="feature-description">
+              Leverage advanced machine learning to instantly match your profile against 
+              the latest job descriptions. Get actionable insights on missing skills.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon-wrapper">
+              <div className="feature-icon-glow"></div>
+              <Shield size={36} className="feature-icon" />
+            </div>
+            <h3 className="feature-title">Role-Based Access</h3>
+            <p className="feature-description">
+              Whether you are a Student building a career, a Mentor guiding talent, 
+              or an Admin managing job postings—EduVault adapts to your needs securely.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
