@@ -123,9 +123,9 @@ export default function MentorDashboard() {
         <Sparkles className="text-blue-500" size={28}/> Mentor Analytics Interface
       </h2>
 
-      <div className="flex flex-wrap gap-4" style={{ minHeight: 'calc(100vh - 12rem)' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4" style={{ minHeight: 'calc(100vh - 12rem)' }}>
         {/* Left Panel: Student List */}
-        <div className="w-full lg:w-1/4">
+        <div className="lg:col-span-1">
           <div className="theme-card flex flex-col h-full">
             <div className="theme-card-header px-4 py-3 flex items-center gap-2">
               <Search className="text-cyan-400" size={20}/>
@@ -157,7 +157,7 @@ export default function MentorDashboard() {
         </div>
 
         {/* Dynamic Content Panel */}
-        <div className="w-full lg:w-3/4">
+        <div className="lg:col-span-3">
           {!selectedStudent ? (
             <div className="theme-card p-6">
                 <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-700/50">
