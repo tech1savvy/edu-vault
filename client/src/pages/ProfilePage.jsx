@@ -72,12 +72,12 @@ const ProfilePage = () => {
       <form onSubmit={handleSubmit} className="grid gap-5 md:grid-cols-[220px_1fr]">
         <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-slate-300 p-4 dark:border-slate-600">
           <div
-            className="flex h-40 w-40 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-4xl font-bold text-white shadow-md"
+            className="flex h-40 w-40 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 text-4xl font-bold text-white shadow-md"
             aria-hidden
           >
             {initial}
           </div>
-          <p className="text-center text-xs text-slate-600 dark:text-slate-300">
+          <p className="text-center text-xs text-gray-400">
             Avatar image is not stored yet; we show your initial from your name.
           </p>
         </div>
@@ -133,7 +133,7 @@ const ProfilePage = () => {
           <button
             type="submit"
             disabled={saving}
-            className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-60"
+            className="theme-btn theme-btn-primary"
           >
             {saving ? "Saving…" : "Save profile"}
           </button>
