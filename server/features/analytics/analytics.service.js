@@ -9,7 +9,9 @@ const getDashboardStats = async () => {
     totalJobs,
     totalMatches,
     avgMatchScore,
-    avgCompletion
+    avgCompletion,
+    readinessDistribution,
+    roleDistribution
   ] = await Promise.all([
     repository.countUsers(),
     repository.countStudents(),
@@ -18,7 +20,9 @@ const getDashboardStats = async () => {
     repository.countJobs(),
     repository.countMatchHistory(),
     repository.getAverageMatchScore(),
-    repository.getAverageResumeCompletion()
+    repository.getAverageResumeCompletion(),
+    repository.getReadinessDistribution(),
+    repository.getRoleDistribution()
   ]);
 
   return {
@@ -30,17 +34,8 @@ const getDashboardStats = async () => {
     totalMatches,
     avgMatchScore: avgMatchScore.toFixed(2),
     avgResumeCompletion: avgCompletion,
-    // Add mock ML distributions for Admin Institutional view
-    readinessDistribution: { 
-        atRisk: Math.floor(totalStudents * 0.15) || 3, 
-        moderate: Math.floor(totalStudents * 0.45) || 12, 
-        ready: Math.floor(totalStudents * 0.40) || 8 
-    },
-    roleDistribution: [
-        { name: 'Software Engineer', value: Math.floor(totalJobs * 0.60) || 15 },
-        { name: 'Data Analyst', value: Math.floor(totalJobs * 0.25) || 8 },
-        { name: 'Product Manager', value: Math.floor(totalJobs * 0.15) || 4 }
-    ]
+    readinessDistribution,
+    roleDistribution
   };
 };
 
