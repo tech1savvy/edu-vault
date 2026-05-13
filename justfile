@@ -30,9 +30,6 @@ restart service="server":
 
 rebuild:
     docker compose up -d --build
-
-# just full-rebuild → rebuild, migrate, re-seed, clear qdrant, re-sync
-full-rebuild: rebuild
     just db migrate
     just db unseed
     just db seed
