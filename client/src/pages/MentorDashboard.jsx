@@ -188,18 +188,14 @@ export default function MentorDashboard() {
                              <AlertCircle className="text-red-500" size={20}/> At-Risk Mentees
                          </h5>
                          <ul className="list-none m-0 p-0 space-y-3">
-                            <li className="flex justify-between items-center pb-2 border-b border-gray-700/50">
-                                <span className="text-gray-400">Student 1</span>
-                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500 text-white">33% Ready</span>
-                            </li>
-                            <li className="flex justify-between items-center pb-2 border-b border-gray-700/50">
-                                <span className="text-gray-400">Sneha Kulkarni</span>
-                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-500 text-gray-900">Missing Milestones</span>
-                            </li>
-                            <li className="flex justify-between items-center">
-                                <span className="text-gray-400">Alex Johnson</span>
-                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500 text-white">Low Engagement</span>
-                            </li>
+                            {students.length === 0 ? (
+                              <li className="text-gray-600 text-sm text-center py-2">No students yet.</li>
+                            ) : students.map((s) => (
+                              <li key={s.id} className="flex justify-between items-center pb-2 border-b border-gray-700/50">
+                                <span className="text-gray-400">{s.name}</span>
+                                <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-500 text-gray-900">Needs Review</span>
+                              </li>
+                            ))}
                          </ul>
                     </div>
                     <div className="theme-card p-4">
