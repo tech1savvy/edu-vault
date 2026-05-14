@@ -156,7 +156,7 @@ export default function AdminDriveDetailPage() {
   const addStageToDrive = async () => {
     if (!drive) return;
     const updatedStages = [
-      ...(drive.stages || []).map((s, i) => ({
+      ...(drive.stages || []).map((s) => ({
         name: s.stageType === 'custom' ? s.name : DRIVE_STAGES.find(ds => ds.value === s.stageType)?.label || s.name,
         stageType: s.stageType, scheduledDate: s.scheduledDate || '', description: s.description || ''
       })),
@@ -431,7 +431,7 @@ export default function AdminDriveDetailPage() {
                 <StudentCard key={app.id} app={app} stageId={null}
                   onDragStart={onDragStart} actionLoading={actionLoading}
                   handleStageAction={handleStageAction} handleMoveToStage={handleMoveToStage}
-                  stages={stages} getStudentName={getStudentName} getStudentEmail={getStudentEmail}
+                  stages={stages} getStudentName={getStudentName}
                   getJobTitle={getJobTitle} />
               ))}
             </div>
@@ -458,7 +458,7 @@ export default function AdminDriveDetailPage() {
                   <StudentCard key={app.id} app={app} stageId={stage.id}
                     onDragStart={onDragStart} actionLoading={actionLoading}
                     handleStageAction={handleStageAction} handleMoveToStage={handleMoveToStage}
-                    stages={stages} getStudentName={getStudentName} getStudentEmail={getStudentEmail}
+                    stages={stages} getStudentName={getStudentName}
                     getJobTitle={getJobTitle} />
                 ))}
               </div>
@@ -471,10 +471,9 @@ export default function AdminDriveDetailPage() {
 }
 
 function getStudentName(app) { return app.user?.name || 'Unknown'; }
-function getStudentEmail(app) { return app.user?.email || ''; }
 function getJobTitle(app) { return app.job?.title || 'Unknown'; }
 
-function StudentCard({ app, stageId, onDragStart, actionLoading, stages, getStudentName, getStudentEmail, getJobTitle, handleMoveToStage, handleStageAction }) {
+function StudentCard({ app, stageId, onDragStart, actionLoading, stages, getStudentName, getJobTitle, handleMoveToStage, handleStageAction }) {
   const latestLog = app.stageLog?.slice().reverse().find(l => l.stageId === stageId);
   const logStatus = latestLog?.status || 'pending';
   const isAssigned = !!stageId;

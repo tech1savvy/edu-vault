@@ -29,7 +29,9 @@ export default function NotificationBell() {
     try {
       const res = await getUnreadNotificationCount();
       setUnreadCount(res.data?.count || 0);
-    } catch { }
+    } catch (err) {
+      console.error('Failed to fetch unread count', err);
+    }
   };
 
   const handleToggle = async () => {
@@ -39,7 +41,9 @@ export default function NotificationBell() {
       try {
         const res = await getNotifications();
         setNotifications(res.data || []);
-      } catch { }
+      } catch (err) {
+        console.error('Failed to fetch notifications', err);
+      }
       setLoading(false);
     }
   };
@@ -49,14 +53,18 @@ export default function NotificationBell() {
       await markNotificationRead(id);
       setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
       setUnreadCount(prev => Math.max(0, prev - 1));
-    } catch { }
+    } catch (err) {
+      console.error('Failed to mark notification as read', err);
+    }
   };
 
   const handleDelete = async (id) => {
     try {
       await deleteNotification(id);
       setNotifications(prev => prev.filter(n => n.id !== id));
-    } catch { }
+    } catch (err) {
+      console.error('Failed to delete notification', err);
+    }
   };
 
   const getTypeIcon = (type) => {

@@ -95,7 +95,7 @@ const MOCK_ACTIVITIES = {
     ]
 };
 
-const StatsCard = ({ title, value, subtext, icon: Icon, colorClass }) => (
+const StatsCard = ({ title, value, subtext, icon: IconComponent, colorClass }) => (
     <div className="bg-gray-800/70 rounded-xl p-6 shadow-sm border border-gray-700/50 hover:shadow-md hover:border-gray-600/50 transition-all">
         <div className="flex justify-between items-start">
             <div>
@@ -103,7 +103,7 @@ const StatsCard = ({ title, value, subtext, icon: Icon, colorClass }) => (
                 <h3 className="text-3xl font-bold text-gray-100">{value}</h3>
             </div>
             <div className={cn("p-2 rounded-lg", colorClass)}>
-                <Icon className="w-6 h-6 text-white" />
+                <IconComponent className="w-6 h-6 text-white" />
             </div>
         </div>
         {subtext && <p className="text-xs text-gray-400 mt-2">{subtext}</p>}

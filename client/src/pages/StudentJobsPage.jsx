@@ -56,7 +56,9 @@ export default function StudentJobsPage() {
       try {
         const res = await getDriveStats(driveId);
         setDriveStats(prev => ({ ...prev, [driveId]: res.data }));
-      } catch { }
+      } catch (err) {
+        console.error('Failed to fetch drive stats', err);
+      }
       setStatsLoading(prev => ({ ...prev, [driveId]: false }));
     }
   };
@@ -290,7 +292,6 @@ function StudentApplicationsView() {
     <div className="space-y-4">
       {applications.map(app => {
         const stages = app.drive?.stages || [];
-        const currentStageIdx = app.currentStage ? stages.findIndex(s => s.id === app.currentStage.id) : -1;
         return (
           <div key={app.id} className="theme-card p-5">
             <div className="flex items-start justify-between mb-3">
