@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import NotificationBell from "./NotificationBell";
 
 const navLink = "block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition";
 const mobileNavLink = "block px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition";
@@ -120,10 +121,13 @@ function Navbar() {
             {isAdmin && (
               <Dropdown name="admin" label={<span className="text-emerald-400">Admin</span>} items={[
                 { to: "/admin/dashboard", label: "Dashboard" },
+                { to: "/admin/drives", label: "Drives" },
+                { to: "/admin/applications", label: "Applications" },
                 { to: "/admin/users", label: "Users" },
                 { to: "/admin/analytics", label: "Analytics" },
               ]} />
             )}
+            {user && <NotificationBell />}
             {user ? (
               <button onClick={handleLogout} className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition">
                 Logout
@@ -194,15 +198,20 @@ function Navbar() {
           {isAdmin && (
             <MobileDropdown name="m-admin" label={<span className="text-emerald-400">Admin</span>} items={[
               { to: "/admin/dashboard", label: "Dashboard" },
+              { to: "/admin/drives", label: "Drives" },
+              { to: "/admin/applications", label: "Applications" },
               { to: "/admin/users", label: "Users" },
               { to: "/admin/analytics", label: "Analytics" },
             ]} />
           )}
 
           {user ? (
-            <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
-              Logout
-            </button>
+            <>
+              <div className="px-3 py-2"><NotificationBell /></div>
+              <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <Link to="/login" onClick={closeMenu} className={mobileNavLink}>Login</Link>
