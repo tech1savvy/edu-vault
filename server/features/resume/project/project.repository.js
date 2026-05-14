@@ -1,11 +1,11 @@
 const { Project } = require('../../../models');
 
 const getProjects = async ({ user_id }) => {
-  return await Project.findAll({ where: { user_id } });
+  return await Project.findAll({ where: { userId: user_id } });
 };
 
 const addProject = async ({ user_id, title, description, techStack, timeline, type, collaborators }) => {
-  return await Project.create({ user_id, title, description, techStack, timeline, type, collaborators });
+  return await Project.create({ userId: user_id, title, description, techStack, timeline, type, collaborators });
 };
 
 const updateProject = async (id, { title, description, techStack, timeline, type, collaborators }) => {
