@@ -281,3 +281,88 @@ export const deleteSkill = async (id) => {
   const result = await response.json();
   throw new Error(result.message || 'Failed to delete skill');
 };
+
+// Jobs & Drives (Student)
+export const getDrives = async () => {
+  const response = await fetch(`${API_URL}/drives`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.error || 'Failed to fetch drives');
+};
+
+export const getDriveById = async (id) => {
+  const response = await fetch(`${API_URL}/drives/${id}`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.error || 'Failed to fetch drive');
+};
+
+export const getDriveStats = async (id) => {
+  const response = await fetch(`${API_URL}/drives/${id}/stats`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.error || 'Failed to fetch stats');
+};
+
+export const applyToJob = async (jobId) => {
+  const response = await fetch(`${API_URL}/applications/job/${jobId}/apply`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.error || 'Failed to apply');
+};
+
+export const getMyApplications = async () => {
+  const response = await fetch(`${API_URL}/applications/stages/student`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.error || 'Failed to fetch applications');
+};
+
+// Notifications
+export const getNotifications = async () => {
+  const response = await fetch(`${API_URL}/notifications`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.error || 'Failed to fetch notifications');
+};
+
+export const getUnreadNotificationCount = async () => {
+  const response = await fetch(`${API_URL}/notifications/unread-count`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.error || 'Failed to fetch count');
+};
+
+export const markNotificationRead = async (id) => {
+  const response = await fetch(`${API_URL}/notifications/${id}/read`, {
+    method: 'PUT',
+    headers: getAuthHeaders(),
+  });
+  const data = await response.json();
+  if (response.ok) return data;
+  throw new Error(data.error || 'Failed to mark as read');
+};
+
+export const deleteNotification = async (id) => {
+  const response = await fetch(`${API_URL}/notifications/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+  if (response.ok) return;
+  throw new Error('Failed to delete notification');
+};
