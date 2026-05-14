@@ -45,6 +45,9 @@ services:
       - postgres
       - qdrant
       - ml
+    volumes:
+      - ./server:/app
+      - /app/node_modules
     restart: unless-stopped
     networks:
       - eduvault-network

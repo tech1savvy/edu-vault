@@ -1,11 +1,11 @@
 const { Achievement } = require('../../../models');
 
 const getAchievements = async ({ user_id }) => {
-  return await Achievement.findAll({ where: { user_id } });
+  return await Achievement.findAll({ where: { userId: user_id } });
 };
 
 const addAchievement = async ({ user_id, title, description, date }) => {
-  return await Achievement.create({ user_id, title, description, date });
+  return await Achievement.create({ userId: user_id, title, description, date });
 };
 
 const updateAchievement = async (id, { title, description, date }) => {

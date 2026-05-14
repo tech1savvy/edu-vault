@@ -14,6 +14,11 @@ const getStudentById = async (id) => {
   });
 };
 
+const getStudentHeading = async (userId) => {
+  const { Heading } = require('../../models');
+  return await Heading.findOne({ where: { userId } });
+};
+
 const getStudentSkills = async (userId) => {
   return await Skill.findAll({ where: { userId } });
 };
@@ -67,6 +72,7 @@ const updateMentorAction = async (id, data) => {
 module.exports = {
   getAllStudents,
   getStudentById,
+  getStudentHeading,
   getStudentSkills,
   getStudentProjects,
   getStudentEducation,

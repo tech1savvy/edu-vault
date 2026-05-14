@@ -5,7 +5,7 @@ const userModel = require('../user/user.repository');
 const signup = async ({ name, email, password, role = 'student' }) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await userModel.createUser({ name, email, password: hashedPassword, role });
-  const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '24h' });
   return { user, token };
 };
 
@@ -18,7 +18,15 @@ const login = async ({ email, password }) => {
   if (!isPasswordValid) {
     throw new Error('Invalid credentials');
   }
-  const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '24h' });
+  
+  // Update last login
+  try {
+    await userModel.updateUser(user.id, { last_login: new Date() });
+  } catch (err) {
+    console.error('Failed to update last_login:', err);
+  }
+
   return { user, token };
 };
 
