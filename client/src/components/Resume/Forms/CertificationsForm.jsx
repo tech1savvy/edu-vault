@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { ResumeContext } from "../../../context/resumeContext";
+import { addCertification, updateCertification, deleteCertification } from "../../../services/api";
 
 function CertificationsForm() {
   const { certifications, setCertifications } = useContext(ResumeContext);
@@ -17,22 +18,33 @@ function CertificationsForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (form.name.trim()) {
-      if (editIndex !== null) {
-        const updatedCertifications = [...certifications];
-        updatedCertifications[editIndex] = form;
-        setCertifications(updatedCertifications);
-        setEditIndex(null);
-      } else {
-        setCertifications([...certifications, form]);
+      try {
+        if (editIndex !== null) {
+          const updated = await updateCertification(certifications[editIndex].id, form);
+          const updatedCertifications = [...certifications];
+          updatedCertifications[editIndex] = updated;
+          setCertifications(updatedCertifications);
+          setEditIndex(null);
+        } else {
+          const created = await addCertification(form);
+          setCertifications([...certifications, created]);
+        }
+        setForm({ name: "", issuer: "", date: "", credentialId: "" });
+      } catch (error) {
+        console.error("Failed to save certification:", error);
       }
-      setForm({ name: "", issuer: "", date: "", credentialId: "" });
     }
   };
 
-  const handleRemove = (index) => {
-    setCertifications(certifications.filter((_, i) => i !== index));
+  const handleDelete = async (id) => {
+    try {
+      await deleteCertification(id);
+      setCertifications(certifications.filter((cert) => cert.id !== id));
+    } catch (error) {
+      console.error("Failed to delete certification:", error);
+    }
   };
 
   const inputClass = "w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 placeholder-gray-500";
@@ -95,7 +107,7 @@ function CertificationsForm() {
                   Edit
                 </button>
                 <button className="theme-btn border border-red-500/50 text-red-400 hover:bg-red-500/20 text-xs py-1 px-2"
-                  onClick={() => handleRemove(idx)}>
+                  onClick={() => handleDelete(certification.id)}>
                   Remove
                 </button>
               </div>

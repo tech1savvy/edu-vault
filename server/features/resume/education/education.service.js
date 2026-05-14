@@ -5,14 +5,14 @@ const getEducations = async ({ user_id }) => {
   return educationRepository.getEducations({ user_id });
 };
 
-const addEducation = async ({ user_id, institution, degree, fieldOfStudy, duration, details }) => {
-  const education = await educationRepository.addEducation({ user_id, institution, degree, fieldOfStudy, duration, details });
+const addEducation = async ({ user_id, institution, degree, fieldOfStudy, duration, details, cgpa }) => {
+  const education = await educationRepository.addEducation({ user_id, institution, degree, fieldOfStudy, duration, details, cgpa });
   SyncService.syncResume(user_id);
   return education;
 };
 
-const updateEducation = async (id, { institution, degree, fieldOfStudy, duration, details }) => {
-  const education = await educationRepository.updateEducation(id, { institution, degree, fieldOfStudy, duration, details });
+const updateEducation = async (id, { institution, degree, fieldOfStudy, duration, details, cgpa }) => {
+  const education = await educationRepository.updateEducation(id, { institution, degree, fieldOfStudy, duration, details, cgpa });
   if (education) {
     SyncService.syncResume(education.userId);
   }

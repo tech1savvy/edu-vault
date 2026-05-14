@@ -273,16 +273,181 @@ export const addSkill = async (data) => {
 };
 
 export const deleteSkill = async (id) => {
-  const response = await fetch(`${API_URL}/resume/skills/${id}`, {
-    method: 'DELETE',
-    headers: getAuthHeaders(),
-  });
-  if (response.ok) return;
-  const result = await response.json();
-  throw new Error(result.message || 'Failed to delete skill');
-};
+   const response = await fetch(`${API_URL}/resume/skills/${id}`, {
+     method: 'DELETE',
+     headers: getAuthHeaders(),
+   });
+   if (response.ok) return;
+   const result = await response.json();
+   throw new Error(result.message || 'Failed to delete skill');
+ };
 
-// Jobs & Drives (Student)
+ // Education CRUD
+ export const addEducation = async (data) => {
+   const response = await fetch(`${API_URL}/resume/education`, {
+     method: 'POST',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to add education');
+ };
+
+ export const updateEducation = async (id, data) => {
+   const response = await fetch(`${API_URL}/resume/education/${id}`, {
+     method: 'PUT',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to update education');
+ };
+
+ export const deleteEducation = async (id) => {
+   const response = await fetch(`${API_URL}/resume/education/${id}`, {
+     method: 'DELETE',
+     headers: getAuthHeaders(),
+   });
+   if (response.ok) return;
+   const result = await response.json();
+   throw new Error(result.message || 'Failed to delete education');
+ };
+
+ // Experience CRUD
+ export const addExperience = async (data) => {
+   const response = await fetch(`${API_URL}/resume/experiences`, {
+     method: 'POST',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to add experience');
+ };
+
+ export const updateExperience = async (id, data) => {
+   const response = await fetch(`${API_URL}/resume/experiences/${id}`, {
+     method: 'PUT',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to update experience');
+ };
+
+ export const deleteExperience = async (id) => {
+   const response = await fetch(`${API_URL}/resume/experiences/${id}`, {
+     method: 'DELETE',
+     headers: getAuthHeaders(),
+   });
+   if (response.ok) return;
+   const result = await response.json();
+   throw new Error(result.message || 'Failed to delete experience');
+ };
+
+ // Project CRUD
+ export const addProject = async (data) => {
+   const response = await fetch(`${API_URL}/resume/projects`, {
+     method: 'POST',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to add project');
+ };
+
+ export const updateProject = async (id, data) => {
+   const response = await fetch(`${API_URL}/resume/projects/${id}`, {
+     method: 'PUT',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to update project');
+ };
+
+ export const deleteProject = async (id) => {
+   const response = await fetch(`${API_URL}/resume/projects/${id}`, {
+     method: 'DELETE',
+     headers: getAuthHeaders(),
+   });
+   if (response.ok) return;
+   const result = await response.json();
+   throw new Error(result.message || 'Failed to delete project');
+ };
+
+ // Certification CRUD
+ export const addCertification = async (data) => {
+   const response = await fetch(`${API_URL}/resume/certifications`, {
+     method: 'POST',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to add certification');
+ };
+
+ export const updateCertification = async (id, data) => {
+   const response = await fetch(`${API_URL}/resume/certifications/${id}`, {
+     method: 'PUT',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to update certification');
+ };
+
+ export const deleteCertification = async (id) => {
+   const response = await fetch(`${API_URL}/resume/certifications/${id}`, {
+     method: 'DELETE',
+     headers: getAuthHeaders(),
+   });
+   if (response.ok) return;
+   const result = await response.json();
+   throw new Error(result.message || 'Failed to delete certification');
+ };
+
+ // Achievement CRUD
+ export const addAchievement = async (data) => {
+   const response = await fetch(`${API_URL}/resume/achievements`, {
+     method: 'POST',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to add achievement');
+ };
+
+ export const updateAchievement = async (id, data) => {
+   const response = await fetch(`${API_URL}/resume/achievements/${id}`, {
+     method: 'PUT',
+     headers: getAuthHeaders(),
+     body: JSON.stringify(data),
+   });
+   const result = await response.json();
+   if (response.ok) return result;
+   throw new Error(result.message || 'Failed to update achievement');
+ };
+
+ export const deleteAchievement = async (id) => {
+   const response = await fetch(`${API_URL}/resume/achievements/${id}`, {
+     method: 'DELETE',
+     headers: getAuthHeaders(),
+   });
+   if (response.ok) return;
+   const result = await response.json();
+   throw new Error(result.message || 'Failed to delete achievement');
+ };
+
+ // Jobs & Drives (Student)
 export const getDrives = async () => {
   const response = await fetch(`${API_URL}/drives`, {
     headers: getAuthHeaders(),
