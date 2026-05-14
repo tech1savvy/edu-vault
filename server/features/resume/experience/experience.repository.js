@@ -1,7 +1,7 @@
 const { Experience } = require('../../../models');
 
 const getExperiences = async ({ user_id }) => {
-  return await Experience.findAll({ where: { user_id } });
+  return await Experience.findAll({ where: { userId: user_id } });
 };
 
 const getExperienceById = async (id) => {
@@ -9,7 +9,7 @@ const getExperienceById = async (id) => {
 };
 
 const addExperience = async ({ user_id, type, company, role, duration, details }) => {
-  return await Experience.create({ user_id, type, company, role, duration, details });
+  return await Experience.create({ userId: user_id, type, company, role, duration, details });
 };
 
 const updateExperience = async (id, { type, company, role, duration, details }) => {

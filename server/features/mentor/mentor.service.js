@@ -23,11 +23,14 @@ const getStudentDashboard = async (studentId, targetRole = null) => {
     const projectsString = projects.map(p => p.title || '').join(', ');
     const educationString = education.map(e => `${e.degree || ''} in ${e.fieldOfStudy || ''}`).join(', ');
 
-    const profileText = `Education: ${educationString}. Skills: ${skillsString}. Projects: ${projectsString}.`;
+    const heading = (await repository.getStudentHeading(studentId)) || {};
+    const professionalTitle = heading.role || 'Student';
+    const profileText = `Role: ${professionalTitle}. Education: ${educationString}. Skills: ${skillsString}. Projects: ${projectsString}.`;
     
     // Extract Student Profile Summary Data
     const topSkills = skills.slice(0, 3).map(s => s.name);
     const primaryEducation = education.length > 0 ? (education[0].fieldOfStudy || education[0].degree || 'Not stated') : 'Not stated';
+    const gpa = education.length > 0 ? (education[0].cgpa || 'Not stated') : 'Not stated';
 
     // 1. Call ML Service or use forced Target Role
     let readinessScore = 0;
@@ -176,7 +179,14 @@ const getStudentDashboard = async (studentId, targetRole = null) => {
         const missing = missingSkills.length;
         if (totalReqs > 0) {
             readinessScore = Math.round(((totalReqs - missing) / totalReqs) * 100);
-            if (readinessScore < 15) readinessScore = 15; // Set a floor so it doesn't look like a bug
+            
+            // Boost based on high potential factors
+            if (gpa !== 'Not stated' && parseFloat(gpa) > 8.5) readinessScore += 10;
+            if (certifications.length > 0) readinessScore += 5;
+            if (projects.length > 0) readinessScore += 5;
+            
+            if (readinessScore > 100) readinessScore = 100;
+            if (readinessScore < 15) readinessScore = 15; 
         } else {
             // If no skills could be extracted, retain the ML score or default to 50
             if (!readinessScore) readinessScore = 50;
@@ -190,12 +200,16 @@ const getStudentDashboard = async (studentId, targetRole = null) => {
     }
 
     // 3. AI Explanation Formulation
-    let aiExplanation = "Student is well aligned with their target role framework.";
+    let aiExplanation = `Student is showing strong alignment in ${professionalTitle}.`;
+    
     if (readinessScore < 50) {
-        const missStr = missingSkills.length > 0 ? missingSkills.slice(0, 2).map(m => m.skill).join(' and ') : 'foundational skills';
-        aiExplanation = `Low project experience + missing ${missStr} → causes At Risk readiness status. Immediate foundational intervention required.`;
+        const missStr = missingSkills.length > 0 ? missingSkills.slice(0, 2).map(m => m.skill).join(' and ') : 'specific domain expertise';
+        const projectContext = projects.length > 0 ? `With ${projects.length} project(s) completed, the main gap` : "Low project experience + missing foundational skills";
+        aiExplanation = `${projectContext} is the mismatch between current stack and target role (${roleMatch}). Missing ${missStr} results in an At Risk status for this specific role.`;
     } else if (readinessScore < 75) {
-        aiExplanation = `Student has baseline skills but is missing specialization in ${missingSkills.length > 0 ? missingSkills[0].skill : 'Advanced topics'}. They are currently tracking Moderately.`;
+        aiExplanation = `Student has strong baseline skills in ${topSkills.join(', ')} but needs specialization in ${missingSkills.length > 0 ? missingSkills[0].skill : 'Advanced topics'} for the ${roleMatch} role.`;
+    } else {
+        aiExplanation = `Excellent fit for ${roleMatch}. Student's expertise in ${topSkills.join(', ')} aligns perfectly with industry requirements.`;
     }
 
     return {
@@ -204,6 +218,8 @@ const getStudentDashboard = async (studentId, targetRole = null) => {
            name: student.name,
            email: student.email,
            branch: primaryEducation,
+           gpa: gpa,
+           professionalTitle: professionalTitle,
            topSkills: topSkills,
            projectCount: projects.length,
            certCount: certifications.length
