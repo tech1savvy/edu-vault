@@ -78,7 +78,7 @@ const LoginPage = () => {
       } else if (user && user.role === 'mentor') {
         window.location.href = '/mentor-dashboard';
       } else if (user && user.role === 'student') {
-        window.location.href = '/dashboard/profile';
+        window.location.href = '/dashboard/jobs';
       } else {
         window.location.href = '/';
       }
