@@ -11,9 +11,11 @@ import {
   FileText,
   QrCode,
   MessagesSquare,
+  Building2,
 } from "lucide-react";
 
 const items = [
+  { to: "/dashboard/jobs", label: "Jobs & Drives", icon: Building2 },
   { to: "/dashboard/profile", label: "Profile", icon: UserCircle2 },
   { to: "/dashboard/experience", label: "Experience", icon: Briefcase },
   { to: "/dashboard/education", label: "Education", icon: GraduationCap },
