@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       JobApplication.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
       JobApplication.belongsTo(models.JobDescription, { foreignKey: 'jobId', as: 'job' });
+      JobApplication.belongsTo(models.DriveStage, { foreignKey: 'currentStageId', as: 'currentStage' });
+      JobApplication.hasMany(models.ApplicationStage, { foreignKey: 'applicationId', as: 'stageLog' });
     }
   }
 
@@ -29,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
     appliedAt: {
       type: DataTypes.DATE,
       field: 'applied_at'
+    },
+    currentStageId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: 'current_stage_id'
     }
   }, {
     sequelize,
