@@ -8,16 +8,16 @@ const findById = async (id) => {
   return await JobDescription.findByPk(id);
 };
 
-const addJobDescription = async ({ title, description, requirements }) => {
-  return await JobDescription.create({ title, description, requirements });
+const addJobDescription = async (data) => {
+  return await JobDescription.create(data);
 };
 
-const updateJobDescription = async (id, { title, description, requirements }) => {
+const updateJobDescription = async (id, data) => {
   const jobDescription = await JobDescription.findByPk(id);
   if (!jobDescription) {
     throw new Error('Job Description not found');
   }
-  return await jobDescription.update({ title, description, requirements });
+  return await jobDescription.update(data);
 };
 
 const deleteJobDescription = async (id) => {

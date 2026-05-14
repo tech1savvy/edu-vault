@@ -1,4 +1,4 @@
-const { JobApplication, User, JobDescription } = require('../../models');
+const { JobApplication, User, JobDescription, Drive, DriveStage } = require('../../models');
 
 const findByJobId = async (jobId) => {
   return await JobApplication.findAll({
@@ -63,6 +63,20 @@ const countByStatus = async (jobId) => {
   return result;
 };
 
+const findAllForAdmin = async () => {
+  return await JobApplication.findAll({
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'name', 'email'] },
+      {
+        model: JobDescription, as: 'job',
+        include: [{ model: Drive, as: 'drive', attributes: ['id', 'companyName', 'title'] }]
+      },
+      { model: DriveStage, as: 'currentStage' }
+    ],
+    order: [['createdAt', 'DESC']]
+  });
+};
+
 module.exports = {
   findByJobId,
   findByUserId,
@@ -70,5 +84,6 @@ module.exports = {
   create,
   updateStatus,
   hasApplied,
-  countByStatus
+  countByStatus,
+  findAllForAdmin
 };

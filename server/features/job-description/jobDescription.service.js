@@ -18,14 +18,17 @@ const getJobDescriptionById = async (id) => {
   return jobDescription;
 };
 
-const addJobDescription = async ({ title, description, requirements }) => {
-  const jobDescription = await jobDescriptionRepository.addJobDescription({ title, description, requirements });
+const addJobDescription = async (data) => {
+  if (!data.driveId) {
+    throw new Error('Job description must belong to a drive');
+  }
+  const jobDescription = await jobDescriptionRepository.addJobDescription(data);
   SyncService.syncJobDescription(jobDescription);
   return jobDescription;
 };
 
-const updateJobDescription = async (id, { title, description, requirements }) => {
-  const jobDescription = await jobDescriptionRepository.updateJobDescription(id, { title, description, requirements });
+const updateJobDescription = async (id, data) => {
+  const jobDescription = await jobDescriptionRepository.updateJobDescription(id, data);
   SyncService.syncJobDescription(jobDescription);
   return jobDescription;
 };

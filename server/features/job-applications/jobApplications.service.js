@@ -59,10 +59,15 @@ const getApplicationCounts = async (jobId) => {
   return result;
 };
 
+const getAllApplications = async () => {
+  return await repository.findAllForAdmin();
+};
+
 module.exports = {
   getApplicationsByJob,
   getApplicationsByUser,
   applyToJob,
   updateApplicationStatus,
-  getApplicationCounts
+  getApplicationCounts,
+  getAllApplications
 };

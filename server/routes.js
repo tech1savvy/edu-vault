@@ -19,6 +19,9 @@ const interviewRoutes = require("./routes/interviewRoutes");
 const mentorRoutes = require("./features/mentor").router;
 const resumeRoutes = require("./features/resume/resume.routes");
 const publicRoutes = require("./features/public/public.routes");
+const driveRoutes = require("./features/drive").router;
+const applicationStageRoutes = require("./features/application-stage/index").router;
+const notificationRoutes = require("./features/notification").router;
 const { syncProfileData } = require("./features/resume/resume.sync.controller");
 router.use("/auth", authRoutes);
 router.use("/public", publicRoutes);
@@ -46,5 +49,8 @@ router.use("/applications", jobApplicationsRoutes);
 
 router.use("/interview", interviewRoutes);
 router.use("/mentor", mentorRoutes);
+router.use("/drives", driveRoutes);
+router.use("/applications/stages", applicationStageRoutes);
+router.use("/notifications", notificationRoutes);
 
 module.exports = router;

@@ -4,6 +4,7 @@ const controller = require('./jobApplications.controller');
 const authenticateToken = require('../../middleware/auth');
 const authorizeRoles = require('../../middleware/roles');
 
+router.get('/all', authenticateToken, authorizeRoles('administrator'), controller.getAll);
 router.get('/job/:jobId', authenticateToken, authorizeRoles('administrator'), controller.getByJob);
 router.post('/job/:jobId/apply', authenticateToken, controller.apply);
 router.put('/application/:applicationId/status', authenticateToken, authorizeRoles('administrator'), controller.updateStatus);
