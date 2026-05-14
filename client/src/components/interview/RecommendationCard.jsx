@@ -1,6 +1,6 @@
 import { Lightbulb } from "lucide-react";
 
-export default function RecommendationCard({ title, items = [], icon: IconComponent = Lightbulb }) {
+export default function RecommendationCard({ title, items = [], icon: IconComponent = Lightbulb }) { // eslint-disable-line no-unused-vars
   if (!items?.length) return null;
 
   return (
