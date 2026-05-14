@@ -6,13 +6,16 @@ import Navbar from "./components/Navbar";
 
 // Admin
 import AdminDashboardPage from "./pages/AdminDashboardPage";
-import JobDescriptionFormPage from "./pages/JobDescriptionFormPage";
 import UsersPage from "./pages/UsersPage";
 import UserDetailPage from "./pages/UserDetailPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import JobApplicationsPage from "./pages/JobApplicationsPage";
 import AdminRoute from "./components/AdminRoute";
 import MatchResultsPage from "./pages/MatchResultsPage";
+import StudentJobsPage from "./pages/StudentJobsPage";
+import AdminDrivesPage from "./pages/AdminDrivesPage";
+import AdminDriveDetailPage from "./pages/AdminDriveDetailPage";
+import AdminApplicationsPage from "./pages/AdminApplicationsPage";
 
 // Forms
 import HeadingForm from "./components/Resume/Forms/HeadingForm";
@@ -96,7 +99,8 @@ function App() {
 
           {/* Student Dashboard */}
           <Route path="/dashboard" element={<RoleRoute allowedRoles={['student']}><DashboardLayout /></RoleRoute>}>
-            <Route index element={<Navigate to="/dashboard/profile" replace />} />
+            <Route index element={<Navigate to="/dashboard/jobs" replace />} />
+            <Route path="jobs" element={<StudentJobsPage />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="education" element={<EducationPage />} />
             <Route path="experience" element={<ExperiencePage />} />
@@ -117,13 +121,15 @@ function App() {
 
           {/* Admin Routes */}
           <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
-          <Route path="/admin/job-descriptions/new" element={<AdminRoute><JobDescriptionFormPage /></AdminRoute>} />
-          <Route path="/admin/job-descriptions/edit/:id" element={<AdminRoute><JobDescriptionFormPage /></AdminRoute>} />
           <Route path="/admin/job-descriptions/:id/matches" element={<AdminRoute><MatchResultsPage /></AdminRoute>} />
+          <Route path="/admin/job-descriptions/:jobId/applications" element={<AdminRoute><JobApplicationsPage /></AdminRoute>} />
           <Route path="/admin/users" element={<AdminRoute><UsersPage /></AdminRoute>} />
           <Route path="/admin/users/:id" element={<AdminRoute><UserDetailPage /></AdminRoute>} />
           <Route path="/admin/analytics" element={<AdminRoute><AnalyticsPage /></AdminRoute>} />
-          <Route path="/admin/job-descriptions/:jobId/applications" element={<AdminRoute><JobApplicationsPage /></AdminRoute>} />
+          <Route path="/admin/drives" element={<AdminRoute><AdminDrivesPage /></AdminRoute>} />
+          <Route path="/admin/drives/new" element={<Navigate to="/admin/drives" replace />} />
+          <Route path="/admin/drives/:id" element={<AdminRoute><AdminDriveDetailPage /></AdminRoute>} />
+          <Route path="/admin/applications" element={<AdminRoute><AdminApplicationsPage /></AdminRoute>} />
 
           {/* Mentor Routes */}
           <Route path="/faculty-dashboard" element={<RoleRoute allowedRoles={['administrator', 'mentor']}><FacultyMentoringDashboard /></RoleRoute>} />
