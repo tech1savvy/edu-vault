@@ -47,9 +47,19 @@ const getCounts = async (req, res) => {
   }
 };
 
+const getAll = async (req, res) => {
+  try {
+    const applications = await service.getAllApplications();
+    res.json({ success: true, data: applications });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   getByJob,
   apply,
   updateStatus,
-  getCounts
+  getCounts,
+  getAll
 };
