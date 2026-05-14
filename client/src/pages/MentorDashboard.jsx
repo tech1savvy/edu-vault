@@ -187,7 +187,7 @@ export default function MentorDashboard() {
                          <h5 className="text-white mb-4 flex items-center gap-2 font-semibold">
                              <AlertCircle className="text-red-500" size={20}/> At-Risk Mentees
                          </h5>
-                          <ul className="list-none m-0 p-0 space-y-3">
+                         <ul className="list-none m-0 p-0 space-y-3">
                             {students.length === 0 ? (
                               <li className="text-gray-600 text-sm text-center py-2">No students yet.</li>
                             ) : students.map((s) => (
@@ -246,29 +246,36 @@ export default function MentorDashboard() {
                       <div className="flex justify-between items-start mb-4">
                          <div>
                            <h3 className="font-bold text-white text-xl mb-1">{dashboardData.student.name}</h3>
-                           <p className="text-gray-400 text-sm mb-0">{dashboardData.student.email} • {dashboardData.student.branch || "Information Technology"}</p>
-                         </div>
-                         <div className="text-right">
-                            <h4 className="text-white mb-0 text-xl">8.5 <span className="text-gray-500 text-sm">GPA</span></h4>
-                         </div>
-                      </div>
+                           <p className="text-gray-400 text-sm mb-0">
+                             {dashboardData.student.email} • {dashboardData.student.professionalTitle || "No Title"}
+                          </p>
+                          <p className="text-gray-500 text-xs mt-1">
+                            {dashboardData.student.branch || "Information Technology"}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                           <h4 className="text-white mb-0 text-xl">
+                             {dashboardData.student.gpa && dashboardData.student.gpa !== 'Not stated' ? dashboardData.student.gpa : '—'} <span className="text-gray-500 text-sm">GPA</span>
+                           </h4>
+                        </div>
+                     </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                         <div className="p-3 rounded-lg bg-gray-900/50 border border-gray-700/50">
-                            <small className="text-gray-400 block mb-1">Portfolio Stats</small>
-                            <div className="flex gap-3">
-                                <span className="text-white font-semibold text-sm flex items-center gap-1"><Briefcase size={14} className="text-blue-500"/> {dashboardData.student.projectCount} Projects</span>
-                                <span className="text-white font-semibold text-sm flex items-center gap-1"><CheckCircle size={14} style={{ color: '#4ade80' }}/> {dashboardData.student.certCount} Certs</span>
-                            </div>
-                         </div>
-                         <div className="p-3 rounded-lg bg-gray-900/50 border border-gray-700/50">
-                            <small className="text-gray-400 block mb-1">System Status</small>
-                            <div className="flex flex-col gap-1">
-                                <span className="text-white text-xs">Resume: <span style={{ color: '#4ade80' }}>Generated ✓</span></span>
-                                <span className="text-white text-xs">Last Active: <span className="text-cyan-400">2 days ago</span></span>
-                            </div>
-                         </div>
-                      </div>
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                        <div className="p-3 rounded-lg bg-gray-900/50 border border-gray-700/50">
+                           <small className="text-gray-400 block mb-1">Portfolio Stats</small>
+                           <div className="flex gap-3">
+                               <span className="text-white font-semibold text-sm flex items-center gap-1"><Briefcase size={14} className="text-blue-500"/> {dashboardData.student.projectCount || 0} Projects</span>
+                               <span className="text-white font-semibold text-sm flex items-center gap-1"><CheckCircle size={14} style={{ color: '#4ade80' }}/> {dashboardData.student.certCount || 0} Certs</span>
+                           </div>
+                        </div>
+                        <div className="p-3 rounded-lg bg-gray-900/50 border border-gray-700/50">
+                           <small className="text-gray-400 block mb-1">System Status</small>
+                           <div className="flex flex-col gap-1">
+                               <span className="text-white text-xs">Resume: <span style={{ color: '#4ade80' }}>Generated ✓</span></span>
+                               <span className="text-white text-xs">Last Active: <span className="text-cyan-400">{dashboardData.student.lastLogin ? new Date(dashboardData.student.lastLogin).toLocaleDateString() : 'Active Now'}</span></span>
+                           </div>
+                        </div>
+                     </div>
 
                       <div>
                         <small className="text-gray-500 block mb-2 font-bold text-xs uppercase tracking-wider">Core Tech Stack</small>

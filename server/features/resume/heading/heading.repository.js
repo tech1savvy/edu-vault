@@ -1,13 +1,13 @@
 const { Heading } = require('../../../models');
 
 const getHeading = async ({ user_id }) => {
-  return await Heading.findOne({ where: { user_id } });
+  return await Heading.findOne({ where: { userId: user_id } });
 };
 
 const createOrUpdateHeading = async ({ user_id, name, role, email, phone, location, link }) => {
   const [heading, created] = await Heading.findOrCreate({
-    where: { user_id },
-    defaults: { user_id, name, role, email, phone, location, link },
+    where: { userId: user_id },
+    defaults: { userId: user_id, name, role, email, phone, location, link },
   });
 
   if (!created) {

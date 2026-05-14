@@ -1,11 +1,11 @@
 const { Education } = require('../../../models');
 
 const getEducations = async ({ user_id }) => {
-  return await Education.findAll({ where: { user_id } });
+  return await Education.findAll({ where: { userId: user_id } });
 };
 
-const addEducation = async ({ user_id, institution, degree, fieldOfStudy, duration, details }) => {
-  return await Education.create({ user_id, institution, degree, fieldOfStudy, duration, details });
+const addEducation = async ({ user_id, institution, degree, fieldOfStudy, duration, details, cgpa }) => {
+  return await Education.create({ userId: user_id, institution, degree, fieldOfStudy, duration, details, cgpa });
 };
 
 const updateEducation = async (id, { institution, degree, fieldOfStudy, duration, details }) => {
