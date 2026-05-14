@@ -40,6 +40,29 @@ adminApi.interceptors.response.use(
 
 // Admin-specific API calls
 const adminService = {
+  // Drives
+  getDrives: () => adminApi.get('/drives'),
+  getDriveById: (id) => adminApi.get(`/drives/${id}`),
+  createDrive: (data) => adminApi.post('/drives', data),
+  updateDrive: (id, data) => adminApi.put(`/drives/${id}`, data),
+  deleteDrive: (id) => adminApi.delete(`/drives/${id}`),
+  updateDriveStatus: (id, status) => adminApi.put(`/drives/${id}/status`, { status }),
+  getDriveStats: (id) => adminApi.get(`/drives/${id}/stats`),
+
+  // Drive Applications (Kanban)
+  getDriveApplications: (driveId) => adminApi.get(`/applications/stages/drive/${driveId}`),
+  moveToStage: (applicationId, stageId) => adminApi.post(`/applications/stages/${applicationId}/stage`, { stageId }),
+  updateStageStatus: (applicationId, stageId, status, notes) => adminApi.put(`/applications/stages/${applicationId}/stage/${stageId}`, { status, notes }),
+
+  // Global Applications
+  getAllApplications: () => adminApi.get('/applications/all'),
+
+  // Notifications (admin can view own)
+  getNotifications: () => adminApi.get('/notifications'),
+  getUnreadNotificationCount: () => adminApi.get('/notifications/unread-count'),
+  markNotificationRead: (id) => adminApi.put(`/notifications/${id}/read`),
+  deleteNotification: (id) => adminApi.delete(`/notifications/${id}`),
+
   // Job descriptions
   getJobDescriptions: () => adminApi.get('/job-descriptions'),
   getJobDescriptionById: (id) => adminApi.get(`/job-descriptions/${id}`),
