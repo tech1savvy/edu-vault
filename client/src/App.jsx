@@ -160,7 +160,7 @@ function App() {
 
           {/* Interview */}
           <Route path="/interview/domain" element={<StudentRoute><DomainSelection /></StudentRoute>} />
-          <Route path="/interview/session/:domainSlug" element={<StudentRoute><MockInterview /></StudentRoute>} />
+          <Route path="/interview/session/:sessionId" element={<StudentRoute><MockInterview /></StudentRoute>} />
           <Route path="/interview/result/:id" element={<StudentRoute><InterviewResult /></StudentRoute>} />
         </Routes>
       </main>

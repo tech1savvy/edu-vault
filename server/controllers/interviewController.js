@@ -1,85 +1,68 @@
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
-const { Op } = require("sequelize");
-
 const db = require("../models");
 const logger = require("../config/logger");
+const { analyzeStudentProfile } = require("../utils/domainDetector");
 const {
-  analyzeStudentProfile,
-  resolveDomainFromParam,
-} = require("../utils/domainDetector");
-const { summarizeAttempt } = require("../utils/scoreCalculator");
-const { generateFeedbackFromTopics } = require("../utils/feedbackGenerator");
+  generateInterviewQuestion,
+  evaluateInterviewAnswer,
+  generateFinalInterviewReport,
+} = require("../services/geminiInterview.service");
 
-const { Heading, Skill, Project, Certification, Experience, Interview } = db;
+const { Heading, Skill, Project, Certification, Experience, WrittenInterviewSession } = db;
 
-const QUESTION_COUNT = 17;
-const BANK_PATH = path.join(__dirname, "..", "data", "questionBank.json");
+const ALLOWED_DIFFICULTIES = ["Beginner", "Intermediate", "Advanced"];
+const ALLOWED_COUNTS = [5, 10, 15];
 
-let questionBankCache = null;
+const WRITTEN_INTERVIEW_DOMAINS = [
+  "React",
+  "Node.js",
+  "Java",
+  "Python",
+  "DevOps",
+  "SQL",
+  "System Design",
+  "Full Stack Development",
+  "Frontend Development",
+  "Backend Development",
+  "Data Science & Analytics",
+  "Cloud (AWS/Azure/GCP)",
+  "Security",
+  "Mobile (iOS/Android)",
+];
 
-function loadQuestionBank() {
-  if (!questionBankCache) {
-    const raw = fs.readFileSync(BANK_PATH, "utf8");
-    questionBankCache = JSON.parse(raw);
+function normalizeQuestion(q) {
+  return String(q || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
+function isNearDuplicate(newQ, list) {
+  const n = normalizeQuestion(newQ);
+  if (!n) return true;
+  for (const existing of list) {
+    const e = normalizeQuestion(existing);
+    if (!e) continue;
+    if (n === e) return true;
+    if (n.length >= 48 && (e.includes(n.slice(0, 48)) || n.includes(e.slice(0, 48)))) return true;
   }
-  return questionBankCache;
+  return false;
 }
 
-function shuffleInPlace(items) {
-  const arr = [...items];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function stripCorrectAnswer(question) {
-  const { correctAnswer: _omit, ...rest } = question;
-  return rest;
-}
-
-function resolveDomain(raw) {
-  if (!raw || typeof raw !== "string") return null;
-  const fromSlug = resolveDomainFromParam(raw.trim());
-  if (fromSlug) return fromSlug;
-  const trimmed = raw.trim();
-  const bank = loadQuestionBank();
-  if (bank[trimmed]) return trimmed;
-  return null;
-}
-
-function computeApproxPercentileFromScore(scoreOutOf100) {
-  const s = Number(scoreOutOf100);
-  if (Number.isNaN(s)) return 50;
-  return Math.min(98, Math.max(12, Math.round(55 + (s - 72) * 1.05)));
-}
-
-async function percentileFromStoredCohort(domain, score) {
-  const total = await Interview.count({
-    where: { selectedDomain: domain },
+async function loadActiveSession(sessionId, userId) {
+  const idNum = Number.parseInt(String(sessionId), 10);
+  if (!Number.isInteger(idNum) || idNum < 1) return null;
+  return WrittenInterviewSession.findOne({
+    where: { id: idNum, userId },
   });
-  if (total <= 1) {
-    return computeApproxPercentileFromScore(score);
-  }
-  const strictlyLess = await Interview.count({
-    where: {
-      selectedDomain: domain,
-      score: { [Op.lt]: score },
-    },
-  });
-  const equal = await Interview.count({
-    where: {
-      selectedDomain: domain,
-      score,
-    },
-  });
+}
 
-  const midRank = strictlyLess + 0.5 * equal;
-  return Math.round((midRank / total) * 100);
+function pendingAnswerTurn(turns) {
+  const t = turns?.length ? turns[turns.length - 1] : null;
+  if (!t || !t.questionText) return null;
+  const evaluated = t.skipped === true || (t.evaluation && t.evaluation.evaluated !== false);
+  return evaluated ? null : t;
 }
 
 /**
@@ -112,147 +95,418 @@ async function detectDomains(req, res) {
 }
 
 /**
- * GET /api/interview/questions/:domain
+ * POST /api/interview/start
+ * Body: { domain, difficulty, questionCount }
  */
-async function getQuestions(req, res) {
+async function startWrittenInterview(req, res) {
   try {
-    const domain = resolveDomain(req.params.domain);
-    if (!domain) {
+    const userId = req.user.userId;
+    const { domain, difficulty, questionCount } = req.body || {};
+
+    if (!domain || typeof domain !== "string" || !WRITTEN_INTERVIEW_DOMAINS.includes(domain.trim())) {
       return res.status(400).json({
-        error: "Unknown interview domain",
-        hint: "Use a slug such as full-stack-development or the exact canonical domain label.",
+        error: "Invalid domain",
+        allowedDomains: WRITTEN_INTERVIEW_DOMAINS,
+      });
+    }
+    if (!difficulty || typeof difficulty !== "string" || !ALLOWED_DIFFICULTIES.includes(difficulty)) {
+      return res.status(400).json({
+        error: "Invalid difficulty",
+        allowed: ALLOWED_DIFFICULTIES,
+      });
+    }
+    const count = Number(questionCount);
+    if (!ALLOWED_COUNTS.includes(count)) {
+      return res.status(400).json({
+        error: "Invalid questionCount",
+        allowed: ALLOWED_COUNTS,
       });
     }
 
-    const bank = loadQuestionBank();
-    const pool = bank[domain];
-    if (!Array.isArray(pool) || pool.length === 0) {
-      return res.status(500).json({ error: "Question bank unavailable for domain" });
-    }
-
-    const count = Math.min(QUESTION_COUNT, pool.length);
-    const picks = shuffleInPlace(pool).slice(0, count);
-    const questions = picks.map(stripCorrectAnswer);
-
-    res.json({
-      domain,
-      count: questions.length,
-      questions,
-    });
-  } catch (err) {
-    logger.error("Interview questions GET failed", err);
-    res.status(500).json({ error: "Unable to load interview questions" });
-  }
-}
-
-/**
- * POST /api/interview/submit
- * Body: { selectedDomain:string, answers: { questionId, selectedOption:null|0-3 }[], durationSeconds:number }
- */
-async function submitInterview(req, res) {
-  try {
-    const userId = req.user.userId;
-    const { selectedDomain: rawDomain, answers, durationSeconds } = req.body || {};
-
-    const domain = resolveDomain(rawDomain);
-    if (!domain) {
-      return res
-        .status(400)
-        .json({ error: "selectedDomain is required and must resolve to a configured domain." });
-    }
-    if (!Array.isArray(answers) || answers.length === 0) {
-      return res.status(400).json({ error: "answers must be a non-empty array." });
-    }
-
-    const duration = Number(durationSeconds);
-    const timeTaken = Number.isFinite(duration) && duration >= 0 ? Math.floor(duration) : 0;
-
-    const bank = loadQuestionBank();
-    const pool = bank[domain];
-
-    const answerMap = new Map();
-    for (const row of answers) {
-      const qId = row?.questionId;
-      if (!qId) {
-        return res.status(400).json({ error: "Each answer must include questionId." });
-      }
-      if (answerMap.has(qId)) {
-        return res.status(400).json({ error: `Duplicate answer for questionId ${qId}.` });
-      }
-      let opt =
-        row.selectedOption === undefined || row.selectedOption === ""
-          ? null
-          : row.selectedOption;
-      if (opt !== null && opt !== undefined && typeof opt !== "number") {
-        const parsed = Number(opt);
-        opt = Number.isInteger(parsed) ? parsed : NaN;
-      }
-      if (opt !== null && (typeof opt !== "number" || opt < 0 || opt > 3 || !Number.isInteger(opt))) {
-        return res.status(400).json({ error: `Invalid selectedOption for ${qId}; use integer 0–3 or null to skip.` });
-      }
-      answerMap.set(qId, opt);
-    }
-
-    const summary = summarizeAttempt(pool, answerMap);
-    if (summary.error) {
-      return res.status(400).json({ error: summary.error });
-    }
-
-    const { strengths, weaknesses, recommendations } = generateFeedbackFromTopics(
-      summary.byTopicPayload
-    );
-
-    const analytics = {
-      correct: summary.correct,
-      incorrect: summary.incorrect,
-      skipped: summary.skipped,
-      attemptedTotal: summary.attemptedTotal,
-      totalSeen: summary.totalSeen,
-      topicBreakdown: summary.byTopicPayload,
-    };
-
-    const interview = await Interview.create({
+    const session = await WrittenInterviewSession.create({
       userId,
-      selectedDomain: domain,
-      questions: summary.sanitizedQuestionsPayload,
-      answers: [...answerMap.entries()].map(([questionId, selectedOption]) => ({
-        questionId,
-        selectedOption,
-      })),
-      score: summary.scoreRounded,
-      percentile: 0,
-      strengths,
-      weaknesses,
-      recommendations,
-      analytics,
-      timeTaken,
+      domain: domain.trim(),
+      difficulty,
+      targetQuestionCount: count,
+      status: "active",
+      turns: [],
+      previousQuestions: [],
+      lastEvaluation: null,
+      followUpConsumed: false,
     });
-
-    const percentileRounded = await percentileFromStoredCohort(domain, summary.scoreRounded);
-
-    await interview.update({ percentile: percentileRounded });
 
     res.status(201).json({
-      interviewId: interview.id,
-      selectedDomain: domain,
-      score: summary.scoreRounded,
-      percentile: percentileRounded,
-      timeTaken,
-      analytics,
-      strengths,
-      weaknesses,
-      recommendations,
+      sessionId: session.id,
+      domain: session.domain,
+      difficulty: session.difficulty,
+      questionCount: session.targetQuestionCount,
     });
   } catch (err) {
-    logger.error("Interview submit failed", err);
-    res.status(500).json({ error: "Unable to submit interview attempt" });
+    logger.error("Interview start failed", err);
+    const sqlMsg = err?.parent?.message || err?.original?.message || err?.message;
+    const details =
+      process.env.NODE_ENV !== "production" && sqlMsg
+        ? String(sqlMsg).slice(0, 500)
+        : undefined;
+    res.status(500).json({
+      error: "Unable to start interview session",
+      ...(details ? { details } : {}),
+    });
   }
 }
 
 /**
- * GET /api/interview/result/:id
+ * POST /api/interview/question
+ * Body: { sessionId }
  */
-async function getResult(req, res) {
+async function nextQuestion(req, res) {
+  try {
+    const userId = req.user.userId;
+    const { sessionId } = req.body || {};
+    const session = await loadActiveSession(sessionId, userId);
+    if (!session) {
+      return res.status(404).json({ error: "Interview session not found" });
+    }
+    if (session.status !== "active") {
+      return res.status(400).json({ error: "Session is not active" });
+    }
+
+    const turns = Array.isArray(session.turns) ? [...session.turns] : [];
+    const prevList = Array.isArray(session.previousQuestions) ? [...session.previousQuestions] : [];
+
+    const pending = pendingAnswerTurn(turns);
+    if (pending) {
+      return res.json({
+        question: pending.questionText,
+        questionIndex: turns.length,
+        totalPlanned: session.targetQuestionCount,
+      });
+    }
+
+    if (turns.length >= session.targetQuestionCount) {
+      return res.status(400).json({
+        error: "All planned questions have been presented. Use POST /api/interview/end to finish.",
+      });
+    }
+
+    let questionText = null;
+    const lastEval = session.lastEvaluation;
+
+    const canUseFollowUp =
+      lastEval &&
+      lastEval.followUpRelevant === true &&
+      typeof lastEval.followUpQuestion === "string" &&
+      lastEval.followUpQuestion.trim() &&
+      !session.followUpConsumed;
+
+    let followUpConsumed = session.followUpConsumed;
+
+    if (canUseFollowUp) {
+      const fq = lastEval.followUpQuestion.trim();
+      if (!isNearDuplicate(fq, prevList)) {
+        questionText = fq;
+        followUpConsumed = true;
+      }
+    }
+
+    if (!questionText) {
+      let attempts = 0;
+      while (attempts < 4 && !questionText) {
+        attempts += 1;
+        const gen = await generateInterviewQuestion({
+          domain: session.domain,
+          difficulty: session.difficulty,
+          previousQuestions: prevList,
+        });
+        if (!isNearDuplicate(gen.question, prevList)) {
+          questionText = gen.question;
+          break;
+        }
+      }
+      if (!questionText) {
+        return res.status(502).json({ error: "Could not generate a unique question. Try again." });
+      }
+      followUpConsumed = false;
+    }
+
+    turns.push({
+      questionText,
+      answerText: null,
+      skipped: false,
+      evaluation: null,
+    });
+    prevList.push(questionText);
+
+    await session.update({
+      turns,
+      previousQuestions: prevList,
+      followUpConsumed,
+    });
+
+    res.json({
+      question: questionText,
+      questionIndex: turns.length,
+      totalPlanned: session.targetQuestionCount,
+    });
+  } catch (err) {
+    if (err.code === "GEMINI_CONFIG") {
+      return res.status(503).json({ error: "Interview AI is not configured (missing GEMINI_API_KEY)." });
+    }
+    logger.error("Interview question generation failed", err);
+    res.status(500).json({ error: err.message || "Unable to generate question" });
+  }
+}
+
+/**
+ * POST /api/interview/evaluate
+ * Body: { sessionId, answerText?, skipped?: boolean }
+ */
+async function evaluateAnswer(req, res) {
+  try {
+    const userId = req.user.userId;
+    const { sessionId, answerText, skipped } = req.body || {};
+    const session = await loadActiveSession(sessionId, userId);
+    if (!session) {
+      return res.status(404).json({ error: "Interview session not found" });
+    }
+    if (session.status !== "active") {
+      return res.status(400).json({ error: "Session is not active" });
+    }
+
+    const turns = Array.isArray(session.turns) ? [...session.turns] : [];
+    const pending = pendingAnswerTurn(turns);
+    if (!pending) {
+      return res.status(400).json({ error: "No active question to evaluate. Request a question first." });
+    }
+
+    const isSkip = skipped === true || skipped === "true";
+    const qText = pending.questionText;
+    const idx = turns.length - 1;
+
+    if (isSkip) {
+      const skipEval = {
+        score: null,
+        feedback: "This question was skipped. No score was assigned.",
+        strengths: [],
+        weaknesses: ["Question skipped — opportunity to practice this topic missed."],
+        idealAnswer: "",
+        followUpQuestion: "",
+        followUpRelevant: false,
+        skipped: true,
+        evaluated: true,
+        isSkip: true,
+      };
+      turns[idx] = {
+        questionText: qText,
+        answerText: null,
+        skipped: true,
+        evaluation: skipEval,
+      };
+      await session.update({
+        turns,
+        lastEvaluation: skipEval,
+        followUpConsumed: false,
+      });
+      return res.json({
+        skipped: true,
+        score: null,
+        feedback: skipEval.feedback,
+        strengths: skipEval.strengths,
+        weaknesses: skipEval.weaknesses,
+        idealAnswer: skipEval.idealAnswer,
+        followUpQuestion: skipEval.followUpQuestion,
+        followUpRelevant: false,
+        questionIndex: turns.length,
+        totalPlanned: session.targetQuestionCount,
+      });
+    }
+
+    const trimmed = typeof answerText === "string" ? answerText.trim() : "";
+    if (!trimmed) {
+      return res.status(400).json({ error: "answerText is required unless skipped is true." });
+    }
+
+    const evaluation = await evaluateInterviewAnswer({
+      domain: session.domain,
+      difficulty: session.difficulty,
+      question: qText,
+      answer: trimmed,
+    });
+
+    const storedEval = {
+      ...evaluation,
+      evaluated: true,
+      skipped: false,
+    };
+
+    turns[idx] = {
+      questionText: qText,
+      answerText: trimmed,
+      skipped: false,
+      evaluation: storedEval,
+    };
+
+    await session.update({
+      turns,
+      lastEvaluation: storedEval,
+      followUpConsumed: false,
+    });
+
+    res.json({
+      skipped: false,
+      score: evaluation.score,
+      feedback: evaluation.feedback,
+      strengths: evaluation.strengths,
+      weaknesses: evaluation.weaknesses,
+      idealAnswer: evaluation.idealAnswer,
+      followUpQuestion: evaluation.followUpQuestion,
+      followUpRelevant: evaluation.followUpRelevant,
+      questionIndex: turns.length,
+      totalPlanned: session.targetQuestionCount,
+    });
+  } catch (err) {
+    if (err.code === "GEMINI_CONFIG") {
+      return res.status(503).json({ error: "Interview AI is not configured (missing GEMINI_API_KEY)." });
+    }
+    logger.error("Interview evaluate failed", err);
+    res.status(500).json({ error: err.message || "Unable to evaluate answer" });
+  }
+}
+
+function computeScoresFromTurns(turns) {
+  const scored = (turns || [])
+    .map((t) => t?.evaluation?.score)
+    .filter((s) => typeof s === "number" && !Number.isNaN(s));
+  if (!scored.length) {
+    return { averageScore: 0, overallScore: 0 };
+  }
+  const sum = scored.reduce((a, b) => a + b, 0);
+  const avg = sum / scored.length;
+  return {
+    averageScore: Math.round(avg * 100) / 100,
+    overallScore: Math.round(avg * 100) / 100,
+  };
+}
+
+/**
+ * POST /api/interview/end
+ * Body: { sessionId, durationSeconds?, abandoned?: boolean }
+ */
+async function endInterview(req, res) {
+  try {
+    const userId = req.user.userId;
+    const { sessionId, durationSeconds, abandoned } = req.body || {};
+    const session = await loadActiveSession(sessionId, userId);
+    if (!session) {
+      return res.status(404).json({ error: "Interview session not found" });
+    }
+    if (session.status !== "active") {
+      return res.status(400).json({ error: "Session has already been ended" });
+    }
+
+    let turns = Array.isArray(session.turns) ? [...session.turns] : [];
+    let prevList = Array.isArray(session.previousQuestions) ? [...session.previousQuestions] : [];
+
+    const dur = Number(durationSeconds);
+    const timeTaken = Number.isFinite(dur) && dur >= 0 ? Math.floor(dur) : null;
+
+    const isAbandoned = abandoned === true || abandoned === "true";
+
+    if (isAbandoned && pendingAnswerTurn(turns)) {
+      turns.pop();
+      if (prevList.length > turns.length) {
+        prevList = prevList.slice(0, turns.length);
+      } else if (prevList.length) {
+        prevList.pop();
+      }
+      await session.update({
+        turns,
+        previousQuestions: prevList,
+        lastEvaluation: null,
+        followUpConsumed: false,
+      });
+    } else if (!isAbandoned && pendingAnswerTurn(turns)) {
+      return res.status(400).json({
+        error: "Submit or skip the current question before ending the interview.",
+      });
+    }
+
+    const { averageScore, overallScore } = computeScoresFromTurns(turns);
+
+    let finalReport = null;
+    if (!isAbandoned && turns.length > 0) {
+      try {
+        finalReport = await generateFinalInterviewReport({
+          domain: session.domain,
+          difficulty: session.difficulty,
+          turns,
+          averageScore,
+          overallScore,
+        });
+      } catch (e) {
+        logger.warn("Final Gemini report failed; using fallback summary", e);
+        finalReport = {
+          overallSummary: "Interview completed. Review per-question feedback for details.",
+          finalStrengths: [],
+          finalWeaknesses: [],
+          improvementSuggestions: [
+            "Re-read weaker answers and compare them to the ideal answers shown.",
+            "Drill fundamentals in your selected domain at the chosen difficulty.",
+            "Write longer structured answers (situation → approach → tradeoffs → conclusion).",
+            "Schedule another session after focused study.",
+          ],
+        };
+      }
+    } else {
+      finalReport = {
+        overallSummary: isAbandoned
+          ? "Interview ended early. Progress has been saved as abandoned."
+          : "No questions were completed.",
+        finalStrengths: [],
+        finalWeaknesses: [],
+        improvementSuggestions: [],
+      };
+    }
+
+    const fullReport = {
+      sessionId: session.id,
+      domain: session.domain,
+      difficulty: session.difficulty,
+      targetQuestionCount: session.targetQuestionCount,
+      questionsCompleted: turns.length,
+      averageScore,
+      overallScore,
+      turns,
+      finalStrengths: finalReport.finalStrengths || [],
+      finalWeaknesses: finalReport.finalWeaknesses || [],
+      improvementSuggestions: finalReport.improvementSuggestions || [],
+      overallSummary: finalReport.overallSummary || "",
+      timeTakenSeconds: timeTaken,
+      abandoned: isAbandoned,
+    };
+
+    await session.update({
+      status: isAbandoned ? "abandoned" : "completed",
+      finalReport: fullReport,
+      overallScore,
+      averageScore,
+      timeTakenSeconds: timeTaken,
+    });
+
+    res.json({ report: fullReport });
+  } catch (err) {
+    if (err.code === "GEMINI_CONFIG") {
+      return res.status(503).json({ error: "Interview AI is not configured (missing GEMINI_API_KEY)." });
+    }
+    logger.error("Interview end failed", err);
+    res.status(500).json({ error: "Unable to finalize interview" });
+  }
+}
+
+/**
+ * GET /api/interview/:id/report
+ */
+async function getInterviewReport(req, res) {
   try {
     const userId = req.user.userId;
     const idNum = Number.parseInt(req.params.id, 10);
@@ -260,37 +514,36 @@ async function getResult(req, res) {
       return res.status(400).json({ error: "Invalid interview id" });
     }
 
-    const row = await Interview.findOne({
+    const session = await WrittenInterviewSession.findOne({
       where: { id: idNum, userId },
     });
-    if (!row) {
-      return res.status(404).json({ error: "Interview result not found" });
+    if (!session) {
+      return res.status(404).json({ error: "Interview report not found" });
+    }
+    if (session.status === "active") {
+      return res.status(400).json({ error: "Interview is still in progress" });
     }
 
-    const payload = row.toJSON();
-    res.json({
-      id: payload.id,
-      selectedDomain: payload.selectedDomain,
-      score: payload.score,
-      percentile: Number(payload.percentile),
-      strengths: payload.strengths,
-      weaknesses: payload.weaknesses,
-      recommendations: payload.recommendations,
-      analytics: payload.analytics || null,
-      timeTaken: payload.timeTaken,
-      questions: payload.questions,
-      answers: payload.answers,
-      createdAt: payload.createdAt,
-    });
+    const report = session.finalReport;
+    if (!report) {
+      return res.status(404).json({ error: "Report not available" });
+    }
+
+    res.json(report);
   } catch (err) {
-    logger.error("Interview result GET failed", err);
-    res.status(500).json({ error: "Unable to retrieve interview result" });
+    logger.error("Interview report GET failed", err);
+    res.status(500).json({ error: "Unable to retrieve interview report" });
   }
 }
 
 module.exports = {
   detectDomains,
-  getQuestions,
-  submitInterview,
-  getResult,
+  startWrittenInterview,
+  nextQuestion,
+  evaluateAnswer,
+  endInterview,
+  getInterviewReport,
+  WRITTEN_INTERVIEW_DOMAINS,
+  ALLOWED_DIFFICULTIES,
+  ALLOWED_COUNTS,
 };

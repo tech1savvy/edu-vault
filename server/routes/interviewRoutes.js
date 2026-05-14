@@ -9,8 +9,10 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get("/domain-detection", interviewController.detectDomains);
-router.get("/questions/:domain", interviewController.getQuestions);
-router.post("/submit", interviewController.submitInterview);
-router.get("/result/:id", interviewController.getResult);
+router.post("/start", interviewController.startWrittenInterview);
+router.post("/question", interviewController.nextQuestion);
+router.post("/evaluate", interviewController.evaluateAnswer);
+router.post("/end", interviewController.endInterview);
+router.get("/:id/report", interviewController.getInterviewReport);
 
 module.exports = router;

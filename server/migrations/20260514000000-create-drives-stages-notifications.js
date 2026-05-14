@@ -186,7 +186,7 @@ module.exports = {
     // 5. Add drive_id and eligibility columns to JobDescriptions
     await queryInterface.addColumn('JobDescriptions', 'drive_id', {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: { model: 'Drives', key: 'id' },
       onDelete: 'CASCADE'
     });
