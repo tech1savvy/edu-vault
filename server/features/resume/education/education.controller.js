@@ -7,6 +7,7 @@ const getEducations = async (req, res) => {
     const result = await education.getEducations({ user_id });
     res.json(result);
   } catch(e) {
+    console.error('[education.controller] getEducations error:', e.message, e.original?.message || '', e.stack);
     res.status(500).send({ error: 'Problem fetching educations.' });
   }
 };

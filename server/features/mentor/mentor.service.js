@@ -12,20 +12,22 @@ const getStudentDashboard = async (studentId, targetRole = null) => {
         throw new Error('Student not found');
     }
 
-    const skills = await repository.getStudentSkills(studentId);
-    const projects = await repository.getStudentProjects(studentId);
-    const education = await repository.getStudentEducation(studentId);
-    const certifications = await repository.getStudentCertifications ? await repository.getStudentCertifications(studentId) : [];
+    const skills = (await repository.getStudentSkills(studentId)) || [];
+    const projects = (await repository.getStudentProjects(studentId)) || [];
+    const education = (await repository.getStudentEducation(studentId)) || [];
+    const certifications = repository.getStudentCertifications
+      ? ((await repository.getStudentCertifications(studentId)) || [])
+      : [];
 
-    const skillsString = skills.map(s => s.name).join(', ');
-    const projectsString = projects.map(p => p.title).join(', ');
-    const educationString = education.map(e => `${e.degree} in ${e.fieldOfStudy}`).join(', ');
+    const skillsString = skills.map(s => s.name || '').join(', ');
+    const projectsString = projects.map(p => p.title || '').join(', ');
+    const educationString = education.map(e => `${e.degree || ''} in ${e.fieldOfStudy || ''}`).join(', ');
 
     const profileText = `Education: ${educationString}. Skills: ${skillsString}. Projects: ${projectsString}.`;
     
     // Extract Student Profile Summary Data
     const topSkills = skills.slice(0, 3).map(s => s.name);
-    const primaryEducation = education.length > 0 ? education[0].fieldOfStudy : 'Not stated';
+    const primaryEducation = education.length > 0 ? (education[0].fieldOfStudy || education[0].degree || 'Not stated') : 'Not stated';
 
     // 1. Call ML Service or use forced Target Role
     let readinessScore = 0;
