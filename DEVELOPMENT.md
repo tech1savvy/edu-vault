@@ -17,13 +17,13 @@ docker compose up -d
 This starts:
 - **PostgreSQL** on port 5432
 - **Qdrant** on port 6333
-- **Server** on port 8000
+- **Backend (backend)** on port 8000
 - **Client** on port 5173
 - **ML Service** on port 8001
 
 ## Environment Variables
 
-### Server
+### Backend (backend)
 
 | Variable | Default | Description |
 |----------|---------|-------------|
@@ -99,11 +99,11 @@ docker compose up -d
 
 ```bash
 # Run migrations
-docker compose exec server npx sequelize-cli db:migrate
+docker compose exec backend npx sequelize-cli db:migrate
 
 # Revert last migration
-docker compose exec server npx sequelize-cli db:migrate:undo
+docker compose exec backend npx sequelize-cli db:migrate:undo
 
 # Seed data
-docker compose exec server npx sequelize-cli db:seed:all
+docker compose exec backend npx sequelize-cli db:seed:all
 ```

@@ -25,10 +25,10 @@ services:
     networks:
       - eduvault-network
 
-  server:
+  backend:
     build:
       context: ./server
-    container_name: eduvault-server
+    container_name: eduvault-backend
     command: node index.js
     ports:
       - "8000:8000"
