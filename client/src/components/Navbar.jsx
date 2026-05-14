@@ -9,12 +9,10 @@ const dropdownBtn = "flex items-center gap-1 px-3 py-2 text-sm font-medium text-
 const dropdownItem = "block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition";
 
 function Navbar() {
-  const { logout } = useContext(AuthContext);
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
 
-  const storedUser = localStorage.getItem('user');
-  const user = storedUser ? (() => { try { return JSON.parse(storedUser); } catch { return null; } })() : null;
   const role = user?.role;
   const isAdmin = role === 'administrator';
   const isStudent = role === 'student';
@@ -86,6 +84,7 @@ function Navbar() {
             {isStudent && (
               <>
                 <Dropdown name="dashboard" label="Dashboard" items={[
+                  { to: "/dashboard/jobs", label: "Jobs & Drives" },
                   { to: "/dashboard/profile", label: "Profile" },
                   { to: "/dashboard/education", label: "Education" },
                   { to: "/dashboard/experience", label: "Experience" },
@@ -105,7 +104,7 @@ function Navbar() {
               </>
             )}
 
-            {user && (
+            {isStudent && (
               <Link to="/interview/domain" className={`${navLink} text-cyan-400 hover:text-cyan-300`}>
                 Mock Interview
               </Link>
@@ -127,8 +126,8 @@ function Navbar() {
                 { to: "/admin/analytics", label: "Analytics" },
               ]} />
             )}
-            {user && <NotificationBell />}
-            {user ? (
+            {isLoggedIn && <NotificationBell />}
+            {isLoggedIn ? (
               <button onClick={handleLogout} className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition">
                 Logout
               </button>
@@ -162,6 +161,7 @@ function Navbar() {
           {isStudent && (
             <>
               <MobileDropdown name="m-dashboard" label="Dashboard" items={[
+                { to: "/dashboard/jobs", label: "Jobs & Drives" },
                 { to: "/dashboard/profile", label: "Profile" },
                 { to: "/dashboard/education", label: "Education" },
                 { to: "/dashboard/experience", label: "Experience" },
@@ -181,7 +181,7 @@ function Navbar() {
             </>
           )}
 
-          {user && (
+          {isStudent && (
             <Link to="/interview/domain" onClick={closeMenu} className={`${mobileNavLink} text-cyan-400`}>
               Mock Interview
             </Link>
@@ -205,7 +205,7 @@ function Navbar() {
             ]} />
           )}
 
-          {user ? (
+          {isLoggedIn ? (
             <>
               <div className="px-3 py-2"><NotificationBell /></div>
               <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
