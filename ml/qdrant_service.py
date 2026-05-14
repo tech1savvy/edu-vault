@@ -60,6 +60,7 @@ def query_similar(
     limit: int = 10,
     filter_type: str | None = None,
 ) -> list[dict]:
+    get_client()
     with httpx.Client(base_url=QDRANT_URL, timeout=30.0) as client:
         payload = {
             "vector": embedding,
@@ -90,6 +91,7 @@ def query_similar(
 
 
 def get_vector(vector_id: str) -> dict | None:
+    get_client()
     with httpx.Client(base_url=QDRANT_URL, timeout=30.0) as client:
         payload = {
             "filter": {"must": [{"key": "external_id", "match": {"value": vector_id}}]},
