@@ -25,8 +25,6 @@ const LoginPage = () => {
     setError(null);
     try {
       const { token, user } = await login(email, password);
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
       authLogin(token, user);
 
       for (let i = localStorage.length - 1; i >= 0; i--) {
