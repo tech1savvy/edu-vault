@@ -126,7 +126,7 @@ function Navbar() {
                 { to: "/admin/analytics", label: "Analytics" },
               ]} />
             )}
-            {isLoggedIn && <NotificationBell />}
+            {isStudent && <NotificationBell />}
             {isLoggedIn ? (
               <button onClick={handleLogout} className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition">
                 Logout
@@ -207,7 +207,7 @@ function Navbar() {
 
           {isLoggedIn ? (
             <>
-              <div className="px-3 py-2"><NotificationBell /></div>
+              {isStudent && <div className="px-3 py-2"><NotificationBell /></div>}
               <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
                 Logout
               </button>
