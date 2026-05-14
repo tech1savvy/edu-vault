@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { ResumeContext } from "../../../context/resumeContext";
+import { addExperience, updateExperience, deleteExperience } from "../../../services/api";
 
 function ExperienceForm() {
   const { experiences, setExperiences } = useContext(ResumeContext);
@@ -18,16 +19,33 @@ function ExperienceForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = () => {
-    if (editIndex !== null) {
-      const updatedExperiences = [...experiences];
-      updatedExperiences[editIndex] = form;
-      setExperiences(updatedExperiences);
-      setEditIndex(null);
-    } else {
-      setExperiences([...experiences, form]);
+  const handleAdd = async () => {
+    if (form.company.trim() || form.role.trim()) {
+      try {
+        if (editIndex !== null) {
+          const updated = await updateExperience(experiences[editIndex].id, form);
+          const updatedExperiences = [...experiences];
+          updatedExperiences[editIndex] = updated;
+          setExperiences(updatedExperiences);
+          setEditIndex(null);
+        } else {
+          const created = await addExperience(form);
+          setExperiences([...experiences, created]);
+        }
+        setForm({ type: "Job", company: "", role: "", duration: "", details: "" });
+      } catch (error) {
+        console.error("Failed to save experience:", error);
+      }
     }
-    setForm({ type: "Job", company: "", role: "", duration: "", details: "" });
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteExperience(id);
+      setExperiences(experiences.filter((exp) => exp.id !== id));
+    } catch (error) {
+      console.error("Failed to delete experience:", error);
+    }
   };
 
   const inputClass = "w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 placeholder-gray-500";
@@ -96,7 +114,7 @@ function ExperienceForm() {
                 Edit
               </button>
               <button className="theme-btn border border-red-500/50 text-red-400 hover:bg-red-500/20 text-xs py-1 px-2"
-                onClick={() => setExperiences(experiences.filter((_, i) => i !== idx))}>
+                onClick={() => handleDelete(exp.id)}>
                 Remove
               </button>
             </div>

@@ -1,16 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import {
-  login,
-  getHeading,
-  getProjects,
-  getSkills,
-  getExperience,
-  getEducation,
-  getAchievements,
-  getCertifications
-} from '../services/api';
+import { login } from '../services/api';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -26,50 +17,6 @@ const LoginPage = () => {
     try {
       const { token, user } = await login(email, password);
       authLogin(token, user);
-
-      for (let i = localStorage.length - 1; i >= 0; i--) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('resume_')) {
-          localStorage.removeItem(key);
-        }
-      }
-
-      if (user && user.role === 'student') {
-        try {
-          const [heading, projects, skills, exp, edu, ach, cert] = await Promise.all([
-            getHeading().catch(() => ({})),
-            getProjects().catch(() => []),
-            getSkills().catch(() => []),
-            getExperience().catch(() => []),
-            getEducation().catch(() => []),
-            getAchievements().catch(() => []),
-            getCertifications().catch(() => [])
-          ]);
-
-          const hData = heading.data || heading || {};
-          if (Object.keys(hData).length > 0) localStorage.setItem('resume_heading', JSON.stringify(hData));
-
-          const pData = projects.data || projects || [];
-          if (pData.length > 0) localStorage.setItem('resume_projects', JSON.stringify(pData));
-
-          const sData = skills.data || skills || [];
-          if (sData.length > 0) localStorage.setItem('resume_skills', JSON.stringify(sData));
-
-          const expData = exp.data || exp || [];
-          if (expData.length > 0) localStorage.setItem('resume_experiences', JSON.stringify(expData));
-
-          const eduData = edu.data || edu || [];
-          if (eduData.length > 0) localStorage.setItem('resume_education', JSON.stringify(eduData));
-
-          const achData = ach.data || ach || [];
-          if (achData.length > 0) localStorage.setItem('resume_achievements', JSON.stringify(achData));
-
-          const certData = cert.data || cert || [];
-          if (certData.length > 0) localStorage.setItem('resume_certifications', JSON.stringify(certData));
-        } catch (fetchErr) {
-          console.warn('Could not fetch existing resume data on login:', fetchErr);
-        }
-      }
 
       if (user && user.role === 'administrator') {
         window.location.href = '/admin/dashboard';

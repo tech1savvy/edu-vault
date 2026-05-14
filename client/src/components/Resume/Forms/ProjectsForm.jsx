@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { ResumeContext } from "../../../context/resumeContext";
+import { addProject, updateProject, deleteProject } from "../../../services/api";
 
 function ProjectsForm() {
   const { projects, setProjects } = useContext(ResumeContext);
@@ -19,16 +20,33 @@ function ProjectsForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = () => {
-    if (editIndex !== null) {
-      const updatedProjects = [...projects];
-      updatedProjects[editIndex] = form;
-      setProjects(updatedProjects);
-      setEditIndex(null);
-    } else {
-      setProjects([...projects, form]);
+  const handleAdd = async () => {
+    if (form.title.trim()) {
+      try {
+        if (editIndex !== null) {
+          const updated = await updateProject(projects[editIndex].id, form);
+          const updatedProjects = [...projects];
+          updatedProjects[editIndex] = updated;
+          setProjects(updatedProjects);
+          setEditIndex(null);
+        } else {
+          const created = await addProject(form);
+          setProjects([...projects, created]);
+        }
+        setForm({ title: "", description: "", techStack: "", timeline: "", type: "Individual", collaborators: "" });
+      } catch (error) {
+        console.error("Failed to save project:", error);
+      }
     }
-    setForm({ title: "", description: "", techStack: "", timeline: "", type: "Individual", collaborators: "" });
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteProject(id);
+      setProjects(projects.filter((proj) => proj.id !== id));
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+    }
   };
 
   const inputClass = "w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 placeholder-gray-500";
@@ -97,7 +115,7 @@ function ProjectsForm() {
               <small className="text-gray-400">{proj.timeline}</small>
               <p className="mb-1">{proj.description}</p>
               <em className="text-gray-400">{proj.techStack}</em> <br />
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-500/20 text-cyan-400 mt-1">{proj.type}</span>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-400 mt-1">{proj.type}</span>
               {proj.type === "Group" && <p className="mb-0 mt-1">Collaborators: {proj.collaborators}</p>}
             </div>
             <div className="flex flex-col gap-2 shrink-0">
@@ -106,7 +124,7 @@ function ProjectsForm() {
                 Edit
               </button>
               <button className="theme-btn border border-red-500/50 text-red-400 hover:bg-red-500/20 text-xs py-1 px-2"
-                onClick={() => setProjects(projects.filter((_, i) => i !== idx))}>
+                onClick={() => handleDelete(proj.id)}>
                 Remove
               </button>
             </div>

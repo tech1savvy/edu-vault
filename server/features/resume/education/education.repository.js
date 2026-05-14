@@ -8,12 +8,12 @@ const addEducation = async ({ user_id, institution, degree, fieldOfStudy, durati
   return await Education.create({ userId: user_id, institution, degree, fieldOfStudy, duration, details, cgpa });
 };
 
-const updateEducation = async (id, { institution, degree, fieldOfStudy, duration, details }) => {
+const updateEducation = async (id, { institution, degree, fieldOfStudy, duration, details, cgpa }) => {
   const education = await Education.findByPk(id);
   if (!education) {
     throw new Error('Education not found');
   }
-  return await education.update({ institution, degree, fieldOfStudy, duration, details });
+  return await education.update({ institution, degree, fieldOfStudy, duration, details, cgpa });
 };
 
 const deleteEducation = async (id) => {

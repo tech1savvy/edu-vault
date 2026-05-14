@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ResumeContext } from "../../../context/resumeContext";
+import { addEducation, updateEducation, deleteEducation } from "../../../services/api";
 
 function EducationForm() {
   const { education = [], setEducation } = useContext(ResumeContext);
@@ -10,29 +11,44 @@ function EducationForm() {
 
   const [formData, setFormData] = useState({
     degree: "",
-    college: "",
-    location: "",
-    startDate: "",
-    endDate: "",
-    score: "",
+    institution: "",
+    fieldOfStudy: "",
+    duration: "",
+    details: "",
+    cgpa: "",
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
-    if (formData.degree.trim() || formData.college.trim()) {
-      if (editIndex !== null) {
-        const updatedEducation = [...education];
-        updatedEducation[editIndex] = formData;
-        setEducation(updatedEducation);
-        setEditIndex(null);
-      } else {
-        setEducation((prev) => [...prev, formData]);
+    if (formData.degree.trim() || formData.institution.trim()) {
+      try {
+        if (editIndex !== null) {
+          const updated = await updateEducation(education[editIndex].id, formData);
+          const updatedEducation = [...education];
+          updatedEducation[editIndex] = updated;
+          setEducation(updatedEducation);
+          setEditIndex(null);
+        } else {
+          const created = await addEducation(formData);
+          setEducation((prev) => [...prev, created]);
+        }
+        setFormData({ degree: "", institution: "", fieldOfStudy: "", duration: "", details: "", cgpa: "" });
+      } catch (error) {
+        console.error("Failed to save education:", error);
       }
-      setFormData({ degree: "", college: "", location: "", startDate: "", endDate: "", score: "" });
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteEducation(id);
+      setEducation(education.filter((edu) => edu.id !== id));
+    } catch (error) {
+      console.error("Failed to delete education:", error);
     }
   };
 
@@ -46,11 +62,11 @@ function EducationForm() {
     <div className="space-y-4">
       <form onSubmit={handleAdd} className="space-y-3">
         <input className={inputClass} name="degree" placeholder="Degree/Program" value={formData.degree} onChange={handleChange} />
-        <input className={inputClass} name="college" placeholder="University/College" value={formData.college} onChange={handleChange} />
-        <input className={inputClass} name="location" placeholder="Location" value={formData.location} onChange={handleChange} />
-        <input className={inputClass} type="date" name="startDate" value={formData.startDate} onChange={handleChange} />
-        <input className={inputClass} type="date" name="endDate" value={formData.endDate} onChange={handleChange} />
-        <input className={inputClass} name="score" placeholder="Marks/Percentage/GPA" value={formData.score} onChange={handleChange} />
+        <input className={inputClass} name="institution" placeholder="University/Institution" value={formData.institution} onChange={handleChange} />
+        <input className={inputClass} name="fieldOfStudy" placeholder="Field of Study" value={formData.fieldOfStudy} onChange={handleChange} />
+        <input className={inputClass} name="duration" placeholder="Duration (e.g. Jan 2020 - Jun 2024)" value={formData.duration} onChange={handleChange} />
+        <input className={inputClass} name="details" placeholder="Details / Location" value={formData.details} onChange={handleChange} />
+        <input className={inputClass} name="cgpa" placeholder="CGPA" value={formData.cgpa} onChange={handleChange} />
 
         <div className="flex gap-2">
           <button type="submit" className={editIndex !== null ? "theme-btn theme-btn-success" : "theme-btn theme-btn-primary"}>
@@ -59,7 +75,7 @@ function EducationForm() {
           {editIndex !== null && (
             <button type="button" className="theme-btn border border-gray-500 text-gray-300 hover:bg-gray-700" onClick={() => {
               setEditIndex(null);
-              setFormData({ degree: "", college: "", location: "", startDate: "", endDate: "", score: "" });
+              setFormData({ degree: "", institution: "", fieldOfStudy: "", duration: "", details: "", cgpa: "" });
             }}>
               Cancel
             </button>
@@ -76,10 +92,11 @@ function EducationForm() {
           {education.map((edu, idx) => (
             <li key={idx} className="theme-card p-3 flex justify-between items-start">
               <div className="text-gray-200 text-sm">
-                <strong>{edu.degree}</strong> at {edu.college} <br />
-                <small className="text-gray-400">{edu.startDate} {edu.endDate ? `- ${edu.endDate}` : ""}</small>
-                {edu.location && <p className="mb-0 text-gray-400">{edu.location}</p>}
-                {edu.score && <p className="mb-0">Score: {edu.score}</p>}
+                <strong>{edu.degree}</strong> at {edu.institution} <br />
+                <small className="text-gray-400">{edu.duration}</small>
+                {edu.fieldOfStudy && <p className="mb-0 text-gray-400">{edu.fieldOfStudy}</p>}
+                {edu.details && <p className="mb-0 text-gray-400">{edu.details}</p>}
+                {edu.cgpa && <p className="mb-0">CGPA: {edu.cgpa}</p>}
               </div>
               <div className="flex flex-col gap-2 shrink-0">
                 <button className="theme-btn border border-blue-500/50 text-blue-400 hover:bg-blue-500/20 text-xs py-1 px-2"
@@ -87,7 +104,7 @@ function EducationForm() {
                   Edit
                 </button>
                 <button className="theme-btn border border-red-500/50 text-red-400 hover:bg-red-500/20 text-xs py-1 px-2"
-                  onClick={() => setEducation(education.filter((_, i) => i !== idx))}>
+                  onClick={() => handleDelete(edu.id)}>
                   Remove
                 </button>
               </div>

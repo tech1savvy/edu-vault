@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { ResumeContext } from "../../../context/resumeContext";
+import { addAchievement, updateAchievement, deleteAchievement } from "../../../services/api";
 
 function AchievementsForm() {
   const { achievements, setAchievements } = useContext(ResumeContext);
@@ -16,22 +17,33 @@ function AchievementsForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (form.title.trim()) {
-      if (editIndex !== null) {
-        const updatedAchievements = [...achievements];
-        updatedAchievements[editIndex] = form;
-        setAchievements(updatedAchievements);
-        setEditIndex(null);
-      } else {
-        setAchievements([...achievements, form]);
+      try {
+        if (editIndex !== null) {
+          const updated = await updateAchievement(achievements[editIndex].id, form);
+          const updatedAchievements = [...achievements];
+          updatedAchievements[editIndex] = updated;
+          setAchievements(updatedAchievements);
+          setEditIndex(null);
+        } else {
+          const created = await addAchievement(form);
+          setAchievements([...achievements, created]);
+        }
+        setForm({ title: "", description: "", date: "" });
+      } catch (error) {
+        console.error("Failed to save achievement:", error);
       }
-      setForm({ title: "", description: "", date: "" });
     }
   };
 
-  const handleRemove = (index) => {
-    setAchievements(achievements.filter((_, i) => i !== index));
+  const handleDelete = async (id) => {
+    try {
+      await deleteAchievement(id);
+      setAchievements(achievements.filter((ach) => ach.id !== id));
+    } catch (error) {
+      console.error("Failed to delete achievement:", error);
+    }
   };
 
   const inputClass = "w-full bg-gray-900 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 placeholder-gray-500";
@@ -87,7 +99,7 @@ function AchievementsForm() {
                   Edit
                 </button>
                 <button className="theme-btn border border-red-500/50 text-red-400 hover:bg-red-500/20 text-xs py-1 px-2"
-                  onClick={() => handleRemove(idx)}>
+                  onClick={() => handleDelete(achievement.id)}>
                   Remove
                 </button>
               </div>

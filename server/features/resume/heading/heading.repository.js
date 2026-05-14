@@ -4,14 +4,14 @@ const getHeading = async ({ user_id }) => {
   return await Heading.findOne({ where: { userId: user_id } });
 };
 
-const createOrUpdateHeading = async ({ user_id, name, role, email, phone, location, link }) => {
+const createOrUpdateHeading = async ({ user_id, name, role, email, phone, location, link, description }) => {
   const [heading, created] = await Heading.findOrCreate({
     where: { userId: user_id },
-    defaults: { userId: user_id, name, role, email, phone, location, link },
+    defaults: { userId: user_id, name, role, email, phone, location, link, description },
   });
 
   if (!created) {
-    return await heading.update({ name, role, email, phone, location, link });
+    return await heading.update({ name, role, email, phone, location, link, description });
   }
 
   return heading;
